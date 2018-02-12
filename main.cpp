@@ -4,6 +4,7 @@
 #include <GL/glut.h>
 #include <chrono>
 #include <thread>
+#include <ctime> // содержит time()
 using namespace std::this_thread;     // sleep_for, sleep_until
 using std::chrono::system_clock;
 using namespace std::chrono; // nanoseconds, system_clock, seconds
@@ -13,8 +14,13 @@ using namespace std;
 void display();
 const int N = 100;
 const int WALL = 55;
-const int HERO = -5;
+const int HERO = -1;
 const int EXIT = -8;
+const int heroCoordX = 3;
+const int heroCoordY = 6;
+int exitCoordX = 20;
+int exitCoordY = 20;
+
 int map[N][N];
 vector<pair<int, int> > wave;
 
@@ -23,6 +29,7 @@ void timer(int = 0)
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_QUADS);
 
+    srand(time(NULL));
     for (int i = 0; i < N; ++i)
         for (int j = 0; j < N; ++j)
         {
@@ -38,14 +45,14 @@ void timer(int = 0)
         map[i][N - 1] = WALL;
         map[N - 1][i] = WALL;
     }
-    map[N / 8 + 5][N / 4] = HERO;
-    map[N - 10][N / 2] = EXIT;
+    map[heroCoordX][heroCoordY] = HERO;
+    map[exitCoordX][exitCoordY] = EXIT;
 
 
     vector<pair<int, int> > oldWave;
-    oldWave.push_back(pair<int, int>(N / 8 + 5, N / 4));
+    oldWave.push_back(pair<int, int>(heroCoordX, heroCoordY));
     int nstep = 1;
-    map[N / 8 + 5][N / 4] = nstep;
+    map[heroCoordX][heroCoordY] = nstep;
     const int dx[] = { 0, 1, 0, -1 };
     const int dy[] = { -1, 0, 1, 0 };
 
@@ -88,8 +95,9 @@ void timer(int = 0)
     }
 
     sleep_for(nanoseconds(700000000));
-    int x = N - 10;
-    int y = N / 2;
+
+    int x = exitCoordX;
+    int y = exitCoordY;
     wave.clear();
     wave.push_back(pair<int, int>(x, y));
     while (map[x][y] != 1)
@@ -134,18 +142,23 @@ void display()
     for (int i = 0; i < N; ++i)
         for (int j = 0; j < N; ++j)
         {
-            if (map[i][j] == WALL)
+            if ((i == heroCoordX)&&(j == heroCoordY))
+                glColor3f(0, 0, 1);
+            else  if ((i == exitCoordX)&&(j == exitCoordY))
+                glColor3f(1, 1, 0);
+            else if (map[i][j] == WALL)
                 glColor3f(1, 1, 1);
-            else if (map[i][j] == -1)
+            else if (map[i][j] == 0)
                 glColor3f(0, 0, 0);
             else
                 glColor3f(map[i][j] / 48.0, 0, 0);
+
             glVertex2f((i) * 480 / N, (j) * 480 / N);
             glVertex2f((i + 1) * 480 / N, (j) * 480 / N);
             glVertex2f((i + 1) * 480 / N, (j + 1) * 480 / N);
             glVertex2f((i) * 480 / N, (j + 1) * 480 / N);
         }
-    for (vector<pair<int, int> >::iterator i = wave.begin(); i != wave.end(); ++i)
+    for (vector<pair<int, int> >::iterator i = wave.begin() + 1; i < wave.end() - 1; ++i)
     {
         glColor3f(0, 1, 0);
         glVertex2f((i -> first) * 480 / N, (i -> second) * 480 / N);
@@ -168,7 +181,8 @@ int main(int argc, char **argv)
     glLoadIdentity();
     glOrtho (0, 480, 480, 0, -1, 1);
     glutDisplayFunc(display);
-    glutTimerFunc(10, timer, 0);
+    timer();
+    // glutTimerFunc(10, timer, 0);
     glutMainLoop();
 }
 
