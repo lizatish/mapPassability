@@ -48,8 +48,14 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = main.cpp 
-OBJECTS       = main.o
+SOURCES       = main.cpp \
+		globalmap.cpp \
+		display.cpp \
+		localmap.cpp 
+OBJECTS       = main.o \
+		globalmap.o \
+		display.o \
+		localmap.o
 DIST          = ../../Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../Qt5.7.0/5.7/gcc_64/mkspecs/common/unix.conf \
 		../../Qt5.7.0/5.7/gcc_64/mkspecs/common/linux.conf \
@@ -199,7 +205,12 @@ DIST          = ../../Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../Qt5.7.0/5.7/gcc_64/mkspecs/features/exceptions.prf \
 		../../Qt5.7.0/5.7/gcc_64/mkspecs/features/yacc.prf \
 		../../Qt5.7.0/5.7/gcc_64/mkspecs/features/lex.prf \
-		mapPassability.pro  main.cpp
+		mapPassability.pro globalmap.h \
+		display.h \
+		localmap.h main.cpp \
+		globalmap.cpp \
+		display.cpp \
+		localmap.cpp
 QMAKE_TARGET  = opencv
 DESTDIR       = 
 TARGET        = opencv
@@ -534,7 +545,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents globalmap.h display.h localmap.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp globalmap.cpp display.cpp localmap.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -576,8 +588,17 @@ compiler_clean:
 
 ####### Compile
 
-main.o: main.cpp 
+main.o: main.cpp display.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
+
+globalmap.o: globalmap.cpp globalmap.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o globalmap.o globalmap.cpp
+
+display.o: display.cpp display.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o display.o display.cpp
+
+localmap.o: localmap.cpp localmap.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o localmap.o localmap.cpp
 
 ####### Install
 

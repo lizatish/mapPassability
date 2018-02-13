@@ -25,3 +25,11 @@ LIBS += -lglut
 TEMPLATE = app
 
 SOURCES += main.cpp \
+    globalmap.cpp \
+    display.cpp \
+    localmap.cpp
+
+HEADERS += \
+    globalmap.h \
+    display.h \
+    localmap.h
