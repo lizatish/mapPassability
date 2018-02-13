@@ -12,7 +12,7 @@ using std::chrono::system_clock;
 using namespace std::chrono; // nanoseconds, system_clock, seconds
 using namespace std;
 void display();
-const int N = 100;
+const int N = 30;
 const int WALL = 55;
 const int HERO = -1;
 const int EXIT = -8;
@@ -21,17 +21,20 @@ const int heroCoordY = 6;
 int exitCoordX = 20;
 int exitCoordY = 20;
 
+
 int map[N][N];
 static int closed_nodes_map[N][N]; // map of closed (tried-out) nodes
 static int open_nodes_map[N][N]; // map of open (not-yet-tried) nodes
 static int dir_map[N][N]; // map of directions
+vector<pair<int, int> > resDirection;
 
 const int dir=8; // number of possible directions to go at any position
 // if dir==8
 static int dx[dir]={1, 1, 0, -1, -1, -1, 0, 1};
 static int dy[dir]={0, 1, 1, 1, 0, -1, -1, -1};
+vector<pair<int, int>> pathFind( const int & xStart, const int & yStart,
+                                 const int & xFinish, const int & yFinish );
 
-vector<pair<int, int> > wave;
 class node
 {
     // current position
@@ -106,72 +109,8 @@ void timer(int = 0)
     map[exitCoordX][exitCoordY] = EXIT;
 
 
-    vector<pair<int, int> > oldWave;
-    oldWave.push_back(pair<int, int>(heroCoordX, heroCoordY));
-    int nstep = 1;
-    map[heroCoordX][heroCoordY] = nstep;
-    const int dx[] = { 0, 1, 0, -1 };
-    const int dy[] = { -1, 0, 1, 0 };
+    resDirection = pathFind(heroCoordX, heroCoordY, exitCoordX, exitCoordY);
 
-    bool isExitFind = false;
-    while (!isExitFind)
-    {
-        ++nstep;
-        wave.clear();
-        for (vector<pair<int, int> >::iterator i = oldWave.begin(); i != oldWave.end(); ++i){
-            for (int d = 0; d < 4; ++d){
-                int nx = i -> first + dx[d];
-                int ny = i -> second + dy[d];
-
-                if(map[nx][ny] == EXIT){
-                    map[nx][ny] = nstep;
-                    display();
-
-                    wave.erase(wave.end() - d, wave.end());
-                    wave.push_back(pair<int, int>(nx, ny));
-
-                    isExitFind = true;
-                    break;
-                }
-                else if (map[nx][ny] == 0){
-                    wave.push_back(pair<int, int>(nx, ny));
-                    map[nx][ny] = nstep;
-                    display();
-
-                    if (nx == N - 2 && ny == N - 2){
-                        isExitFind = true;
-                        break;
-                    }
-                }
-            }
-            if(isExitFind)
-                break;
-        }
-        oldWave = wave;
-
-    }
-
-    sleep_for(nanoseconds(700000000));
-
-    int x = exitCoordX;
-    int y = exitCoordY;
-    wave.clear();
-    wave.push_back(pair<int, int>(x, y));
-    while (map[x][y] != 1)
-    {
-        for (int d = 0; d < 4; ++d)
-        {
-            int nx = x + dx[d];
-            int ny = y + dy[d];
-            if (map[x][y] - 1 == map[nx][ny])
-            {
-                x = nx;
-                y = ny;
-                wave.push_back(pair<int, int>(x, y));
-                break;
-            }
-        }
-    }
     for(int i = 0; i < N; i++){
         for(int j = 0; j < N; j++)
             if(map[i][j] == WALL)
@@ -180,14 +119,23 @@ void timer(int = 0)
                 map[i][j] = 0;
     }
 
-    nstep = 1;
-    for (vector<pair<int, int> >::iterator k = wave.end() - 1; k != wave.begin() - 1; --k){
+    int nstep = 1;
+    for (vector<pair<int, int> >::iterator k = resDirection.end() - 1; k != resDirection.begin() - 1; --k){
 
         int nx = k -> first;
         int ny = k -> second;
         map[nx][ny] = nstep;
         nstep++;
     }
+
+    for (int i = 0; i < N; ++i)
+        for (int j = 0; j < N; ++j){
+            if(open_nodes_map[i][j] == 1)
+                map[i][j] = -10;
+            else if (closed_nodes_map[i][j] == 1)
+                map[i][j] = -20;
+
+        }
 
     display();
 }
@@ -204,9 +152,15 @@ void display()
             else  if ((i == exitCoordX)&&(j == exitCoordY))
                 glColor3f(1, 1, 0);
             else if (map[i][j] == WALL)
-                glColor3f(1, 1, 1);
-            else if (map[i][j] == 0)
                 glColor3f(0, 0, 0);
+            else if (map[i][j] == 0)
+                glColor3f(1, 1, 1);
+            else if (map[i][j] == -10)
+                glColor3f(0.58, 0.53, 0.53);
+            else if (map[i][j] == -20)
+                glColor3f(0.06, 0.96, 0.92);
+
+
             else
                 glColor3f(map[i][j] / 48.0, 0, 0);
 
@@ -215,9 +169,9 @@ void display()
             glVertex2f((i + 1) * 480 / N, (j + 1) * 480 / N);
             glVertex2f((i) * 480 / N, (j + 1) * 480 / N);
         }
-    for (vector<pair<int, int> >::iterator i = wave.begin() + 1; i < wave.end() - 1; ++i)
+    for (vector<pair<int, int> >::iterator i = resDirection.begin() + 1; i < resDirection.end(); ++i)
     {
-        glColor3f(0, 1, 0);
+        glColor3f(1, 0, 0);
         glVertex2f((i -> first) * 480 / N, (i -> second) * 480 / N);
         glVertex2f((i -> first + 1) * 480 / N, (i -> second) * 480 / N);
         glVertex2f((i -> first + 1) * 480 / N, (i -> second + 1) * 480 / N);
@@ -245,7 +199,7 @@ int main(int argc, char **argv)
 
 
 vector<pair<int, int>> pathFind( const int & xStart, const int & yStart,
-                                const int & xFinish, const int & yFinish )
+                                 const int & xFinish, const int & yFinish )
 {
     // Создаем очередь с приоритеттом для хранения 2x свободных узлов
     static priority_queue<node> pq[2];
@@ -302,7 +256,6 @@ vector<pair<int, int>> pathFind( const int & xStart, const int & yStart,
                 x += dx[j];
                 y += dy[j];
             }
-
             // Удаление мусора
             delete n0;
             // Очистить оставшиеся узлы
@@ -350,7 +303,7 @@ vector<pair<int, int>> pathFind( const int & xStart, const int & yStart,
                     pq[pqi].pop(); // Удаляем требуемый узел
 
                     // Опускаем размер pq до меньшего размера
-                    if(pq[pqi].size() > pq[1-pqi].size()) pqi = 1 - pqi;
+                    if(pq[pqi].size() > pq[1 - pqi].size()) pqi = 1 - pqi;
                     while(!pq[pqi].empty())
                     {
                         pq[1-pqi].push(pq[pqi].top());
