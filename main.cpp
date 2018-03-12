@@ -1,38 +1,29 @@
 #include "globalmap.h"
 
-int bigMapSize = 30;
-int localMapSize = 3;
-int WALL = 55;
+int bigMapSize;
+int localMapSize;
+int WALL;
 
-int heroCoordX = 3;
-int heroCoordY = 6;
-int exitCoordX = 20;
-int exitCoordY = 20;
-int UNKNOWN = 99;
+int heroCoordX;
+int heroCoordY;
+int exitCoordX;
+int exitCoordY;
+int UNKNOWN;
 
 int** map;
 int** localMap;
-
+void glutInit();
 void display();
+
+globalMap GM;
+
 int main()
 {
 
-    int argc = 0;
-    char* argv[1];
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowSize(480, 480);
-    glutInitWindowPosition(20, 1050 - 480 - 20);
-    glutCreateWindow("Sample Algorithm");
-    glClearColor(0, 0, 0, 1.0);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho (0, 480, 480, 0, -1, 1);
-    glutDisplayFunc(display);
-
-
-    globalMap GM;
+    glutInit();
     GM.setGlobalMap();
+      GM.isFindWALL();
+
 
     bigMapSize = GM.getBigMapSize();
     localMapSize = GM.getLocalMapSize();
@@ -81,4 +72,20 @@ void display(){
 
     glEnd();
     glutSwapBuffers();
+}
+
+void glutInit(){
+
+    int argc = 0;
+    char* argv[1];
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(480, 480);
+    glutInitWindowPosition(20, 1050 - 480 - 20);
+    glutCreateWindow("Sample Algorithm");
+    glClearColor(0, 0, 0, 1.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho (0, 480, 480, 0, -1, 1);
+    glutDisplayFunc(display);
 }

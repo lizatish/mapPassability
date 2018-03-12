@@ -32,6 +32,7 @@ private:
 
     int** map;
     int** localMap;
+    int** currentMap;
 
 
 //    vector<pair<int, int> > resDirection;
@@ -39,6 +40,8 @@ private:
 
 public:
     globalMap();
+    void connectGlobalAndLocalMap();
+
 
     void setGlobalMap();
     void isFindWALL();
