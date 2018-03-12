@@ -33,9 +33,12 @@ int main()
 
     exitCoordX = GM.getExitCoordX();
     exitCoordY = GM.getExitCoordY();
+    UNKNOWN = GM.getUNKNOWN();
 
 
-    map = GM.getMap();
+    map = GM.getCurrentMap();
+    glutDisplayFunc(display);
+
     glutMainLoop();
 
 
@@ -59,6 +62,8 @@ void display(){
                 glColor3f(0.58, 0.53, 0.53);
             else if (map[i][j] == -20)
                 glColor3f(0.06, 0.96, 0.92);
+            else if (map[i][j] == UNKNOWN)
+                glColor3f( 0.64,  0.64, 0.64);
 
 
             else
@@ -87,5 +92,4 @@ void glutInit(){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho (0, 480, 480, 0, -1, 1);
-    glutDisplayFunc(display);
 }

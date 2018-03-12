@@ -58,6 +58,7 @@ public:
     int getBigMapSize() const;
     int **getMap() const;
     int **getLocalMap() const;
+    int **getCurrentMap() const;
 };
 
 #endif // GLOBALMAP_H

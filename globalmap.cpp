@@ -62,6 +62,11 @@ int **globalMap::getLocalMap() const
 }
 
 
+int **globalMap::getCurrentMap() const
+{
+    return currentMap;
+}
+
 globalMap::globalMap()
 {
 
@@ -165,18 +170,27 @@ void globalMap::isFindWALL(){
                 }
 
             }
+
+    int x = heroCoordX;
+    int y = heroCoordY;
+
+    for(int i = x - 2; i < x + localMapSize; i++)
+        for(int j = y - 2; j < y + localMapSize; j++){
+            currentMap[i][j] = map[i][j];
+        }
+
 }
 
-//void globalMap::connectGlobalAndLocalMap(){
-//    int x = heroCoordX - 3;
-//    int y = heroCoordY - 3;
+void globalMap::connectGlobalAndLocalMap(){
+    int x = heroCoordX - 3;
+    int y = heroCoordY - 3;
 
-//    for(int i = x; i < x + localMapSize; i++)
-//        for(int j = y; j < y + localMapSize; j++){
-//            localMap[i][j] = map[i][j];
-//        }
+    for(int i = x; i < x + localMapSize; i++)
+        for(int j = y; j < y + localMapSize; j++){
+            localMap[i][j] = map[i][j];
+        }
 
-//}
+}
 
 void globalMap::setGlobalMap(){
 
@@ -203,4 +217,5 @@ void globalMap::setGlobalMap(){
         for (int j = 0; j < bigMapSize; ++j){
             currentMap[i][j] = UNKNOWN;
         }
+    connectGlobalAndLocalMap();
 }
