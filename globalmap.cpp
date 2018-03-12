@@ -90,106 +90,112 @@ globalMap::globalMap()
 
 void globalMap::isFindWALL(){
 
-    for(int i = 0; i < localMapSize; i++)
-        for(int j = 0; j < localMapSize; j++)
-            if(localMap[i][j] == WALL){
-                //// В зависимости от того, где расположено препятствие
-                /// рисовать невидимые участки
-                // Сверху
-                if((i == heroCoordX)||(j - 1 == heroCoordY)){
-                    if(localMap[i][j - 1] != WALL)
-                        localMap[i][j - 1] = UNKNOWN;
-                    if(localMap[i + 1][j - 1] != WALL)
-                        localMap[i + 1][j - 1] = UNKNOWN;
-                    if(localMap[i - 1][j - 1] != WALL)
-                        localMap[i - 1][j - 1] = UNKNOWN;
-                }
-                // Снизу
-                if((i == heroCoordX)||(j + 1 == heroCoordY)){
-                    if(localMap[i][j + 1] != WALL)
-                        localMap[i][j + 1] = UNKNOWN;
-                    if(localMap[i + 1][j + 1] != WALL)
-                        localMap[i + 1][j + 1] = UNKNOWN;
-                    if(localMap[i - 1][j + 1] != WALL)
-                        localMap[i - 1][j + 1] = UNKNOWN;
-                }
-                // Справа
-                if((i - 1 == heroCoordX)||(j == heroCoordY)){
-                    if(localMap[i + 1][j - 1] != WALL)
-                        localMap[i + 1][j - 1] = UNKNOWN;
-                    if(localMap[i + 1][j] != WALL)
-                        localMap[i + 1][j] = UNKNOWN;
-                    if(localMap[i + 1][j + 1] != WALL)
-                        localMap[i + 1][j + 1] = UNKNOWN;
-                }
-                // Слева
-                if((i + 1 == heroCoordX)||(j == heroCoordY)){
-                    if(localMap[i - 1][j - 1] != WALL)
-                        localMap[i - 1][j - 1] = UNKNOWN;
-                    if(localMap[i - 1][j] != WALL)
-                        localMap[i - 1][j] = UNKNOWN;
-                    if(localMap[i - 1][j + 1] != WALL)
-                        localMap[i - 1][j + 1] = UNKNOWN;
-                }
-                // Верхняя правая диагональ
-                if((i - 1 == heroCoordX)||(j + 1 == heroCoordY)){
-                    if(localMap[i + 1][j] != WALL)
-                        localMap[i + 1][j] = UNKNOWN;
-                    if(localMap[i][j - 1] != WALL)
-                        localMap[i][j - 1] = UNKNOWN;
-                    if(localMap[i + 1][j - 1] != WALL)
-                        localMap[i + 1][j - 1] = UNKNOWN;
-                }
-                // Нижняя правая диагональ
-                if((i - 1 == heroCoordX)||(j - 1 == heroCoordY)){
-                    if(localMap[i + 1][j] != WALL)
-                        localMap[i + 1][j] = UNKNOWN;
-                    if(localMap[i][j + 1]!= WALL)
-                        localMap[i][j + 1] = UNKNOWN;
-                    if(localMap[i + 1][j + 1] != WALL)
-                        localMap[i + 1][j + 1] = UNKNOWN;
-                }
+//    for(int i = 0; i < localMapSize; i++)
+//        for(int j = 0; j < localMapSize; j++)
+//            if(localMap[i][j] == WALL){
+//                //// В зависимости от того, где расположено препятствие
+//                /// рисовать невидимые участки
+//                // Сверху
+//                if((i == heroCoordX)||(j - 1 == heroCoordY)){
+//                    if(localMap[i][j - 1] != WALL)
+//                        localMap[i][j - 1] = UNKNOWN;
+//                    if(localMap[i + 1][j - 1] != WALL)
+//                        localMap[i + 1][j - 1] = UNKNOWN;
+//                    if(localMap[i - 1][j - 1] != WALL)
+//                        localMap[i - 1][j - 1] = UNKNOWN;
+//                }
+//                // Снизу
+//                if((i == heroCoordX)||(j + 1 == heroCoordY)){
+//                    if(localMap[i][j + 1] != WALL)
+//                        localMap[i][j + 1] = UNKNOWN;
+//                    if(localMap[i + 1][j + 1] != WALL)
+//                        localMap[i + 1][j + 1] = UNKNOWN;
+//                    if(localMap[i - 1][j + 1] != WALL)
+//                        localMap[i - 1][j + 1] = UNKNOWN;
+//                }
+//                // Справа
+//                if((i - 1 == heroCoordX)||(j == heroCoordY)){
+//                    if(localMap[i + 1][j - 1] != WALL)
+//                        localMap[i + 1][j - 1] = UNKNOWN;
+//                    if(localMap[i + 1][j] != WALL)
+//                        localMap[i + 1][j] = UNKNOWN;
+//                    if(localMap[i + 1][j + 1] != WALL)
+//                        localMap[i + 1][j + 1] = UNKNOWN;
+//                }
+//                // Слева
+//                if((i + 1 == heroCoordX)||(j == heroCoordY)){
+//                    if(localMap[i - 1][j - 1] != WALL)
+//                        localMap[i - 1][j - 1] = UNKNOWN;
+//                    if(localMap[i - 1][j] != WALL)
+//                        localMap[i - 1][j] = UNKNOWN;
+//                    if(localMap[i - 1][j + 1] != WALL)
+//                        localMap[i - 1][j + 1] = UNKNOWN;
+//                }
+//                // Верхняя правая диагональ
+//                if((i - 1 == heroCoordX)||(j + 1 == heroCoordY)){
+//                    if(localMap[i + 1][j] != WALL)
+//                        localMap[i + 1][j] = UNKNOWN;
+//                    if(localMap[i][j - 1] != WALL)
+//                        localMap[i][j - 1] = UNKNOWN;
+//                    if(localMap[i + 1][j - 1] != WALL)
+//                        localMap[i + 1][j - 1] = UNKNOWN;
+//                }
+//                // Нижняя правая диагональ
+//                if((i - 1 == heroCoordX)||(j - 1 == heroCoordY)){
+//                    if(localMap[i + 1][j] != WALL)
+//                        localMap[i + 1][j] = UNKNOWN;
+//                    if(localMap[i][j + 1]!= WALL)
+//                        localMap[i][j + 1] = UNKNOWN;
+//                    if(localMap[i + 1][j + 1] != WALL)
+//                        localMap[i + 1][j + 1] = UNKNOWN;
+//                }
 
-                // Верхняя левая диагональ
-                if((i + 1 == heroCoordX)||(j + 1 == heroCoordY)){
-                    if(localMap[i - 1][j] != WALL)
-                        localMap[i - 1][j] = UNKNOWN;
-                    if(localMap[i][j - 1] != WALL)
-                        localMap[i][j - 1] = UNKNOWN;
-                    if(localMap[i - 1][j - 1] != WALL)
-                        localMap[i - 1][j - 1] = UNKNOWN;
-                }
-                // Нижняя левая диагональ
-                if((i - 1 == heroCoordX)||(j - 1 == heroCoordY)){
-                    if(localMap[i - 1][j] != WALL)
-                        localMap[i - 1][j] = UNKNOWN;
-                    if(localMap[i][j + 1]!= WALL)
-                        localMap[i][j + 1] = UNKNOWN;
-                    if(localMap[i - 1][j + 1] != WALL)
-                        localMap[i - 1][j + 1] = UNKNOWN;
-                }
+//                // Верхняя левая диагональ
+//                if((i + 1 == heroCoordX)||(j + 1 == heroCoordY)){
+//                    if(localMap[i - 1][j] != WALL)
+//                        localMap[i - 1][j] = UNKNOWN;
+//                    if(localMap[i][j - 1] != WALL)
+//                        localMap[i][j - 1] = UNKNOWN;
+//                    if(localMap[i - 1][j - 1] != WALL)
+//                        localMap[i - 1][j - 1] = UNKNOWN;
+//                }
+//                // Нижняя левая диагональ
+//                if((i - 1 == heroCoordX)||(j - 1 == heroCoordY)){
+//                    if(localMap[i - 1][j] != WALL)
+//                        localMap[i - 1][j] = UNKNOWN;
+//                    if(localMap[i][j + 1]!= WALL)
+//                        localMap[i][j + 1] = UNKNOWN;
+//                    if(localMap[i - 1][j + 1] != WALL)
+//                        localMap[i - 1][j + 1] = UNKNOWN;
+//                }
 
+//            }
+
+
+
+        int x = heroCoordX - 2;
+        int y = heroCoordY - 2;
+        for(int i = 0; i < localMapSize; i++){
+            for(int j = 0; j < localMapSize; j++){
+                currentMap[x][y++] = localMap[i][j];
             }
-
-    int x = heroCoordX;
-    int y = heroCoordY;
-
-    for(int i = x - 2; i < x + localMapSize; i++)
-        for(int j = y - 2; j < y + localMapSize; j++){
-            currentMap[i][j] = map[i][j];
+            x++;
+            y = heroCoordY - 2;
         }
 
 }
 
 void globalMap::connectGlobalAndLocalMap(){
-    int x = heroCoordX - 3;
-    int y = heroCoordY - 3;
+    int x = heroCoordX - 2;
+    int y = heroCoordY - 2;
 
-    for(int i = x; i < x + localMapSize; i++)
-        for(int j = y; j < y + localMapSize; j++){
-            localMap[i][j] = map[i][j];
+    for(int i = 0; i < localMapSize; i++){
+        for(int j = 0; j < localMapSize; j++){
+            localMap[i][j] = map[x][y++];
         }
-
+        x++;
+        y = heroCoordY - 2;
+    }
 }
 
 void globalMap::setGlobalMap(){

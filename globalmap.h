@@ -20,7 +20,7 @@ class globalMap
 private:
 
     const int bigMapSize = 30;
-    const int localMapSize = 3;
+    const int localMapSize = 5;
     const int WALL = 55;
     const int HERO = -1;
     const int EXIT = -8;
