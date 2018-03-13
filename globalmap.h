@@ -30,6 +30,9 @@ private:
     const int exitCoordY = 20;
     const int UNKNOWN = 99;
 
+    const int localHeroX = 2;
+    const int localHeroY = 2;
+
     int** map;
     int** localMap;
     int** currentMap;

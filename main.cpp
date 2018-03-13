@@ -36,6 +36,8 @@ int main()
     UNKNOWN = GM.getUNKNOWN();
 
 
+//    map = GM.getMap();
+//    glutDisplayFunc(display);
     map = GM.getCurrentMap();
     glutDisplayFunc(display);
 
