@@ -24,8 +24,10 @@ private:
     const int WALL = 55;
     const int HERO = -1;
     const int EXIT = -8;
-    const int heroCoordX = 3;
-    const int heroCoordY = 6;
+    const int wasThere = 40;
+
+    int heroCoordX;
+    int heroCoordY;
     const int exitCoordX = 20;
     const int exitCoordY = 20;
     const int UNKNOWN = 99;
@@ -38,12 +40,22 @@ private:
     int** currentMap;
 
 
-//    vector<pair<int, int> > resDirection;
+
 
 
 public:
+
+    struct point{
+        int x;
+        int y;
+    };
+    vector<point> resDirection;
+
     globalMap();
     void connectGlobalAndLocalMap();
+    void connectCurrentAndLocalMap();
+
+    void findNextStep();
 
 
     void setGlobalMap();
@@ -62,6 +74,7 @@ public:
     int **getMap() const;
     int **getLocalMap() const;
     int **getCurrentMap() const;
+    vector<point> getResDirection() const;
 };
 
 #endif // GLOBALMAP_H
