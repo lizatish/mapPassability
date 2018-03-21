@@ -77,6 +77,8 @@ globalMap::globalMap()
     // Наша начальная позиция
     heroCoordX = 3;
     heroCoordY = 6;
+    prevHeroCoordX = heroCoordX;
+    prevHeroCoordY = heroCoordY;
 
     map = new int* [bigMapSize];
     for(int i = 0; i < bigMapSize; i++){
@@ -86,11 +88,17 @@ globalMap::globalMap()
     for(int i = 0; i < localMapSize; i++){
         localMap[i] = new int[localMapSize];
     }
+    prevLocalMap = new int* [localMapSize];
+    for(int i = 0; i < localMapSize; i++){
+        prevLocalMap[i] = new int[localMapSize];
+    }
 
     currentMap = new int* [bigMapSize];
     for(int i = 0; i < bigMapSize; i++){
         currentMap[i] = new int[bigMapSize];
     }
+
+    prevPath = "";
 }
 
 
@@ -184,7 +192,6 @@ void globalMap::isFindWALL(){
                 // Нижняя левая диагональ
                 if((i + 1 == localHeroX)&&(j - 1 == localHeroY)){
                     cout << "Down left" << endl;
-
                     if(localMap[i - 1][j] != WALL)
                         localMap[i - 1][j] = UNKNOWN;
                     if(localMap[i][j + 1]!= WALL)
@@ -194,8 +201,11 @@ void globalMap::isFindWALL(){
                 }
 
             }
+
     // Проверка на пересекаемые зоны предыдущей версии карты и только что открытой
-   //  checkForOverloadingCells();
+    // checkForOverloadingCells();
+
+    prevLocalMap = localMap;
 
     // Нарисовать на текущей открытой карте то, что только что увидели
     connectCurrentAndLocalMap();
@@ -255,9 +265,15 @@ void globalMap::setGlobalMap(){
 
 void globalMap::findNextStep(){
 
+    prevHeroCoordX = heroCoordX;
+    prevHeroCoordY = heroCoordY;
+
     // Право
     if((map[heroCoordX + 1][heroCoordY] != WALL)&&(map[heroCoordX + 1][heroCoordY] != UNKNOWN)){
         cout << "GO RIGHT" << endl;
+
+        prevPath = "Right";
+
 
         currentMap[heroCoordX][heroCoordY] = wasThere;
         heroCoordX++;
@@ -268,6 +284,8 @@ void globalMap::findNextStep(){
     // Низ
     else if((map[heroCoordX][heroCoordY - 1] != WALL)&&(map[heroCoordX][heroCoordY - 1] != UNKNOWN)){
         cout << "GO UP" << endl;
+
+        prevPath = "Down";
 
         currentMap[heroCoordX][heroCoordY] = wasThere;
 
@@ -280,6 +298,9 @@ void globalMap::findNextStep(){
     else if((map[heroCoordX][heroCoordY + 1] != WALL)&&(map[heroCoordX][heroCoordY + 1] != UNKNOWN)){
 
         cout << "GO DOWN" << endl;
+
+        prevPath = "Up";
+
         currentMap[heroCoordX][heroCoordY] = wasThere;
 
         heroCoordY++;
@@ -292,15 +313,15 @@ void globalMap::findNextStep(){
     else if((map[heroCoordX - 1][heroCoordY] != WALL)&&(map[heroCoordX - 1][heroCoordY] != UNKNOWN)){
         cout << "GO LEFT" << endl;
 
+        prevPath = "Left";
+
         currentMap[heroCoordX][heroCoordY] = wasThere;
 
         heroCoordX--;
         currentMap[heroCoordX][heroCoordY] = HERO;
 
     }
-    else if((map[heroCoordX][heroCoordY] == wasThere)&&(map[heroCoordX - 1][heroCoordY] != UNKNOWN)){
 
-    }
 }
 
 int globalMap::getWasThere() const
@@ -310,17 +331,68 @@ int globalMap::getWasThere() const
 
 void globalMap::checkForOverloadingCells(){
 
-    int x = heroCoordX - (localMapSize - 1) / 2;
-    int y = heroCoordY - (localMapSize - 1) / 2;
-    for(int i = 0; i < localMapSize; i++){
-        for(int j = 0; j < localMapSize; j++){
-            if((currentMap[x][y++] == UNKNOWN)&&(localMap[i][j] == VISIBLE)){
+    if(prevPath == "Right"){
+        int x = 1;
+        int y = 0;
+        for(int i = 0; i < localMapSize - 1; i++){
+            for(int j = 0; j < localMapSize; j++){
+                if((prevLocalMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
+                    localMap[i][j] = VISIBLE;
 
+                else if((prevLocalMap[x][y] == WALL)&&(localMap[i][j] == UNKNOWN))
+                    localMap[i][j] = WALL;
+                y++;
             }
+            x++;
+            y = 0;
         }
-        x++;
-        y = heroCoordY - (localMapSize - 1) / 2;
+
     }
+    //    else if(prevPath == "Left"){
+    //        int x = 0;
+    //        int y = 0;
+    //        for(int i = 1; i < localMapSize; i++){
+    //            for(int j = 0; j < localMapSize; j++){
+    //                if((prevLocalMap[x][y++] == VISIBLE)&&(localMap[i][j] == UNKNOWN)){
+    //                    localMap[i][j] = VISIBLE;
+    //                }
+    //                else if((prevLocalMap[x][y++] == WALL)&&(localMap[i][j] == UNKNOWN)){
+    //                    localMap[i][j] = WALL;
+
+    //                }
+    //            }
+    //            x++;
+    //            y = 0;
+    //        }
+
+
+    //    else if(prevPath == "Up"){
+    //        int x = 0;
+    //        int y = 0;
+    //        for(int i = 1; i < localMapSize; i++){
+    //            for(int j = 1; j < localMapSize; j++){
+    //                if((prevLocalMap[x][y++] == VISIBLE)&&(localMap[i][j] == UNKNOWN)){
+    //                    localMap[i][j] = VISIBLE;
+    //                }
+    //                else if((prevLocalMap[x][y++] == WALL)&&(localMap[i][j] == UNKNOWN)){
+    //                    localMap[i][j] = WALL;
+
+    //                }
+    //            }
+    //            x++;
+    //            y = 0;
+    //        }
+    //    }
+
+    //    }
+    //    else if(prevPath == "Down"){
+
+    //    }
+
+
+
+
+
 
 }
 

@@ -42,6 +42,11 @@ private:
     int heroCoordX;
     int heroCoordY;
 
+    string prevPath;
+
+    int prevHeroCoordX;
+    int prevHeroCoordY;
+
     // Локальные координаты героя
     const int localHeroX = 2;
     const int localHeroY = 2;
@@ -51,6 +56,7 @@ private:
     int** map;
     // Локальная
     int** localMap;
+    int** prevLocalMap;
     // Текущая раскрытая
     int** currentMap;
 
