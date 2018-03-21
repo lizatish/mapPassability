@@ -44,6 +44,7 @@ private:
 
     string prevPath;
 
+    int n = 0;
     int prevHeroCoordX;
     int prevHeroCoordY;
 

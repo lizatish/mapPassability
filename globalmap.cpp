@@ -201,9 +201,11 @@ void globalMap::isFindWALL(){
                 }
 
             }
-
-    // Проверка на пересекаемые зоны предыдущей версии карты и только что открытой
-    // checkForOverloadingCells();
+    if(n >= 1){
+        // Проверка на пересекаемые зоны предыдущей версии карты и только что открытой
+        checkForOverloadingCells();
+    }
+    n++;
 
     prevLocalMap = localMap;
 
@@ -331,68 +333,81 @@ int globalMap::getWasThere() const
 
 void globalMap::checkForOverloadingCells(){
 
-    if(prevPath == "Right"){
-        int x = 1;
-        int y = 0;
-        for(int i = 0; i < localMapSize - 1; i++){
-            for(int j = 0; j < localMapSize; j++){
-                if((prevLocalMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
-                    localMap[i][j] = VISIBLE;
 
-                else if((prevLocalMap[x][y] == WALL)&&(localMap[i][j] == UNKNOWN))
-                    localMap[i][j] = WALL;
+
+    if(prevPath == "Right"){
+
+        int x = heroCoordX - (localMapSize - 1) / 2 - 1;
+        int y = heroCoordY - (localMapSize - 1) / 2;
+        for(int i = 0; i < localMapSize; i++){
+            for(int j = 0; j < localMapSize; j++){
+                if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
+                    localMap[i][j] = VISIBLE;
                 y++;
             }
             x++;
-            y = 0;
+            y = heroCoordY - (localMapSize - 1) / 2;
         }
-
     }
-    //    else if(prevPath == "Left"){
-    //        int x = 0;
-    //        int y = 0;
-    //        for(int i = 1; i < localMapSize; i++){
-    //            for(int j = 0; j < localMapSize; j++){
-    //                if((prevLocalMap[x][y++] == VISIBLE)&&(localMap[i][j] == UNKNOWN)){
-    //                    localMap[i][j] = VISIBLE;
-    //                }
-    //                else if((prevLocalMap[x][y++] == WALL)&&(localMap[i][j] == UNKNOWN)){
-    //                    localMap[i][j] = WALL;
+    else if(prevPath == "Left"){
+        int x = heroCoordX - (localMapSize - 1) / 2 + 1;
+        int y = heroCoordY - (localMapSize - 1) / 2;
+        for(int i = 0; i < localMapSize; i++){
+            for(int j = 0; j < localMapSize; j++){
+                if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
+                    localMap[i][j] = VISIBLE;
+                y++;
+            }
+            x++;
+            y = heroCoordY - (localMapSize - 1) / 2;
 
-    //                }
-    //            }
-    //            x++;
-    //            y = 0;
-    //        }
+        }
+    }
+        else if(prevPath == "Up"){
+            int x = heroCoordX - (localMapSize - 1) / 2;
+            int y = heroCoordY - (localMapSize - 1) / 2 - 1;
+            for(int i = 0; i < localMapSize; i++){
+                for(int j = 0; j < localMapSize; j++){
+                    if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
+                        localMap[i][j] = VISIBLE;
+                    y++;
+                }
+                x++;
+                y = heroCoordY - (localMapSize - 1) / 2;
 
-
-    //    else if(prevPath == "Up"){
-    //        int x = 0;
-    //        int y = 0;
-    //        for(int i = 1; i < localMapSize; i++){
-    //            for(int j = 1; j < localMapSize; j++){
-    //                if((prevLocalMap[x][y++] == VISIBLE)&&(localMap[i][j] == UNKNOWN)){
-    //                    localMap[i][j] = VISIBLE;
-    //                }
-    //                else if((prevLocalMap[x][y++] == WALL)&&(localMap[i][j] == UNKNOWN)){
-    //                    localMap[i][j] = WALL;
-
-    //                }
-    //            }
-    //            x++;
-    //            y = 0;
-    //        }
-    //    }
-
-    //    }
-    //    else if(prevPath == "Down"){
-
-    //    }
-
-
-
-
-
-
+            }
 }
+            else if(prevPath == "Down"){
+                int x = heroCoordX - (localMapSize - 1) / 2;
+                int y = heroCoordY - (localMapSize - 1) / 2 + 1;
+                for(int i = 0; i < localMapSize; i++){
+                    for(int j = 0; j < localMapSize; j++){
+                        if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
+                            localMap[i][j] = VISIBLE;
+                        y++;
+                    }
+                    x++;
+                    y = heroCoordY - (localMapSize - 1) / 2;
+
+                }
+    }
+
+
+                //        int x = 1;
+                //        int y = 0;
+                //        for(int i = 0; i < localMapSize - 1; i++){
+                //            for(int j = 0; j < localMapSize; j++){
+                //                if((prevLocalMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
+                //                    localMap[i][j] = VISIBLE;
+
+                ////                else if((prevLocalMap[x][y] == WALL)&&(localMap[i][j] == UNKNOWN))
+                ////                    localMap[i][j] = WALL;
+                //                y++;
+                //            }
+                //            x++;
+                //            y = 0;
+                //        }
+
+
+            }
 
