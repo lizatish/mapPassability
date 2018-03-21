@@ -19,29 +19,40 @@ class globalMap
 {
 private:
 
+    //// Размеры карт
+    // Размер глобальной карты
     const int bigMapSize = 30;
+    // Размер локальной карты
     const int localMapSize = 5;
+
+    // Константы для обозначения ячеек внутри карты
     const int WALL = 55;
     const int HERO = -1;
     const int EXIT = -8;
+    const int UNKNOWN = 99;
+    const int VISIBLE = -9;
+    // Обозначение ячейки, где мы уже были
     const int wasThere = 40;
 
-    int heroCoordX;
-    int heroCoordY;
+    // Координаты выхода
     const int exitCoordX = 20;
     const int exitCoordY = 20;
-    const int UNKNOWN = 99;
 
+    // Глобальные координаты героя
+    int heroCoordX;
+    int heroCoordY;
+
+    // Локальные координаты героя
     const int localHeroX = 2;
     const int localHeroY = 2;
 
+    //// Карты
+    // Глобальная
     int** map;
+    // Локальная
     int** localMap;
+    // Текущая раскрытая
     int** currentMap;
-
-
-
-
 
 public:
 
@@ -49,7 +60,8 @@ public:
         int x;
         int y;
     };
-    vector<point> resDirection;
+
+    void checkForOverloadingCells();
 
     globalMap();
     void connectGlobalAndLocalMap();
@@ -61,6 +73,7 @@ public:
     void setGlobalMap();
     void isFindWALL();
 
+    // Get-теры
     int getUNKNOWN() const;
     int getExitCoordY() const;
     int getExitCoordX() const;
@@ -69,12 +82,14 @@ public:
     int getEXIT() const;
     int getHERO() const;
     int getWALL() const;
+    int getVISIBLE() const;
     int getLocalMapSize() const;
     int getBigMapSize() const;
     int **getMap() const;
     int **getLocalMap() const;
     int **getCurrentMap() const;
-    vector<point> getResDirection() const;
+
+    int getWasThere() const;
 };
 
 #endif // GLOBALMAP_H

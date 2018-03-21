@@ -67,9 +67,9 @@ int **globalMap::getCurrentMap() const
     return currentMap;
 }
 
-vector<globalMap::point> globalMap::getResDirection() const
+int globalMap::getVISIBLE() const
 {
-    return resDirection;
+    return VISIBLE;
 }
 
 globalMap::globalMap()
@@ -194,6 +194,10 @@ void globalMap::isFindWALL(){
                 }
 
             }
+    // Проверка на пересекаемые зоны предыдущей версии карты и только что открытой
+   //  checkForOverloadingCells();
+
+    // Нарисовать на текущей открытой карте то, что только что увидели
     connectCurrentAndLocalMap();
 
 }
@@ -231,7 +235,7 @@ void globalMap::setGlobalMap(){
             if (rand() % 4 == 0)
                 map[i][j] = WALL;
             else
-                map[i][j] = 0;
+                map[i][j] = VISIBLE;
         }
     for (int i = 0; i < bigMapSize; ++i)
     {
@@ -251,10 +255,6 @@ void globalMap::setGlobalMap(){
 
 void globalMap::findNextStep(){
 
-
-    point p;
-    p.x = heroCoordX;
-    p.y = heroCoordY;
     // Право
     if((map[heroCoordX + 1][heroCoordY] != WALL)&&(map[heroCoordX + 1][heroCoordY] != UNKNOWN)){
         cout << "GO RIGHT" << endl;
@@ -289,7 +289,7 @@ void globalMap::findNextStep(){
     }
 
     // Лево
-    else if((map[heroCoordX - 1][heroCoordY ] != WALL)&&(map[heroCoordX - 1][heroCoordY] != UNKNOWN)){
+    else if((map[heroCoordX - 1][heroCoordY] != WALL)&&(map[heroCoordX - 1][heroCoordY] != UNKNOWN)){
         cout << "GO LEFT" << endl;
 
         currentMap[heroCoordX][heroCoordY] = wasThere;
@@ -298,6 +298,29 @@ void globalMap::findNextStep(){
         currentMap[heroCoordX][heroCoordY] = HERO;
 
     }
+    else if((map[heroCoordX][heroCoordY] == wasThere)&&(map[heroCoordX - 1][heroCoordY] != UNKNOWN)){
 
+    }
+}
+
+int globalMap::getWasThere() const
+{
+    return wasThere;
+}
+
+void globalMap::checkForOverloadingCells(){
+
+    int x = heroCoordX - (localMapSize - 1) / 2;
+    int y = heroCoordY - (localMapSize - 1) / 2;
+    for(int i = 0; i < localMapSize; i++){
+        for(int j = 0; j < localMapSize; j++){
+            if((currentMap[x][y++] == UNKNOWN)&&(localMap[i][j] == VISIBLE)){
+
+            }
+        }
+        x++;
+        y = heroCoordY - (localMapSize - 1) / 2;
+    }
 
 }
+
