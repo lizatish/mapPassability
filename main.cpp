@@ -21,12 +21,8 @@ void glutInit();
 void display();
 void getInitParams();
 
-struct point{
-    int x;
-    int y;
-};
-
-vector<point> path;
+vector<int> pathX;
+vector<int> pathY;
 
 globalMap GM;
 
@@ -53,12 +49,19 @@ int main()
 
     for(int i = 0; i < 20; i++){
         GM.findNextStep();
+        display();
+        usleep(100000);
+
 
         GM.isFindWALL();
-        map = GM.getCurrentMap();
 
+
+        map = GM.getCurrentMap();
         display();
-       usleep(1000000);
+        usleep(1000000);
+
+        //        display();
+        //        usleep(1000000);
     }
 
     glutMainLoop();
@@ -78,25 +81,19 @@ void display(){
                 glColor3f(0, 0, 1);
             else  if ((i == exitCoordX)&&(j == exitCoordY))
                 glColor3f(1, 1, 0);
+            else if (map[i][j] == wasThere)
+                glColor3f( 1, 0, 0);
             else if (map[i][j] == WALL)
                 glColor3f(0, 0, 0);
             else if (map[i][j] == VISIBLE)
                 glColor3f(1, 1, 1);
             else if (map[i][j] == UNKNOWN)
                 glColor3f( 0.64,  0.64, 0.64);
-//            else if (map[i][j] == wasThere){
-//                point p;
-//                p.x = i;
-//                p.y = j;
-//                path.push_back(p);
-//                glColor3f( 1, 0, 0);
-//            }
-            else
-                glColor3f(1, 1, 1);
 
-//            for(int i = 0; i < path.size(); i++){
-//                map[path]
-//            }
+            //            else
+            //                glColor3f(1, 1, 1);
+
+
 
 
             glVertex2f((i) * 480 / bigMapSize, (j) * 480 / bigMapSize);

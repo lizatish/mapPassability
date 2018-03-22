@@ -52,6 +52,9 @@ private:
     const int localHeroX = 2;
     const int localHeroY = 2;
 
+    vector<int> pathX;
+    vector<int> pathY;
+
     //// Карты
     // Глобальная
     int** map;
