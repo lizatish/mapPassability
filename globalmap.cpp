@@ -280,9 +280,22 @@ void globalMap::findNextStep(){
     pathY.push_back(heroCoordY);
 
 
+    // Верх
+     if((map[heroCoordX][heroCoordY + 1] != WALL)&&(map[heroCoordX][heroCoordY + 1] != UNKNOWN)){
 
+        cout << "GO DOWN" << endl;
+
+        prevPath = "Up";
+
+        // currentMap[heroCoordX][heroCoordY] = wasThere;
+
+        heroCoordY++;
+        currentMap[heroCoordX][heroCoordY] = HERO;
+
+
+    }
     // Право
-    if((map[heroCoordX + 1][heroCoordY] != WALL)&&(map[heroCoordX + 1][heroCoordY] != UNKNOWN)){
+    else if((map[heroCoordX + 1][heroCoordY] != WALL)&&(map[heroCoordX + 1][heroCoordY] != UNKNOWN)){
         cout << "GO RIGHT" << endl;
 
         prevPath = "Right";
@@ -320,20 +333,7 @@ void globalMap::findNextStep(){
 
     }
 
-    // Верх
-    else if((map[heroCoordX][heroCoordY + 1] != WALL)&&(map[heroCoordX][heroCoordY + 1] != UNKNOWN)){
 
-        cout << "GO DOWN" << endl;
-
-        prevPath = "Up";
-
-        // currentMap[heroCoordX][heroCoordY] = wasThere;
-
-        heroCoordY++;
-        currentMap[heroCoordX][heroCoordY] = HERO;
-
-
-    }
 
     for(int i = 0; i < pathX.size(); i++){
         map[pathX[i]][pathY[i]] = wasThere;
@@ -355,7 +355,7 @@ void globalMap::checkForOverloadingCells(){
 
     if(prevPath == "Right"){
         x += 1;
-        for(int i = 0; i < localMapSize; i++){
+        for(int i = 0; i < localMapSize - 1; i++){
             for(int j = 0; j < localMapSize; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                     localMap[i][j] = VISIBLE;
@@ -368,12 +368,14 @@ void globalMap::checkForOverloadingCells(){
         }
     }
     else if(prevPath == "Left"){
-        x-= 1;
+        x -= 1;
 
-        for(int i = 0; i < localMapSize; i++){
+        for(int i = 0; i < localMapSize - 1; i++){
             for(int j = 0; j < localMapSize; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                     localMap[i][j] = VISIBLE;
+                else if((currentMap[x][y] == wasThere)&&(localMap[i][j] == UNKNOWN))
+                    localMap[i][j] = wasThere;
                 y++;
             }
             x++;
@@ -382,28 +384,32 @@ void globalMap::checkForOverloadingCells(){
         }
     }
     else if(prevPath == "Up"){
-
+        y++;
         for(int i = 0; i < localMapSize; i++){
-            for(int j = 0; j < localMapSize; j++){
+            for(int j = 0; j < localMapSize - 1; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                     localMap[i][j] = VISIBLE;
+                else if((currentMap[x][y] == wasThere)&&(localMap[i][j] == UNKNOWN))
+                    localMap[i][j] = wasThere;
                 y++;
             }
             x++;
-            y = prevHeroCoordY - (localMapSize - 1) / 2;
+            y = prevHeroCoordY - (localMapSize - 1) / 2 + 1;
 
         }
     }
     else if(prevPath == "Down"){
-
+        y--;
         for(int i = 0; i < localMapSize; i++){
-            for(int j = 0; j < localMapSize; j++){
+            for(int j = 0; j < localMapSize - 1; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                     localMap[i][j] = VISIBLE;
+                else if((currentMap[x][y] == wasThere)&&(localMap[i][j] == UNKNOWN))
+                    localMap[i][j] = wasThere;
                 y++;
             }
             x++;
-            y = prevHeroCoordY - (localMapSize - 1) / 2;
+            y = prevHeroCoordY - (localMapSize - 1) / 2 - 1;
 
         }
     }
