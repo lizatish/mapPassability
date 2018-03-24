@@ -350,10 +350,11 @@ int globalMap::getWasThere() const
 void globalMap::checkForOverloadingCells(){
 
 
-    int x = prevHeroCoordX - (localMapSize - 1) / 2 ;
+    int x = prevHeroCoordX - (localMapSize - 1) / 2;
     int y = prevHeroCoordY - (localMapSize - 1) / 2;
 
     if(prevPath == "Right"){
+        x += 1;
         for(int i = 0; i < localMapSize; i++){
             for(int j = 0; j < localMapSize; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
@@ -367,6 +368,7 @@ void globalMap::checkForOverloadingCells(){
         }
     }
     else if(prevPath == "Left"){
+        x-= 1;
 
         for(int i = 0; i < localMapSize; i++){
             for(int j = 0; j < localMapSize; j++){
