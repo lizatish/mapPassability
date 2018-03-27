@@ -32,7 +32,7 @@ private:
     const int UNKNOWN = 99;
     const int VISIBLE = -9;
     // Обозначение ячейки, где мы уже были
-    const int wasThere = 40;
+    const int WAS_THERE = 40;
 
     // Координаты выхода
     const int exitCoordX = 20;

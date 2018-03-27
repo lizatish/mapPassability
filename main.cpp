@@ -47,10 +47,10 @@ int main()
 
     //glutDisplayFunc(display);
 
-    for(int i = 0; i < 20; i++){
+    for(int i = 0; i < 60; i++){
         GM.findNextStep();
         display();
-        usleep(100000);
+      //  usleep(100000);
 
 
         GM.isFindWALL();

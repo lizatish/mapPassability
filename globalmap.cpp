@@ -71,12 +71,17 @@ int globalMap::getVISIBLE() const
 {
     return VISIBLE;
 }
+int globalMap::getWasThere() const
+{
+    return WAS_THERE;
+}
+
 
 globalMap::globalMap()
 {
     // Наша начальная позиция
-    heroCoordX = 3;
-    heroCoordY = 6;
+    heroCoordX = 10;
+    heroCoordY = 10;
     prevHeroCoordX = heroCoordX;
     prevHeroCoordY = heroCoordY;
 
@@ -279,73 +284,363 @@ void globalMap::findNextStep(){
     pathX.push_back(heroCoordX);
     pathY.push_back(heroCoordY);
 
+//    int randomNumber;
+//    srand(time(NULL));
 
-    // Верх
-     if((map[heroCoordX][heroCoordY + 1] != WALL)&&(map[heroCoordX][heroCoordY + 1] != UNKNOWN)){
+//    // Если стенка справа
+//    if((map[heroCoordX + 1][heroCoordY] == WALL || WAS_THERE)
+//            &&(map[heroCoordX - 1][heroCoordY] == VISIBLE )
+//            &&(map[heroCoordX][heroCoordY + 1] == VISIBLE)
+//            && (map[heroCoordX][heroCoordY - 1] == VISIBLE)){
+//        randomNumber =  1 + rand() % 3;
+//        switch(randomNumber){
+//        case 1:
+//        {
+//            cout << "GO DOWN" << endl;
+//            prevPath = "Down";
+//            heroCoordY++;
+//            break;
+//        }
+//        case 2:{
+//            cout << "GO UP" << endl;
+//            prevPath = "Up";
+//            heroCoordY--;
+//            break;
+//        }
 
-        cout << "GO DOWN" << endl;
+//        case 3:{
+//            cout << "GO LEFT" << endl;
+//            prevPath = "Left";
+//            heroCoordX--;
+//            break;
 
-        prevPath = "Up";
+//        }
+//        }
+//    }
+//    // Если стенка слева
+//    else if((map[heroCoordX - 1][heroCoordY] == WALL || WAS_THERE)
+//            &&(map[heroCoordX + 1][heroCoordY] == VISIBLE)
+//            &&(map[heroCoordX][heroCoordY + 1] == VISIBLE)
+//            && (map[heroCoordX][heroCoordY - 1] == VISIBLE)){
 
-        // currentMap[heroCoordX][heroCoordY] = wasThere;
+//        randomNumber =  1 + rand() % 3;
+//        switch(randomNumber){
+//        case 1:
+//        {
+//            cout << "GO DOWN" << endl;
+//            prevPath = "Down";
+//            heroCoordY++;
+//            break;
 
-        heroCoordY++;
-        currentMap[heroCoordX][heroCoordY] = HERO;
+//        }
+//        case 2:{
+//            cout << "GO UP" << endl;
+//            prevPath = "Up";
+//            heroCoordY--;
+//            break;
 
+//        }
+//        case 3:{
+//            cout << "GO RIGHT" << endl;
+//            prevPath = "Right";
+//            heroCoordX++;
+//            break;
 
-    }
-    // Право
-    else if((map[heroCoordX + 1][heroCoordY] != WALL)&&(map[heroCoordX + 1][heroCoordY] != UNKNOWN)){
-        cout << "GO RIGHT" << endl;
+//        }
+//        }
+//    }
+//    // Если стенка снизу
+//    else if((map[heroCoordX][heroCoordY + 1] == WALL || WAS_THERE)
+//            &&(map[heroCoordX + 1][heroCoordY] == VISIBLE )
+//            &&(map[heroCoordX - 1][heroCoordY] == VISIBLE)
+//            && (map[heroCoordX][heroCoordY - 1] == VISIBLE)){
 
-        prevPath = "Right";
+//        randomNumber =  1 + rand() % 3;
+//        switch(randomNumber){
+//        case 1:
+//        {
+//            cout << "GO LEFT" << endl;
+//            prevPath = "Left";
+//            heroCoordX--;
+//            break;
 
+//        }
+//        case 2:{
+//            cout << "GO UP" << endl;
+//            prevPath = "Up";
+//            heroCoordY--;
+//            break;
 
-        // currentMap[heroCoordX][heroCoordY] = wasThere;
-        heroCoordX++;
-        currentMap[heroCoordX][heroCoordY] = HERO;
+//        }
+//        case 3:{
+//            cout << "GO RIGHT" << endl;
+//            prevPath = "Right";
+//            heroCoordX++;
+//            break;
 
+//        }
+//        }
+//    }
+//    // Если стенка сверху
+//    else if((map[heroCoordX][heroCoordY - 1] == WALL || WAS_THERE)
+//            &&(map[heroCoordX + 1][heroCoordY] == VISIBLE)
+//            &&(map[heroCoordX - 1][heroCoordY] == VISIBLE)
+//            && (map[heroCoordX][heroCoordY + 1] == VISIBLE)){
 
-    }
-    // Низ
-    else if((map[heroCoordX][heroCoordY - 1] != WALL)&&(map[heroCoordX][heroCoordY - 1] != UNKNOWN)){
-        cout << "GO UP" << endl;
+//        randomNumber =  1 + rand() % 3;
+//        switch(randomNumber){
+//        case 1:
+//        {
+//            cout << "GO DOWN" << endl;
+//            prevPath = "Down";
+//            heroCoordY++;
+//            break;
 
-        prevPath = "Down";
+//        }
+//        case 2:{
+//            cout << "GO LEFT" << endl;
+//            prevPath = "Left";
+//            heroCoordX--;
+//            break;
 
-        // currentMap[heroCoordX][heroCoordY] = wasThere;
+//        }
+//        case 3:{
+//            cout << "GO RIGHT" << endl;
+//            prevPath = "Right";
+//            heroCoordX++;
+//            break;
 
-        heroCoordY--;
-        currentMap[heroCoordX][heroCoordY] = HERO;
+//        }
+//        }
+//    }
+//    // Стенки справа и слева
+//    else if((map[heroCoordX][heroCoordY - 1] == VISIBLE)
+//            &&(map[heroCoordX + 1][heroCoordY] == WALL || WAS_THERE)
+//            &&(map[heroCoordX - 1][heroCoordY] == WALL || WAS_THERE)
+//            && (map[heroCoordX][heroCoordY + 1] == VISIBLE)){
+//        randomNumber =  1 + rand() % 2;
+//        switch(randomNumber){
+//        case 1:
+//        {
+//            cout << "GO DOWN" << endl;
+//            prevPath = "Down";
+//            heroCoordY++;
+//            break;
 
-    }
+//        }
+//        case 2:{
+//            cout << "GO UP" << endl;
+//            prevPath = "Up";
+//            heroCoordY--;
+//            break;
+//        }
 
-    // Лево
-    else if((map[heroCoordX - 1][heroCoordY] != WALL)&&(map[heroCoordX - 1][heroCoordY] != UNKNOWN)){
-        cout << "GO LEFT" << endl;
+//        }
+//    }
+//    // Стенки снизу и сверху
+//    else if((map[heroCoordX][heroCoordY - 1] == WALL || WAS_THERE)
+//            &&(map[heroCoordX + 1][heroCoordY] == VISIBLE)
+//            &&(map[heroCoordX - 1][heroCoordY] == VISIBLE)
+//            && (map[heroCoordX][heroCoordY + 1] == WALL || WAS_THERE)){
+//        randomNumber =  1 + rand() % 2;
+//        switch(randomNumber){
+//        case 1:
+//        {
+//            cout << "GO LEFT" << endl;
+//            prevPath = "Left";
+//            heroCoordX--;
+//            break;
 
-        prevPath = "Left";
+//        }
+//        case 2:{
+//            cout << "GO RIGHT" << endl;
+//            prevPath = "Right";
+//            heroCoordX++;
+//            break;
 
-        //currentMap[heroCoordX][heroCoordY] = wasThere;
+//        }
 
-        heroCoordX--;
-        currentMap[heroCoordX][heroCoordY] = HERO;
+//        }
+//    }
+//    // Стенки сверху и слева
+//    else if((map[heroCoordX][heroCoordY - 1] == WALL || WAS_THERE)
+//            &&(map[heroCoordX + 1][heroCoordY] == VISIBLE)
+//            &&(map[heroCoordX - 1][heroCoordY] == WALL || WAS_THERE)
+//            && (map[heroCoordX][heroCoordY + 1] == VISIBLE)){
+//        randomNumber =  1 + rand() % 2;
+//        switch(randomNumber){
+//        case 1:
+//        {
+//            cout << "GO DOWN" << endl;
+//            prevPath = "Down";
+//            heroCoordY++;
+//            break;
+//        }
 
-    }
+//        case 2:{
+//            cout << "GO RIGHT" << endl;
+//            prevPath = "Right";
+//            heroCoordX++;
+//            break;
+
+//        }
+
+//        }
+//        // Стенки сверху и справа
+//    }
+//    else if((map[heroCoordX][heroCoordY - 1] == WALL || WAS_THERE)
+//            &&(map[heroCoordX + 1][heroCoordY] == WALL || WAS_THERE)
+//            &&(map[heroCoordX - 1][heroCoordY] == VISIBLE)
+//            && (map[heroCoordX][heroCoordY + 1] == VISIBLE)){
+//        randomNumber =  1 + rand() % 2;
+//        switch(randomNumber){
+//        case 1:
+//        {
+//            cout << "GO DOWN" << endl;
+//            prevPath = "Down";
+//            heroCoordY++;
+//            break;
+//        }
+//        case 2:{
+//            cout << "GO LEFT" << endl;
+//            prevPath = "Left";
+//            heroCoordX--;
+//            break;
+
+//        }
+
+//        }
+//    }
+//    // Стенки снизу и справа
+//    else if((map[heroCoordX][heroCoordY + 1] == WALL || WAS_THERE)
+//            &&(map[heroCoordX + 1][heroCoordY] == WALL || WAS_THERE)
+//            &&(map[heroCoordX - 1][heroCoordY] == VISIBLE)
+//            && (map[heroCoordX][heroCoordY - 1] == VISIBLE)){
+//        randomNumber =  1 + rand() % 2;
+//        switch(randomNumber){
+
+//        case 1:{
+//            cout << "GO LEFT" << endl;
+//            prevPath = "Left";
+//            heroCoordX--;
+//            break;
+
+//        }
+
+//        case 2:{
+//            cout << "GO UP" << endl;
+//            prevPath = "Up";
+//            heroCoordY--;
+//            break;
+
+//        }
+//        }
+//    }
+//    // Стенки снизу и слева
+//    else if((map[heroCoordX][heroCoordY - 1] == VISIBLE)
+//            &&(map[heroCoordX + 1][heroCoordY]== VISIBLE)
+//            &&(map[heroCoordX - 1][heroCoordY] == WALL || WAS_THERE)
+//            && (map[heroCoordX][heroCoordY + 1] == WALL || WAS_THERE)){
+//        randomNumber =  1 + rand() % 2;
+//        switch(randomNumber){
+
+//        case 1:{
+//            cout << "GO RIGHT" << endl;
+//            prevPath = "Right";
+//            heroCoordX++;
+//            break;
+
+//        }
+//        case 2:{
+//            cout << "GO UP" << endl;
+//            prevPath = "Up";
+//            heroCoordY--;
+//            break;
+
+//        }
+//        }
+//    }
+//    // Стеки справа, слева и сверху
+//    // Стенки справа, слева и снизу
+//    // Стенки сверху, снизу и справа
+//    //Стенки сверху, снизу и слева
+
+//    // Если стенок нет
+//    else{
+//        randomNumber =  1 + rand() % 4;
+//        switch(randomNumber){
+//        case 1:
+//        {
+//            cout << "GO DOWN" << endl;
+//            prevPath = "Down";
+//            heroCoordY++;
+//            break;
+//        }
+//        case 2:{
+//            cout << "GO LEFT" << endl;
+//            prevPath = "Left";
+//            heroCoordX--;
+//            break;
+
+//        }
+//        case 3:{
+//            cout << "GO RIGHT" << endl;
+//            prevPath = "Right";
+//            heroCoordX++;
+//            break;
+
+//        }
+//        case 4:{
+//            cout << "GO UP" << endl;
+//            prevPath = "Up";
+//            heroCoordY--;
+//            break;
+
+//        }
+//        }
+//    }
+        // Низ
+        if((map[heroCoordX][heroCoordY + 1] != WALL)&&(map[heroCoordX][heroCoordY + 1] != UNKNOWN)){
+            cout << "GO DOWN" << endl;
+            prevPath = "Down";
+            heroCoordY++;
+        }
+
+        // Право
+        else if((map[heroCoordX + 1][heroCoordY] != WALL)&&(map[heroCoordX + 1][heroCoordY] != UNKNOWN)){
+            cout << "GO RIGHT" << endl;
+            prevPath = "Right";
+            heroCoordX++;
+        }
+
+        // Верх
+        else if((map[heroCoordX][heroCoordY - 1] != WALL)&&(map[heroCoordX][heroCoordY - 1] != UNKNOWN)){
+            cout << "GO UP" << endl;
+            prevPath = "Up";
+            heroCoordY--;
+
+        }
+
+        // Лево
+        else if((map[heroCoordX - 1][heroCoordY] != WALL)&&(map[heroCoordX - 1][heroCoordY] != UNKNOWN)){
+            cout << "GO LEFT" << endl;
+            prevPath = "Left";
+            heroCoordX--;
+
+        }
+    currentMap[heroCoordX][heroCoordY] = HERO;
+
 
 
 
     for(int i = 0; i < pathX.size(); i++){
-        map[pathX[i]][pathY[i]] = wasThere;
+        map[pathX[i]][pathY[i]] = WAS_THERE;
     }
 
 
 }
 
-int globalMap::getWasThere() const
-{
-    return wasThere;
-}
+
 
 void globalMap::checkForOverloadingCells(){
 
@@ -359,8 +654,8 @@ void globalMap::checkForOverloadingCells(){
             for(int j = 0; j < localMapSize; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                     localMap[i][j] = VISIBLE;
-                else if((currentMap[x][y] == wasThere)&&(localMap[i][j] == UNKNOWN))
-                    localMap[i][j] = wasThere;
+                else if((currentMap[x][y] == WAS_THERE)&&(localMap[i][j] == UNKNOWN))
+                    localMap[i][j] = WAS_THERE;
                 y++;
             }
             x++;
@@ -374,8 +669,8 @@ void globalMap::checkForOverloadingCells(){
             for(int j = 0; j < localMapSize; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                     localMap[i][j] = VISIBLE;
-                else if((currentMap[x][y] == wasThere)&&(localMap[i][j] == UNKNOWN))
-                    localMap[i][j] = wasThere;
+                else if((currentMap[x][y] == WAS_THERE)&&(localMap[i][j] == UNKNOWN))
+                    localMap[i][j] = WAS_THERE;
                 y++;
             }
             x++;
@@ -383,14 +678,14 @@ void globalMap::checkForOverloadingCells(){
 
         }
     }
-    else if(prevPath == "Up"){
+    else if(prevPath == "Down"){
         y++;
         for(int i = 0; i < localMapSize; i++){
             for(int j = 0; j < localMapSize - 1; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                     localMap[i][j] = VISIBLE;
-                else if((currentMap[x][y] == wasThere)&&(localMap[i][j] == UNKNOWN))
-                    localMap[i][j] = wasThere;
+                else if((currentMap[x][y] == WAS_THERE)&&(localMap[i][j] == UNKNOWN))
+                    localMap[i][j] = WAS_THERE;
                 y++;
             }
             x++;
@@ -398,14 +693,14 @@ void globalMap::checkForOverloadingCells(){
 
         }
     }
-    else if(prevPath == "Down"){
+    else if(prevPath == "Up"){
         y--;
         for(int i = 0; i < localMapSize; i++){
             for(int j = 0; j < localMapSize - 1; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                     localMap[i][j] = VISIBLE;
-                else if((currentMap[x][y] == wasThere)&&(localMap[i][j] == UNKNOWN))
-                    localMap[i][j] = wasThere;
+                else if((currentMap[x][y] == WAS_THERE)&&(localMap[i][j] == UNKNOWN))
+                    localMap[i][j] = WAS_THERE;
                 y++;
             }
             x++;
