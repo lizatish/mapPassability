@@ -24,7 +24,7 @@ void getInitParams();
 vector<int> pathX;
 vector<int> pathY;
 
-globalMap GM;
+globalMap GM(30, 5);
 
 int main()
 {

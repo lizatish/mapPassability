@@ -23,8 +23,9 @@ INCLUDEPATH += /usr/include/GL
 LIBS += -lglut
 
 TEMPLATE = app
-SOURCES += main.cpp \
-    globalmap.cpp
+SOURCES += test.cpp \
+    globalmap.cpp \
+## main.cpp
 
-HEADERS += \
+HEADERS += catch.hpp \
     globalmap.h
