@@ -102,6 +102,7 @@ public:
     int **getCurrentMap() const;
 
     int getWasThere() const;
+    void setHeroCoordXY(int x, int y);
 };
 
 #endif // GLOBALMAP_H
