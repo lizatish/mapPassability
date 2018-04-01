@@ -77,8 +77,10 @@ int globalMap::getWasThere() const
 }
 
 
-globalMap::globalMap()
-{
+globalMap::globalMap(int glMapSize, int locMapSize){
+    bigMapSize = glMapSize;
+    localMapSize = locMapSize;
+
     // Наша начальная позиция
     heroCoordX = 10;
     heroCoordY = 10;
@@ -105,6 +107,39 @@ globalMap::globalMap()
 
     prevPath = "";
 }
+
+globalMap::globalMap()
+{
+    // Размеры по умолчанию
+    bigMapSize = 30;
+    localMapSize = 5;
+    // Наша начальная позиция
+    heroCoordX = 10;
+    heroCoordY = 10;
+    prevHeroCoordX = heroCoordX;
+    prevHeroCoordY = heroCoordY;
+
+    map = new int* [bigMapSize];
+    for(int i = 0; i < bigMapSize; i++){
+        map[i] = new int[bigMapSize];
+    }
+    localMap = new int* [localMapSize];
+    for(int i = 0; i < localMapSize; i++){
+        localMap[i] = new int[localMapSize];
+    }
+    prevLocalMap = new int* [localMapSize];
+    for(int i = 0; i < localMapSize; i++){
+        prevLocalMap[i] = new int[localMapSize];
+    }
+
+    currentMap = new int* [bigMapSize];
+    for(int i = 0; i < bigMapSize; i++){
+        currentMap[i] = new int[bigMapSize];
+    }
+
+    prevPath = "";
+}
+
 
 
 

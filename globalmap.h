@@ -21,9 +21,9 @@ private:
 
     //// Размеры карт
     // Размер глобальной карты
-    const int bigMapSize = 30;
+    int bigMapSize;
     // Размер локальной карты
-    const int localMapSize = 5;
+    int localMapSize;
 
     // Константы для обозначения ячеек внутри карты
     const int WALL = 55;
@@ -74,6 +74,8 @@ public:
     void checkForOverloadingCells();
 
     globalMap();
+    globalMap(int glMapSize, int locMapSize);
+
     void connectGlobalAndLocalMap();
     void connectCurrentAndLocalMap();
 
