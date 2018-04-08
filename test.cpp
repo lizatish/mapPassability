@@ -7,7 +7,6 @@
 
 
 int bigMapSize;
-int localMapSize;
 int WALL;
 
 int heroCoordX;
@@ -19,14 +18,10 @@ int VISIBLE;
 int wasThere;
 
 int** map0;
-int** localMap;
 
 void glutInits();
 void display();
 void getInitParams();
-
-vector<int> pathX;
-vector<int> pathY;
 
 globalMap GM;
 
@@ -48,59 +43,78 @@ TEST_CASE( "First_use", "[test]" ) {
         char ch = ' ';
         cout << "Input ch" << endl;
         cin >> ch;
+
+        int x = GM.getHeroCoordX();
+        int y = GM.getHeroCoordY();
         switch(ch){
-        case 'w':{ GM.goUp(); break; }
-        case 'a':{ GM.goLeft();  break; }
-        case 's':{ GM.goDown(); break; }
-        case 'd':{ GM.goRight(); break; }
+        case 'w':{
+            CHECK ( GM.currentMap[x][--y] == VISIBLE );
+
+            GM.goUp();
+//             x = GM.getHeroCoordX();
+//             y = GM.getHeroCoordY();
+//              GM.isFindWALL();
+             map0 = GM.getCurrentMap();
+
+            display();
+
+
+            CHECK ( map0[x][++y] == wasThere );
+            break;
         }
-        display();
+        case 'a':{
+            CHECK ( map0[--x][y] == VISIBLE );
+
+            GM.goLeft();
+//            x = GM.getHeroCoordX();
+//            y = GM.getHeroCoordY();
+//             GM.isFindWALL();
+            map0 = GM.getCurrentMap();
+
+            display();
 
 
-        int x = heroCoordX;
-        int y = heroCoordY;
-        CHECK ( GM.currentMap[x++][y] == WALL );
-        CHECK ( GM.currentMap[x--][y] == WALL );
-        CHECK ( GM.currentMap[x][y++] == WALL );
-        CHECK ( GM.currentMap[x][y--] == WALL );
+            CHECK ( map0[++x][y] == wasThere );
+            break;
+        }
+        case 's':{
+            CHECK ( map0[x][++y] == VISIBLE );
+
+            GM.goDown();
+//            x = GM.getHeroCoordX();
+//            y = GM.getHeroCoordY();
+//             GM.isFindWALL();
+            map0 = GM.getCurrentMap();
+
+            display();
 
 
+            CHECK (map0[x][--y] == wasThere );
+            break; }
+        case 'd':{
+            CHECK ( map0[++x][y] == VISIBLE );
+
+            GM.goRight();
+//            x = GM.getHeroCoordX();
+//            y = GM.getHeroCoordY();
+//             GM.isFindWALL();
+            map0 = GM.getCurrentMap();
+
+            display();
 
 
+            CHECK ( GM.currentMap[--x][y] == wasThere );
+            break;  }
+        }
 
 
+//        int x = heroCoordX;
+//        int y = heroCoordY;
+//        CHECK ( GM.currentMap[x++][y] == VISIBLE );
+//        CHECK ( GM.currentMap[x--][y] == VISIBLE );
+//        CHECK ( GM.currentMap[x][y++] == VISIBLE );
+//        CHECK ( GM.currentMap[x][y--] == VISIBLE );
     }
-
-    //    // Верные
-    //    CHECK ( GM1.getBigMapSize() == 50 );
-    //    CHECK ( GM1.getLocalMapSize() == 7 );
-
-    //    CHECK ( GM2.getBigMapSize() == 40 );
-    //    CHECK ( GM2.getLocalMapSize() == 6 );
-
-    //    CHECK ( GM3.getBigMapSize() == 30 );
-    //    CHECK ( GM3.getLocalMapSize() == 5 );
-
-    //    GM1.setHeroCoordXY(10, 10);
-    //    GM2.setHeroCoordXY(5, 8);
-    //    GM3.setHeroCoordXY(27, 17);
-
-    //    CHECK ( GM1.getHeroCoordX() == 10 );
-    //    CHECK ( GM1.getHeroCoordY() == 10 );
-
-    //    CHECK ( GM2.getHeroCoordX() == 5 );
-    //    CHECK ( GM2.getHeroCoordY() == 8 );
-
-    //    CHECK ( GM3.getHeroCoordX() == 27 );
-    //    CHECK ( GM3.getHeroCoordY() == 17 );
-
-
-    //    // Неверные
-    //    CHECK ( GM3.getBigMapSize() != 8 );
-    //    CHECK ( GM3.getLocalMapSize() != 1 );
-
-    //    CHECK ( GM1.getHeroCoordX() != 2 );
-    //    CHECK ( GM1.getHeroCoordY() != 1 );
 
 }
 
@@ -127,12 +141,6 @@ void display(){
                 glColor3f(1, 1, 1);
             else if (map0[i][j] == UNKNOWN)
                 glColor3f( 0.64,  0.64, 0.64);
-
-            //            else
-            //                glColor3f(1, 1, 1);
-
-
-
 
             glVertex2f((i) * 480 / bigMapSize, (j) * 480 / bigMapSize);
             glVertex2f((i + 1) * 480 / bigMapSize, (j) * 480 / bigMapSize);
@@ -161,7 +169,6 @@ void glutInits(){
 
 void getInitParams(){
     bigMapSize = GM.getBigMapSize();
-    localMapSize = GM.getLocalMapSize();
     WALL = GM.getWALL();
     heroCoordX = GM.getHeroCoordX();
     heroCoordY = GM.getHeroCoordY();
