@@ -154,7 +154,7 @@ void globalMap::isFindWALL(){
                 /// рисовать невидимые участки
                 // Сверху
                 if((i == localHeroX)&&(j + 1 == localHeroY)){
-                    cout << "Up" << endl;
+                   // cout << "Up" << endl;
 
                     if(localMap[i][j - 1] != WALL)
                         localMap[i][j - 1] = UNKNOWN;
@@ -165,7 +165,7 @@ void globalMap::isFindWALL(){
                 }
                 // Снизу
                 if((i == localHeroX)&&(j - 1 == localHeroY)){
-                    cout << "Down" << endl;
+                   // cout << "Down" << endl;
 
                     if(localMap[i][j + 1] != WALL)
                         localMap[i][j + 1] = UNKNOWN;
@@ -176,7 +176,7 @@ void globalMap::isFindWALL(){
                 }
                 // Справа
                 if((i - 1 == localHeroX)&&(j == localHeroY)){
-                    cout << "Right" << endl;
+                   // cout << "Right" << endl;
 
                     if(localMap[i + 1][j - 1] != WALL)
                         localMap[i + 1][j - 1] = UNKNOWN;
@@ -187,7 +187,7 @@ void globalMap::isFindWALL(){
                 }
                 //  Слева
                 if((i + 1 == localHeroX)&&(j == localHeroY)){
-                    cout << "Left" << endl;
+                  //  cout << "Left" << endl;
                     if(localMap[i - 1][j - 1] != WALL)
                         localMap[i - 1][j - 1] = UNKNOWN;
                     if(localMap[i - 1][j] != WALL)
@@ -197,7 +197,7 @@ void globalMap::isFindWALL(){
                 }
                 //  Верхняя правая диагональ
                 if((i - 1 == localHeroX)&&(j + 1 == localHeroY)){
-                    cout << "Up right" << endl;
+                  //  cout << "Up right" << endl;
 
                     if(localMap[i + 1][j] != WALL)
                         localMap[i + 1][j] = UNKNOWN;
@@ -208,7 +208,7 @@ void globalMap::isFindWALL(){
                 }
                 // Нижняя правая диагональ
                 if((i - 1 == localHeroX)&&(j - 1 == localHeroY)){
-                    cout << "Down right" << endl;
+                  //  cout << "Down right" << endl;
 
                     if(localMap[i + 1][j] != WALL)
                         localMap[i + 1][j] = UNKNOWN;
@@ -220,7 +220,7 @@ void globalMap::isFindWALL(){
 
                 // Верхняя левая диагональ
                 if((i + 1 == localHeroX)&&(j + 1 == localHeroY)){
-                    cout << "Up left" << endl;
+                  //  cout << "Up left" << endl;
 
                     if((localMap[i - 1][j] != WALL)
                             )
@@ -234,7 +234,7 @@ void globalMap::isFindWALL(){
                 }
                 // Нижняя левая диагональ
                 if((i + 1 == localHeroX)&&(j - 1 == localHeroY)){
-                    cout << "Down left" << endl;
+                 //   cout << "Down left" << endl;
                     if((localMap[i - 1][j] != WALL)
                             )
                         localMap[i - 1][j] = UNKNOWN;
@@ -749,5 +749,62 @@ void globalMap::checkForOverloadingCells(){
             y = prevHeroCoordY - (localMapSize - 1) / 2 - 1;
 
         }
+    }
+}
+
+
+void globalMap::goLeft(){
+
+    if((map[heroCoordX - 1][heroCoordY] != WALL)&&(map[heroCoordX - 1][heroCoordY] != UNKNOWN)){
+        cout << "GO LEFT" << endl;
+        prevPath = "Left";
+        heroCoordX--;
+        currentMap[heroCoordX][heroCoordY] = HERO;
+        for(int i = 0; i < pathX.size(); i++){
+            map[pathX[i]][pathY[i]] = WAS_THERE;
+        }
+    }
+}
+
+
+void  globalMap::goRight(){
+
+    if((map[heroCoordX + 1][heroCoordY] != WALL)&&(map[heroCoordX + 1][heroCoordY] != UNKNOWN)){
+        cout << "GO RIGHT" << endl;
+        prevPath = "Right";
+        heroCoordX++;
+        currentMap[heroCoordX][heroCoordY] = HERO;
+        for(int i = 0; i < pathX.size(); i++){
+            map[pathX[i]][pathY[i]] = WAS_THERE;
+        }
+    }
+}
+
+void  globalMap::goDown(){
+    // Низ
+    if((map[heroCoordX][heroCoordY + 1] != WALL)&&(map[heroCoordX][heroCoordY + 1] != UNKNOWN)){
+        cout << "GO DOWN" << endl;
+        prevPath = "Down";
+        heroCoordY++;
+        currentMap[heroCoordX][heroCoordY] = HERO;
+        for(int i = 0; i < pathX.size(); i++){
+            map[pathX[i]][pathY[i]] = WAS_THERE;
+        }
+    }
+}
+
+void  globalMap::goUp(){
+
+
+    // Верх
+    if((map[heroCoordX][heroCoordY - 1] != WALL)&&(map[heroCoordX][heroCoordY - 1] != UNKNOWN)){
+        cout << "GO UP" << endl;
+        prevPath = "Up";
+        heroCoordY--;
+        currentMap[heroCoordX][heroCoordY] = HERO;
+        for(int i = 0; i < pathX.size(); i++){
+            map[pathX[i]][pathY[i]] = WAS_THERE;
+        }
+
     }
 }

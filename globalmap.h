@@ -62,9 +62,10 @@ private:
     int** localMap;
     int** prevLocalMap;
     // Текущая раскрытая
-    int** currentMap;
 
 public:
+    int** currentMap;
+
 
     struct point{
         int x;
@@ -81,9 +82,13 @@ public:
 
     void findNextStep();
 
-
     void setGlobalMap();
     void isFindWALL();
+
+    void goRight();
+    void goLeft();
+    void goDown();
+    void goUp();
 
     // Get-теры
     int getUNKNOWN() const;

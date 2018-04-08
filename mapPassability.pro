@@ -24,7 +24,7 @@ LIBS += -lglut
 
 TEMPLATE = app
 SOURCES += globalmap.cpp \
-## main.cpp \
+# main.cpp \
 test.cpp \
 
 HEADERS += globalmap.h \
