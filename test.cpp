@@ -5,14 +5,11 @@
 #include "globalmap.h"
 #include <unistd.h>
 
-
-int bigMapSize;
+int bigMapSize = 10;
 int WALL;
 
 int heroCoordX;
 int heroCoordY;
-int exitCoordX;
-int exitCoordY;
 int UNKNOWN;
 int VISIBLE;
 int wasThere;
@@ -23,7 +20,8 @@ void glutInits();
 void display();
 void getInitParams();
 
-globalMap GM;
+globalMap GM(10,5);
+
 
 
 TEST_CASE( "First_use", "[test]" ) {
@@ -31,98 +29,64 @@ TEST_CASE( "First_use", "[test]" ) {
     // Инициализация GLUT и основных параметров карты
     glutInits();
     getInitParams();
-    // Инициализация глобальной карты
-    GM.setGlobalMap();
-    while(1){
-        // Проверяем наличие стенок  и невидимых зон в локальной карте
-        GM.isFindWALL();
-        // Рисуем текущую карту
-        map0 = GM.getCurrentMap();
-        display();
 
-        char ch = ' ';
-        cout << "Input ch" << endl;
-        cin >> ch;
-
-        int x = GM.getHeroCoordX();
-        int y = GM.getHeroCoordY();
-        switch(ch){
-        case 'w':{
-            CHECK ( GM.currentMap[x][--y] == VISIBLE );
-
-            GM.goUp();
-//             x = GM.getHeroCoordX();
-//             y = GM.getHeroCoordY();
-//              GM.isFindWALL();
-             map0 = GM.getCurrentMap();
-
-            display();
-
-
-            CHECK ( map0[x][++y] == wasThere );
-            break;
-        }
-        case 'a':{
-            CHECK ( map0[--x][y] == VISIBLE );
-
-            GM.goLeft();
-//            x = GM.getHeroCoordX();
-//            y = GM.getHeroCoordY();
-//             GM.isFindWALL();
-            map0 = GM.getCurrentMap();
-
-            display();
-
-
-            CHECK ( map0[++x][y] == wasThere );
-            break;
-        }
-        case 's':{
-            CHECK ( map0[x][++y] == VISIBLE );
-
-            GM.goDown();
-//            x = GM.getHeroCoordX();
-//            y = GM.getHeroCoordY();
-//             GM.isFindWALL();
-            map0 = GM.getCurrentMap();
-
-            display();
-
-
-            CHECK (map0[x][--y] == wasThere );
-            break; }
-        case 'd':{
-            CHECK ( map0[++x][y] == VISIBLE );
-
-            GM.goRight();
-//            x = GM.getHeroCoordX();
-//            y = GM.getHeroCoordY();
-//             GM.isFindWALL();
-            map0 = GM.getCurrentMap();
-
-            display();
-
-
-            CHECK ( GM.currentMap[--x][y] == wasThere );
-            break;  }
-        }
-
-
-//        int x = heroCoordX;
-//        int y = heroCoordY;
-//        CHECK ( GM.currentMap[x++][y] == VISIBLE );
-//        CHECK ( GM.currentMap[x--][y] == VISIBLE );
-//        CHECK ( GM.currentMap[x][y++] == VISIBLE );
-//        CHECK ( GM.currentMap[x][y--] == VISIBLE );
+    map0 = new int* [bigMapSize];
+    for(int i = 0; i < bigMapSize; i++){
+        map0[i] = new int[bigMapSize];
     }
 
+    for(int i = 0; i < bigMapSize; i++){
+        for(int j = 0; j < bigMapSize; j++){
+            map0[i][j] = VISIBLE;
+        }
+    }
+
+    for (int i = 0; i < bigMapSize; ++i)
+    {
+        map0[i][0] = WALL;
+        map0[0][i] = WALL;
+        map0[i][bigMapSize - 1] = WALL;
+        map0[bigMapSize - 1][i] = WALL;
+    }
+heroCoordX = 5;
+heroCoordY = 5;
+    GM.setHeroCoordXY(heroCoordX, heroCoordY);
+
+
+    map0[5][4] = WALL;
+    map0[5][6] = WALL;
+
+    GM.setGlobalMap(map0);
+
+    GM.isFindWALL();
+
+
+    map0 = GM.getCurrentMap();
+
+    display();
+    usleep(1000000);
+
+
+    CHECK(GM.getHeroCoordX() == 5);
+    CHECK(GM.getHeroCoordY() == 5);
+
+    map0 = GM.getCurrentMap();
+    CHECK(map0[5][4] == WALL);
+    CHECK(map0[5][6]  == WALL);
+
+    CHECK(map0[5][3] == UNKNOWN);
+    CHECK(map0[6][3] == UNKNOWN);
+    CHECK(map0[4][3] == UNKNOWN);
+
+    CHECK(map0[5][7] == UNKNOWN);
+    CHECK(map0[4][7] == UNKNOWN);
+    CHECK(map0[6][7] == UNKNOWN);
 }
 
 
 void display(){
 
-    heroCoordX = GM.getHeroCoordX();
-    heroCoordY = GM.getHeroCoordY();
+
 
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_QUADS);
@@ -131,8 +95,6 @@ void display(){
         {
             if ((i == heroCoordX)&&(j == heroCoordY))
                 glColor3f(0, 0, 1);
-            else  if ((i == exitCoordX)&&(j == exitCoordY))
-                glColor3f(1, 1, 0);
             else if (map0[i][j] == wasThere)
                 glColor3f( 1, 0, 0);
             else if (map0[i][j] == WALL)
@@ -168,13 +130,7 @@ void glutInits(){
 }
 
 void getInitParams(){
-    bigMapSize = GM.getBigMapSize();
     WALL = GM.getWALL();
-    heroCoordX = GM.getHeroCoordX();
-    heroCoordY = GM.getHeroCoordY();
-
-    exitCoordX = GM.getExitCoordX();
-    exitCoordY = GM.getExitCoordY();
     UNKNOWN = GM.getUNKNOWN();
     VISIBLE = GM.getVISIBLE();
     wasThere = GM.getWasThere();

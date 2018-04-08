@@ -28,15 +28,10 @@ private:
     // Константы для обозначения ячеек внутри карты
     const int WALL = 55;
     const int HERO = -1;
-    const int EXIT = -8;
     const int UNKNOWN = 99;
     const int VISIBLE = -9;
     // Обозначение ячейки, где мы уже были
     const int WAS_THERE = 40;
-
-    // Координаты выхода
-    const int exitCoordX = 20;
-    const int exitCoordY = 20;
 
     // Глобальные координаты героя
     int heroCoordX;
@@ -82,7 +77,9 @@ public:
 
     void findNextStep();
 
+    void setGlobalMap( int** initMap);
     void setGlobalMap();
+
     void isFindWALL();
 
     void goRight();
