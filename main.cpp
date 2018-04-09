@@ -1,4 +1,4 @@
-#include "mapPassability.h"
+#include "MapPassability.h"
 #include <unistd.h>
 
 
