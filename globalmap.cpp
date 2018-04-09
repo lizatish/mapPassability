@@ -129,7 +129,7 @@ globalMap::globalMap()
 
 
 void globalMap::isFindWALL(){
-
+ cout << "path size " << pathX.size() << endl;
     connectGlobalAndLocalMap();
 
     for(int i = 0; i < localMapSize; i++)
@@ -347,7 +347,7 @@ void globalMap::findNextStep(){
 
 
 
-    for(int i = 0; i < pathX.size(); i++){
+    for(uint i = 0; i < pathX.size(); i++){
         map[pathX[i]][pathY[i]] = WAS_THERE;
     }
 
@@ -375,7 +375,7 @@ void globalMap::checkForOverloadingCells(){
             for(int j = 0; j < localMapSize; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                     localMap[i][j] = VISIBLE;
-                else if((currentMap[x][y] == WAS_THERE)&&(localMap[i][j] == UNKNOWN))
+                else if(currentMap[x][y] == WAS_THERE)
                     localMap[i][j] = WAS_THERE;
                 y++;
             }
@@ -388,7 +388,7 @@ void globalMap::checkForOverloadingCells(){
             for(int j = 0; j < localMapSize; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                     localMap[i][j] = VISIBLE;
-                else if((currentMap[x][y] == WAS_THERE)&&(localMap[i][j] == UNKNOWN))
+                else if(currentMap[x][y] == WAS_THERE)
                     localMap[i][j] = WAS_THERE;
                 y++;
             }
@@ -403,7 +403,7 @@ void globalMap::checkForOverloadingCells(){
             for(int j = 0; j < localMapSize - 1; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                     localMap[i][j] = VISIBLE;
-                else if((currentMap[x][y] == WAS_THERE)&&(localMap[i][j] == UNKNOWN))
+                else if(currentMap[x][y] == WAS_THERE)
                     localMap[i][j] = WAS_THERE;
                 y++;
             }
@@ -417,7 +417,7 @@ void globalMap::checkForOverloadingCells(){
             for(int j = 1; j < localMapSize; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                     localMap[i][j] = VISIBLE;
-                else if((currentMap[x][y] == WAS_THERE)&&(localMap[i][j] == UNKNOWN))
+                else if(currentMap[x][y] == WAS_THERE)
                     localMap[i][j] = WAS_THERE;
                 y++;
             }
@@ -443,7 +443,7 @@ void globalMap::goLeft(){
         prevPath = "Left";
         heroCoordX--;
         currentMap[heroCoordX][heroCoordY] = HERO;
-        for(int i = 0; i < pathX.size(); i++){
+        for(uint i = 0; i < pathX.size(); i++){
             currentMap[pathX[i]][pathY[i]] = WAS_THERE;
         }
     }
@@ -465,7 +465,7 @@ void  globalMap::goRight(){
         prevPath = "Right";
         heroCoordX++;
         currentMap[heroCoordX][heroCoordY] = HERO;
-        for(int i = 0; i < pathX.size(); i++){
+        for(uint i = 0; i < pathX.size(); i++){
             currentMap[pathX[i]][pathY[i]] = WAS_THERE;
         }
     }
@@ -487,7 +487,7 @@ void  globalMap::goDown(){
         prevPath = "Down";
         heroCoordY++;
         currentMap[heroCoordX][heroCoordY] = HERO;
-        for(int i = 0; i < pathX.size(); i++){
+        for(uint i = 0; i < pathX.size(); i++){
             currentMap[pathX[i]][pathY[i]] = WAS_THERE;
         }
     }
@@ -510,7 +510,7 @@ void  globalMap::goUp(){
         prevPath = "Up";
         heroCoordY--;
         currentMap[heroCoordX][heroCoordY] = HERO;
-        for(int i = 0; i < pathX.size(); i++){
+        for(uint i = 0; i < pathX.size(); i++){
             currentMap[pathX[i]][pathY[i]] = WAS_THERE;
         }
 
