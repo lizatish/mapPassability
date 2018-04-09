@@ -67,8 +67,8 @@ globalMap::globalMap(int glMapSize, int locMapSize){
     localMapSize = locMapSize;
 
     // Наша начальная позиция
-    heroCoordX = 1;
-    heroCoordY = 1;
+    heroCoordX = glMapSize / 2 - 1;
+    heroCoordY =  glMapSize / 2 - 1;
     prevHeroCoordX = heroCoordX;
     prevHeroCoordY = heroCoordY;
 
@@ -279,6 +279,7 @@ void globalMap::setGlobalMap( int** initMap){
         for (int j = 0; j < bigMapSize; ++j){
             currentMap[i][j] = UNKNOWN;
         }
+    isFindWALL();
 
 }
 void globalMap::setGlobalMap(){
@@ -306,7 +307,7 @@ void globalMap::setGlobalMap(){
             currentMap[i][j] = UNKNOWN;
         }
 
-
+    isFindWALL();
 }
 
 void globalMap::findNextStep(){
@@ -455,6 +456,8 @@ void globalMap::goLeft(){
             currentMap[pathX[i]][pathY[i]] = WAS_THERE;
         }
     }
+    isFindWALL();
+
 }
 
 
@@ -477,6 +480,8 @@ void  globalMap::goRight(){
             currentMap[pathX[i]][pathY[i]] = WAS_THERE;
         }
     }
+    isFindWALL();
+
 }
 
 void  globalMap::goDown(){
@@ -497,6 +502,8 @@ void  globalMap::goDown(){
             currentMap[pathX[i]][pathY[i]] = WAS_THERE;
         }
     }
+    isFindWALL();
+
 }
 
 void  globalMap::goUp(){
@@ -519,4 +526,6 @@ void  globalMap::goUp(){
         }
 
     }
+    isFindWALL();
+
 }

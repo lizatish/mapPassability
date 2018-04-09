@@ -30,17 +30,18 @@ TEST_CASE( "First_use", "[test]" ) {
     glutInits();
     getInitParams();
 
+    // Инициализация динамического двумерного массива карты
     map0 = new int* [bigMapSize];
     for(int i = 0; i < bigMapSize; i++){
         map0[i] = new int[bigMapSize];
     }
-
+    // Задание всех клеток изначально видимыми
     for(int i = 0; i < bigMapSize; i++){
         for(int j = 0; j < bigMapSize; j++){
             map0[i][j] = VISIBLE;
         }
     }
-
+    // Создание стенок по граниам карты
     for (int i = 0; i < bigMapSize; ++i)
     {
         map0[i][0] = WALL;
@@ -48,45 +49,71 @@ TEST_CASE( "First_use", "[test]" ) {
         map0[i][bigMapSize - 1] = WALL;
         map0[bigMapSize - 1][i] = WALL;
     }
-heroCoordX = 5;
-heroCoordY = 5;
+    // Задание координат героя
+    heroCoordX = 5;
+    heroCoordY = 5;
     GM.setHeroCoordXY(heroCoordX, heroCoordY);
 
-
+    // Задание стенок снизу и сверху от героя
     map0[5][4] = WALL;
     map0[5][6] = WALL;
 
+    // Синзронизация только что созданной карты с объектом
     GM.setGlobalMap(map0);
 
-    GM.isFindWALL();
-
-
+    // Получем карту с объекта
     map0 = GM.getCurrentMap();
 
-    display();
-    usleep(1000000);
-
-
+    // Проверяем местонахождение героя
     CHECK(GM.getHeroCoordX() == 5);
     CHECK(GM.getHeroCoordY() == 5);
 
-    map0 = GM.getCurrentMap();
+    // Проверяем наличие стенок снизу и сверху
     CHECK(map0[5][4] == WALL);
     CHECK(map0[5][6]  == WALL);
 
+    // Проверяем наличие невидимых зон за стенками сверху
     CHECK(map0[5][3] == UNKNOWN);
     CHECK(map0[6][3] == UNKNOWN);
     CHECK(map0[4][3] == UNKNOWN);
 
+    // Проверяем наличие невидимых зон за стенками снизу
     CHECK(map0[5][7] == UNKNOWN);
     CHECK(map0[4][7] == UNKNOWN);
     CHECK(map0[6][7] == UNKNOWN);
+
+    display();
+    usleep(1000000);
+
+    // Идем вправо
+    GM.goRight();
+    display();
+    usleep(1000000);
+
+    // Идем вверх на 2 клетки
+    GM.goUp();
+    display();
+    usleep(1000000);
+    GM.goUp();
+    display();
+    usleep(1000000);
+
+    // Верхние ячейки, которые были невидимы в начальном положении героя,
+    // теперь должны стать видимыми
+    // Проверяем это
+    CHECK(map0[5][3] == VISIBLE);
+    CHECK(map0[6][3] == VISIBLE);
+    CHECK(map0[4][3] == VISIBLE);
+
+    display();
+    usleep(3000000);
 }
 
 
 void display(){
 
-
+    heroCoordX = GM.getHeroCoordX();
+    heroCoordY = GM.getHeroCoordY();
 
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_QUADS);
