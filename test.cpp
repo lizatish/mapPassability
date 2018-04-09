@@ -7,12 +7,11 @@
 
 int bigMapSize = 10;
 int WALL;
-
 int heroCoordX;
 int heroCoordY;
 int UNKNOWN;
 int VISIBLE;
-int wasThere;
+int WAS_THERE;
 
 int** map0;
 
@@ -21,8 +20,6 @@ void display();
 void getInitParams();
 
 globalMap GM(10,5);
-
-
 
 TEST_CASE( "First_use", "[test]" ) {
 
@@ -93,8 +90,6 @@ TEST_CASE( "First_use", "[test]" ) {
     // Идем вверх на 2 клетки
     GM.goUp();
     GM.goUp();
-//    GM.goDown();
-//    GM.goDown();
     display();
     usleep(1000000);
 
@@ -105,8 +100,33 @@ TEST_CASE( "First_use", "[test]" ) {
     CHECK(map0[6][3] == VISIBLE);
     CHECK(map0[4][3] == VISIBLE);
 
+    // Теперь идем вниз к невидимым зонам
+    GM.goDown();
+    GM.goDown();
+    GM.goDown();
+    GM.goDown();
+
+    // Нижние ячейки, которые были невидимы в начальном положении героя,
+    // теперь должны стать видимыми
+    // Проверяем это
+    CHECK(map0[5][7] == VISIBLE);
+    CHECK(map0[4][7] == VISIBLE);
+    CHECK(map0[6][7] == VISIBLE);
+
+    // Проверка на то, что мы запомнили ячейки, в которых уже были
+    // Проверка на начальное положение героя
+    CHECK(map0[5][5] == WAS_THERE);
+    // Как мы ходили вниз
+    CHECK(map0[6][6] == WAS_THERE);
+    // Как мы ходили вверх
+    CHECK(map0[6][4] == WAS_THERE);
+    CHECK(map0[6][3] == WAS_THERE);
+    // Проверка на то, где сейчас герой
+    CHECK(GM.getHeroCoordX() == 6);
+    CHECK(GM.getHeroCoordY() == 7);
+
     display();
-    usleep(3000000);
+    usleep(300000);
 }
 
 
@@ -122,7 +142,7 @@ void display(){
         {
             if ((i == heroCoordX)&&(j == heroCoordY))
                 glColor3f(0, 0, 1);
-            else if (map0[i][j] == wasThere)
+            else if (map0[i][j] == WAS_THERE)
                 glColor3f( 1, 0, 0);
             else if (map0[i][j] == WALL)
                 glColor3f(0, 0, 0);
@@ -160,6 +180,6 @@ void getInitParams(){
     WALL = GM.getWALL();
     UNKNOWN = GM.getUNKNOWN();
     VISIBLE = GM.getVISIBLE();
-    wasThere = GM.getWasThere();
+    WAS_THERE = GM.getWasThere();
 
 }

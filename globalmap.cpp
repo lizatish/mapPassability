@@ -129,7 +129,6 @@ globalMap::globalMap()
 
 
 void globalMap::isFindWALL(){
- cout << "path size " << pathX.size() << endl;
     connectGlobalAndLocalMap();
 
     for(int i = 0; i < localMapSize; i++)
@@ -232,8 +231,6 @@ void globalMap::isFindWALL(){
     }
     n++;
 
-    prevLocalMap = localMap;
-
     // Нарисовать на текущей открытой карте то, что только что увидели
     connectCurrentAndLocalMap();
 
@@ -243,6 +240,8 @@ void globalMap::connectCurrentAndLocalMap(){
     int y = heroCoordY - (localMapSize - 1) / 2;
     for(int i = 0; i < localMapSize; i++){
         for(int j = 0; j < localMapSize; j++){
+            if((x == bigMapSize)||(y == bigMapSize))
+                continue;
             currentMap[x][y++] = localMap[i][j];
         }
         x++;
@@ -256,6 +255,8 @@ void globalMap::connectGlobalAndLocalMap(){
 
     for(int i = 0; i < localMapSize; i++){
         for(int j = 0; j < localMapSize; j++){
+            if((x == bigMapSize)||(y == bigMapSize))
+                continue;
             localMap[i][j] = map[x][y++];
         }
         x++;
@@ -439,7 +440,7 @@ void globalMap::goLeft(){
         pathX.push_back(heroCoordX);
         pathY.push_back(heroCoordY);
 
-        cout << "GO LEFT" << endl;
+        //        cout << "GO LEFT" << endl;
         prevPath = "Left";
         heroCoordX--;
         currentMap[heroCoordX][heroCoordY] = HERO;
@@ -461,7 +462,7 @@ void  globalMap::goRight(){
         pathX.push_back(heroCoordX);
         pathY.push_back(heroCoordY);
 
-        cout << "GO RIGHT" << endl;
+        //        cout << "GO RIGHT" << endl;
         prevPath = "Right";
         heroCoordX++;
         currentMap[heroCoordX][heroCoordY] = HERO;
@@ -483,7 +484,7 @@ void  globalMap::goDown(){
 
         pathX.push_back(heroCoordX);
         pathY.push_back(heroCoordY);
-        cout << "GO DOWN" << endl;
+        //        cout << "GO DOWN" << endl;
         prevPath = "Down";
         heroCoordY++;
         currentMap[heroCoordX][heroCoordY] = HERO;
@@ -506,7 +507,7 @@ void  globalMap::goUp(){
 
         pathX.push_back(heroCoordX);
         pathY.push_back(heroCoordY);
-        cout << "GO UP" << endl;
+        //        cout << "GO UP" << endl;
         prevPath = "Up";
         heroCoordY--;
         currentMap[heroCoordX][heroCoordY] = HERO;

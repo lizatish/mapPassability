@@ -24,7 +24,7 @@ void getInitParams();
 vector<int> pathX;
 vector<int> pathY;
 
-globalMap GM(30, 5);
+globalMap GM(10, 5);
 
 int main()
 {
@@ -40,28 +40,29 @@ int main()
     // Рисуем текущую карту
     map = GM.getCurrentMap();
     display();
-    usleep(1000000);
 
+    while(1){
+        char ch;
+        cin >> ch;
+        switch(ch){
+        case 'w': { GM.goUp();
+            map = GM.getCurrentMap();
+            display();
+            break;}
+        case 'a': { GM.goLeft();
+            map = GM.getCurrentMap();
+            display();
+            break;}
+        case 's': { GM.goDown();
+            map = GM.getCurrentMap();
+            display();
+            break;}
+        case 'd': { GM.goRight();
+            map = GM.getCurrentMap();
+            display();
+            break;}
+        }
 
-
-
-    //glutDisplayFunc(display);
-
-    for(int i = 0; i < 15; i++){
-        GM.findNextStep();
-        display();
-      //  usleep(100000);
-
-
-        GM.isFindWALL();
-
-
-        map = GM.getCurrentMap();
-        display();
-        usleep(1000000);
-
-        //        display();
-        //        usleep(1000000);
     }
 
     glutMainLoop();
@@ -128,8 +129,6 @@ void getInitParams(){
     heroCoordX = GM.getHeroCoordX();
     heroCoordY = GM.getHeroCoordY();
 
-    exitCoordX = GM.getExitCoordX();
-    exitCoordY = GM.getExitCoordY();
     UNKNOWN = GM.getUNKNOWN();
     VISIBLE = GM.getVISIBLE();
     wasThere = GM.getWasThere();
