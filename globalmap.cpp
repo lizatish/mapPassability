@@ -376,7 +376,6 @@ void globalMap::checkForOverloadingCells(){
     int y = prevHeroCoordY - (localMapSize - 1) / 2;
 
     if(prevPath == "Right"){
-        x += 1;
         for(int i = 0; i < localMapSize - 1; i++){
             for(int j = 0; j < localMapSize; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
@@ -390,9 +389,8 @@ void globalMap::checkForOverloadingCells(){
         }
     }
     else if(prevPath == "Left"){
-        x -= 1;
 
-        for(int i = 0; i < localMapSize - 1; i++){
+        for(int i = 1; i < localMapSize; i++){
             for(int j = 0; j < localMapSize; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                     localMap[i][j] = VISIBLE;
@@ -416,14 +414,13 @@ void globalMap::checkForOverloadingCells(){
                 y++;
             }
             x++;
-            y = prevHeroCoordY - (localMapSize - 1) / 2 + 1;
+            y = prevHeroCoordY - (localMapSize - 1) / 2;
 
         }
     }
     else if(prevPath == "Up"){
-        y--;
         for(int i = 0; i < localMapSize; i++){
-            for(int j = 0; j < localMapSize - 1; j++){
+            for(int j = 1; j < localMapSize; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                     localMap[i][j] = VISIBLE;
                 else if((currentMap[x][y] == WAS_THERE)&&(localMap[i][j] == UNKNOWN))
@@ -431,7 +428,7 @@ void globalMap::checkForOverloadingCells(){
                 y++;
             }
             x++;
-            y = prevHeroCoordY - (localMapSize - 1) / 2 - 1;
+            y = prevHeroCoordY - (localMapSize - 1) / 2;
 
         }
     }
@@ -457,9 +454,7 @@ void globalMap::goLeft(){
         }
     }
     isFindWALL();
-
 }
-
 
 void  globalMap::goRight(){
 
