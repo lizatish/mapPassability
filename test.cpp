@@ -92,9 +92,9 @@ TEST_CASE( "First_use", "[test]" ) {
 
     // Идем вверх на 2 клетки
     GM.goUp();
-    display();
-    usleep(1000000);
     GM.goUp();
+//    GM.goDown();
+//    GM.goDown();
     display();
     usleep(1000000);
 

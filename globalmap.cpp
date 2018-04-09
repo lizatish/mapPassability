@@ -207,27 +207,21 @@ void globalMap::isFindWALL(){
                 if((i + 1 == localHeroX)&&(j + 1 == localHeroY)){
                     //  cout << "Up left" << endl;
 
-                    if((localMap[i - 1][j] != WALL)
-                            )
+                    if((localMap[i - 1][j] != WALL))
                         localMap[i - 1][j] = UNKNOWN;
-                    if((localMap[i][j - 1] != WALL)
-                            )
+                    if((localMap[i][j - 1] != WALL))
                         localMap[i][j - 1] = UNKNOWN;
-                    if((localMap[i - 1][j - 1] != WALL)
-                            )
+                    if((localMap[i - 1][j - 1] != WALL))
                         localMap[i - 1][j - 1] = UNKNOWN;
                 }
                 // Нижняя левая диагональ
                 if((i + 1 == localHeroX)&&(j - 1 == localHeroY)){
                     //   cout << "Down left" << endl;
-                    if((localMap[i - 1][j] != WALL)
-                            )
+                    if((localMap[i - 1][j] != WALL))
                         localMap[i - 1][j] = UNKNOWN;
-                    if((localMap[i][j + 1]!= WALL)
-                            )
+                    if((localMap[i][j + 1]!= WALL))
                         localMap[i][j + 1] = UNKNOWN;
-                    if((localMap[i - 1][j + 1] != WALL)
-                            )
+                    if((localMap[i - 1][j + 1] != WALL))
                         localMap[i - 1][j + 1] = UNKNOWN;
                 }
 
@@ -376,6 +370,7 @@ void globalMap::checkForOverloadingCells(){
     int y = prevHeroCoordY - (localMapSize - 1) / 2;
 
     if(prevPath == "Right"){
+        x++;
         for(int i = 0; i < localMapSize - 1; i++){
             for(int j = 0; j < localMapSize; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
@@ -389,7 +384,6 @@ void globalMap::checkForOverloadingCells(){
         }
     }
     else if(prevPath == "Left"){
-
         for(int i = 1; i < localMapSize; i++){
             for(int j = 0; j < localMapSize; j++){
                 if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
@@ -414,7 +408,7 @@ void globalMap::checkForOverloadingCells(){
                 y++;
             }
             x++;
-            y = prevHeroCoordY - (localMapSize - 1) / 2;
+            y = prevHeroCoordY - (localMapSize - 1) / 2 + 1;
 
         }
     }
