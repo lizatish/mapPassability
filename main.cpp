@@ -3,13 +3,11 @@
 
 
 int bigMapSize;
-int localMapSize;
 int WALL;
 
 int heroCoordX;
 int heroCoordY;
-int exitCoordX;
-int exitCoordY;
+
 int UNKNOWN;
 int VISIBLE;
 int wasThere;
@@ -80,8 +78,6 @@ void display(){
         {
             if ((i == heroCoordX)&&(j == heroCoordY))
                 glColor3f(0, 0, 1);
-            else  if ((i == exitCoordX)&&(j == exitCoordY))
-                glColor3f(1, 1, 0);
             else if (map[i][j] == wasThere)
                 glColor3f( 1, 0, 0);
             else if (map[i][j] == WALL)
@@ -124,7 +120,6 @@ void glutInit(){
 
 void getInitParams(){
     bigMapSize = GM.getBigMapSize();
-    localMapSize = GM.getLocalMapSize();
     WALL = GM.getWALL();
     heroCoordX = GM.getHeroCoordX();
     heroCoordY = GM.getHeroCoordY();

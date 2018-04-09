@@ -240,7 +240,7 @@ void globalMap::connectCurrentAndLocalMap(){
     int y = heroCoordY - (localMapSize - 1) / 2;
     for(int i = 0; i < localMapSize; i++){
         for(int j = 0; j < localMapSize; j++){
-            if((x == bigMapSize)||(y == bigMapSize))
+            if((x >= bigMapSize)||(y >= bigMapSize)||(x < 0)||(y < 0))
                 continue;
             currentMap[x][y++] = localMap[i][j];
         }
@@ -255,7 +255,7 @@ void globalMap::connectGlobalAndLocalMap(){
 
     for(int i = 0; i < localMapSize; i++){
         for(int j = 0; j < localMapSize; j++){
-            if((x == bigMapSize)||(y == bigMapSize))
+            if((x >= bigMapSize)||(y >= bigMapSize)||(x < 0)||(y < 0))
                 continue;
             localMap[i][j] = map[x][y++];
         }
@@ -367,66 +367,24 @@ void globalMap::setHeroCoordXY(int x, int y)
 void globalMap::checkForOverloadingCells(){
 
 
-    int x = prevHeroCoordX - (localMapSize - 1) / 2;
-    int y = prevHeroCoordY - (localMapSize - 1) / 2;
+    int x = heroCoordX - (localMapSize - 1) / 2;
+    int y = heroCoordY - (localMapSize - 1) / 2;
 
-    if(prevPath == "Right"){
+    for(int i = 0; i < localMapSize; i++){
+        for(int j = 0; j < localMapSize; j++){
+            if((x >= bigMapSize)||(y >= bigMapSize)||(x < 0)||(y < 0))
+                continue;
+
+            if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
+                localMap[i][j] = VISIBLE;
+            else if(currentMap[x][y] == WAS_THERE)
+                localMap[i][j] = WAS_THERE;
+            y++;
+        }
         x++;
-        for(int i = 0; i < localMapSize - 1; i++){
-            for(int j = 0; j < localMapSize; j++){
-                if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
-                    localMap[i][j] = VISIBLE;
-                else if(currentMap[x][y] == WAS_THERE)
-                    localMap[i][j] = WAS_THERE;
-                y++;
-            }
-            x++;
-            y = prevHeroCoordY - (localMapSize - 1) / 2;
-        }
+        y = heroCoordY - (localMapSize - 1) / 2;
     }
-    else if(prevPath == "Left"){
-        for(int i = 1; i < localMapSize; i++){
-            for(int j = 0; j < localMapSize; j++){
-                if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
-                    localMap[i][j] = VISIBLE;
-                else if(currentMap[x][y] == WAS_THERE)
-                    localMap[i][j] = WAS_THERE;
-                y++;
-            }
-            x++;
-            y = prevHeroCoordY - (localMapSize - 1) / 2;
 
-        }
-    }
-    else if(prevPath == "Down"){
-        y++;
-        for(int i = 0; i < localMapSize; i++){
-            for(int j = 0; j < localMapSize - 1; j++){
-                if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
-                    localMap[i][j] = VISIBLE;
-                else if(currentMap[x][y] == WAS_THERE)
-                    localMap[i][j] = WAS_THERE;
-                y++;
-            }
-            x++;
-            y = prevHeroCoordY - (localMapSize - 1) / 2 + 1;
-
-        }
-    }
-    else if(prevPath == "Up"){
-        for(int i = 0; i < localMapSize; i++){
-            for(int j = 1; j < localMapSize; j++){
-                if((currentMap[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
-                    localMap[i][j] = VISIBLE;
-                else if(currentMap[x][y] == WAS_THERE)
-                    localMap[i][j] = WAS_THERE;
-                y++;
-            }
-            x++;
-            y = prevHeroCoordY - (localMapSize - 1) / 2;
-
-        }
-    }
 }
 
 
