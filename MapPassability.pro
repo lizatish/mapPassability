@@ -23,9 +23,9 @@ INCLUDEPATH += /usr/include/GL
 LIBS += -lglut
 
 TEMPLATE = app
-SOURCES += map.cpp \
+SOURCES += MapPassability.cpp \
 #main.cpp \
 test.cpp \
 
-HEADERS += map.h \
+HEADERS += MapPassability.h \
  catch.hpp \

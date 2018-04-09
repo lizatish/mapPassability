@@ -1,5 +1,5 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef MAPPASSABILITY_H
+#define MAPPASSABILITY_H
 
 #include <iostream>
 #include <iomanip>
@@ -15,7 +15,7 @@ using std::chrono::system_clock;
 using namespace std::chrono; // nanoseconds, system_clock, seconds
 using namespace std;
 
-class Map
+class MapPassability
 {
 private:
 
@@ -55,11 +55,12 @@ private:
     int** map;
     // Локальная
     int** localMap;
-    int** prevLocalMap;
-    // Текущая раскрытая
+    // Текущая открытая
+    int** currentMap;
+
+
 
 public:
-    int** currentMap;
 
 
     struct point{
@@ -69,8 +70,8 @@ public:
 
     void checkForOverloadingCells();
 
-    Map();
-    Map(int glMapSize, int locMapSize);
+    MapPassability();
+    MapPassability(int glMapSize, int locMapSize);
 
     void connectGlobalAndLocalMap();
     void connectCurrentAndLocalMap();
@@ -107,4 +108,4 @@ public:
     void setHeroCoordXY(int x, int y);
 };
 
-#endif // MAP_H
+#endif // MAPPASSABILITY_H

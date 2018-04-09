@@ -1,4 +1,4 @@
-#include "globalmap.h"
+#include "mapPassability.h"
 #include <unistd.h>
 
 
@@ -22,7 +22,7 @@ void getInitParams();
 vector<int> pathX;
 vector<int> pathY;
 
-Map GM(10, 5);
+MapPassability GM(10, 5);
 
 int main()
 {

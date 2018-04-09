@@ -2,7 +2,7 @@
 
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "map.h"
+#include "MapPassability.h"
 #include <unistd.h>
 
 int bigMapSize = 10;
@@ -19,7 +19,7 @@ void glutInits();
 void display();
 void getInitParams();
 
-Map GM(10,5);
+MapPassability GM(10,5);
 
 TEST_CASE( "First_use", "[test]" ) {
 

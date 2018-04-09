@@ -1,68 +1,68 @@
-#include "map.h"
+#include "MapPassability.h"
 
-int Map::getUNKNOWN() const
+int MapPassability::getUNKNOWN() const
 {
     return UNKNOWN;
 }
 
-int Map::getHeroCoordY() const
+int MapPassability::getHeroCoordY() const
 {
     return heroCoordY;
 }
 
-int Map::getHeroCoordX() const
+int MapPassability::getHeroCoordX() const
 {
     return heroCoordX;
 }
 
-int Map::getHERO() const
+int MapPassability::getHERO() const
 {
     return HERO;
 }
 
-int Map::getWALL() const
+int MapPassability::getWALL() const
 {
     return WALL;
 }
 
-int Map::getLocalMapSize() const
+int MapPassability::getLocalMapSize() const
 {
     return localMapSize;
 }
 
-int Map::getBigMapSize() const
+int MapPassability::getBigMapSize() const
 {
     return bigMapSize;
 }
 
-int **Map::getMap() const
+int **MapPassability::getMap() const
 {
     return map;
 }
 
 
-int **Map::getLocalMap() const
+int **MapPassability::getLocalMap() const
 {
     return localMap;
 }
 
 
-int **Map::getCurrentMap() const
+int **MapPassability::getCurrentMap() const
 {
     return currentMap;
 }
 
-int Map::getVISIBLE() const
+int MapPassability::getVISIBLE() const
 {
     return VISIBLE;
 }
-int Map::getWasThere() const
+int MapPassability::getWasThere() const
 {
     return WAS_THERE;
 }
 
 
-Map::Map(int glMapSize, int locMapSize){
+MapPassability::MapPassability(int glMapSize, int locMapSize){
     bigMapSize = glMapSize;
     localMapSize = locMapSize;
 
@@ -80,10 +80,6 @@ Map::Map(int glMapSize, int locMapSize){
     for(int i = 0; i < localMapSize; i++){
         localMap[i] = new int[localMapSize];
     }
-    prevLocalMap = new int* [localMapSize];
-    for(int i = 0; i < localMapSize; i++){
-        prevLocalMap[i] = new int[localMapSize];
-    }
 
     currentMap = new int* [bigMapSize];
     for(int i = 0; i < bigMapSize; i++){
@@ -93,7 +89,7 @@ Map::Map(int glMapSize, int locMapSize){
     prevPath = "";
 }
 
-Map::Map()
+MapPassability::MapPassability()
 {
     // Размеры по умолчанию
     bigMapSize = 30;
@@ -112,10 +108,6 @@ Map::Map()
     for(int i = 0; i < localMapSize; i++){
         localMap[i] = new int[localMapSize];
     }
-    prevLocalMap = new int* [localMapSize];
-    for(int i = 0; i < localMapSize; i++){
-        prevLocalMap[i] = new int[localMapSize];
-    }
 
     currentMap = new int* [bigMapSize];
     for(int i = 0; i < bigMapSize; i++){
@@ -128,7 +120,7 @@ Map::Map()
 
 
 
-void Map::isFindWALL(){
+void MapPassability::isFindWALL(){
     connectGlobalAndLocalMap();
 
     for(int i = 0; i < localMapSize; i++)
@@ -235,7 +227,7 @@ void Map::isFindWALL(){
     connectCurrentAndLocalMap();
 
 }
-void Map::connectCurrentAndLocalMap(){
+void MapPassability::connectCurrentAndLocalMap(){
     int x = heroCoordX - (localMapSize - 1) / 2;
     int y = heroCoordY - (localMapSize - 1) / 2;
     for(int i = 0; i < localMapSize; i++){
@@ -249,7 +241,7 @@ void Map::connectCurrentAndLocalMap(){
     }
 }
 
-void Map::connectGlobalAndLocalMap(){
+void MapPassability::connectGlobalAndLocalMap(){
     int x = heroCoordX - (localMapSize - 1) / 2;
     int y = heroCoordY - (localMapSize - 1) / 2;
 
@@ -264,7 +256,7 @@ void Map::connectGlobalAndLocalMap(){
     }
 }
 
-void Map::setGlobalMap( int** initMap){
+void MapPassability::setGlobalMap( int** initMap){
 
     for (int i = 0; i < bigMapSize; ++i)
         for (int j = 0; j < bigMapSize; ++j)
@@ -277,7 +269,7 @@ void Map::setGlobalMap( int** initMap){
     isFindWALL();
 
 }
-void Map::setGlobalMap(){
+void MapPassability::setGlobalMap(){
 
     srand(time(NULL));
     for (int i = 0; i < bigMapSize; ++i)
@@ -305,7 +297,7 @@ void Map::setGlobalMap(){
     isFindWALL();
 }
 
-void Map::findNextStep(){
+void MapPassability::findNextStep(){
 
     prevHeroCoordX = heroCoordX;
     prevHeroCoordY = heroCoordY;
@@ -355,7 +347,7 @@ void Map::findNextStep(){
 
 }
 
-void Map::setHeroCoordXY(int x, int y)
+void MapPassability::setHeroCoordXY(int x, int y)
 {
     heroCoordX = x;
     heroCoordY = y;
@@ -364,7 +356,7 @@ void Map::setHeroCoordXY(int x, int y)
 
 }
 
-void Map::checkForOverloadingCells(){
+void MapPassability::checkForOverloadingCells(){
 
 
     int x = heroCoordX - (localMapSize - 1) / 2;
@@ -388,7 +380,7 @@ void Map::checkForOverloadingCells(){
 }
 
 
-void Map::goLeft(){
+void MapPassability::goLeft(){
 
 
     if((map[heroCoordX - 1][heroCoordY] != WALL)&&(map[heroCoordX - 1][heroCoordY] != UNKNOWN)){
@@ -409,7 +401,7 @@ void Map::goLeft(){
     isFindWALL();
 }
 
-void  Map::goRight(){
+void  MapPassability::goRight(){
 
 
     if((map[heroCoordX + 1][heroCoordY] != WALL)&&(map[heroCoordX + 1][heroCoordY] != UNKNOWN)){
@@ -432,7 +424,7 @@ void  Map::goRight(){
 
 }
 
-void  Map::goDown(){
+void  MapPassability::goDown(){
 
     // Низ
     if((map[heroCoordX][heroCoordY + 1] != WALL)&&(map[heroCoordX][heroCoordY + 1] != UNKNOWN)){
@@ -454,7 +446,7 @@ void  Map::goDown(){
 
 }
 
-void  Map::goUp(){
+void  MapPassability::goUp(){
 
 
     // Верх
