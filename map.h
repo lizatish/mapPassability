@@ -1,5 +1,5 @@
-#ifndef GLOBALMAP_H
-#define GLOBALMAP_H
+#ifndef MAP_H
+#define MAP_H
 
 #include <iostream>
 #include <iomanip>
@@ -15,7 +15,7 @@ using std::chrono::system_clock;
 using namespace std::chrono; // nanoseconds, system_clock, seconds
 using namespace std;
 
-class globalMap
+class Map
 {
 private:
 
@@ -69,8 +69,8 @@ public:
 
     void checkForOverloadingCells();
 
-    globalMap();
-    globalMap(int glMapSize, int locMapSize);
+    Map();
+    Map(int glMapSize, int locMapSize);
 
     void connectGlobalAndLocalMap();
     void connectCurrentAndLocalMap();
@@ -107,4 +107,4 @@ public:
     void setHeroCoordXY(int x, int y);
 };
 
-#endif // GLOBALMAP_H
+#endif // MAP_H

@@ -22,7 +22,7 @@ void getInitParams();
 vector<int> pathX;
 vector<int> pathY;
 
-globalMap GM(10, 5);
+Map GM(10, 5);
 
 int main()
 {
@@ -86,11 +86,6 @@ void display(){
                 glColor3f(1, 1, 1);
             else if (map[i][j] == UNKNOWN)
                 glColor3f( 0.64,  0.64, 0.64);
-
-            //            else
-            //                glColor3f(1, 1, 1);
-
-
 
 
             glVertex2f((i) * 480 / bigMapSize, (j) * 480 / bigMapSize);

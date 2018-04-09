@@ -2,7 +2,7 @@
 
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "globalmap.h"
+#include "map.h"
 #include <unistd.h>
 
 int bigMapSize = 10;
@@ -19,7 +19,7 @@ void glutInits();
 void display();
 void getInitParams();
 
-globalMap GM(10,5);
+Map GM(10,5);
 
 TEST_CASE( "First_use", "[test]" ) {
 

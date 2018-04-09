@@ -1,68 +1,68 @@
-#include "globalmap.h"
+#include "map.h"
 
-int globalMap::getUNKNOWN() const
+int Map::getUNKNOWN() const
 {
     return UNKNOWN;
 }
 
-int globalMap::getHeroCoordY() const
+int Map::getHeroCoordY() const
 {
     return heroCoordY;
 }
 
-int globalMap::getHeroCoordX() const
+int Map::getHeroCoordX() const
 {
     return heroCoordX;
 }
 
-int globalMap::getHERO() const
+int Map::getHERO() const
 {
     return HERO;
 }
 
-int globalMap::getWALL() const
+int Map::getWALL() const
 {
     return WALL;
 }
 
-int globalMap::getLocalMapSize() const
+int Map::getLocalMapSize() const
 {
     return localMapSize;
 }
 
-int globalMap::getBigMapSize() const
+int Map::getBigMapSize() const
 {
     return bigMapSize;
 }
 
-int **globalMap::getMap() const
+int **Map::getMap() const
 {
     return map;
 }
 
 
-int **globalMap::getLocalMap() const
+int **Map::getLocalMap() const
 {
     return localMap;
 }
 
 
-int **globalMap::getCurrentMap() const
+int **Map::getCurrentMap() const
 {
     return currentMap;
 }
 
-int globalMap::getVISIBLE() const
+int Map::getVISIBLE() const
 {
     return VISIBLE;
 }
-int globalMap::getWasThere() const
+int Map::getWasThere() const
 {
     return WAS_THERE;
 }
 
 
-globalMap::globalMap(int glMapSize, int locMapSize){
+Map::Map(int glMapSize, int locMapSize){
     bigMapSize = glMapSize;
     localMapSize = locMapSize;
 
@@ -93,7 +93,7 @@ globalMap::globalMap(int glMapSize, int locMapSize){
     prevPath = "";
 }
 
-globalMap::globalMap()
+Map::Map()
 {
     // Размеры по умолчанию
     bigMapSize = 30;
@@ -128,7 +128,7 @@ globalMap::globalMap()
 
 
 
-void globalMap::isFindWALL(){
+void Map::isFindWALL(){
     connectGlobalAndLocalMap();
 
     for(int i = 0; i < localMapSize; i++)
@@ -235,7 +235,7 @@ void globalMap::isFindWALL(){
     connectCurrentAndLocalMap();
 
 }
-void globalMap::connectCurrentAndLocalMap(){
+void Map::connectCurrentAndLocalMap(){
     int x = heroCoordX - (localMapSize - 1) / 2;
     int y = heroCoordY - (localMapSize - 1) / 2;
     for(int i = 0; i < localMapSize; i++){
@@ -249,7 +249,7 @@ void globalMap::connectCurrentAndLocalMap(){
     }
 }
 
-void globalMap::connectGlobalAndLocalMap(){
+void Map::connectGlobalAndLocalMap(){
     int x = heroCoordX - (localMapSize - 1) / 2;
     int y = heroCoordY - (localMapSize - 1) / 2;
 
@@ -264,7 +264,7 @@ void globalMap::connectGlobalAndLocalMap(){
     }
 }
 
-void globalMap::setGlobalMap( int** initMap){
+void Map::setGlobalMap( int** initMap){
 
     for (int i = 0; i < bigMapSize; ++i)
         for (int j = 0; j < bigMapSize; ++j)
@@ -277,7 +277,7 @@ void globalMap::setGlobalMap( int** initMap){
     isFindWALL();
 
 }
-void globalMap::setGlobalMap(){
+void Map::setGlobalMap(){
 
     srand(time(NULL));
     for (int i = 0; i < bigMapSize; ++i)
@@ -305,7 +305,7 @@ void globalMap::setGlobalMap(){
     isFindWALL();
 }
 
-void globalMap::findNextStep(){
+void Map::findNextStep(){
 
     prevHeroCoordX = heroCoordX;
     prevHeroCoordY = heroCoordY;
@@ -355,7 +355,7 @@ void globalMap::findNextStep(){
 
 }
 
-void globalMap::setHeroCoordXY(int x, int y)
+void Map::setHeroCoordXY(int x, int y)
 {
     heroCoordX = x;
     heroCoordY = y;
@@ -364,7 +364,7 @@ void globalMap::setHeroCoordXY(int x, int y)
 
 }
 
-void globalMap::checkForOverloadingCells(){
+void Map::checkForOverloadingCells(){
 
 
     int x = heroCoordX - (localMapSize - 1) / 2;
@@ -388,7 +388,7 @@ void globalMap::checkForOverloadingCells(){
 }
 
 
-void globalMap::goLeft(){
+void Map::goLeft(){
 
 
     if((map[heroCoordX - 1][heroCoordY] != WALL)&&(map[heroCoordX - 1][heroCoordY] != UNKNOWN)){
@@ -409,7 +409,7 @@ void globalMap::goLeft(){
     isFindWALL();
 }
 
-void  globalMap::goRight(){
+void  Map::goRight(){
 
 
     if((map[heroCoordX + 1][heroCoordY] != WALL)&&(map[heroCoordX + 1][heroCoordY] != UNKNOWN)){
@@ -432,7 +432,7 @@ void  globalMap::goRight(){
 
 }
 
-void  globalMap::goDown(){
+void  Map::goDown(){
 
     // Низ
     if((map[heroCoordX][heroCoordY + 1] != WALL)&&(map[heroCoordX][heroCoordY + 1] != UNKNOWN)){
@@ -454,7 +454,7 @@ void  globalMap::goDown(){
 
 }
 
-void  globalMap::goUp(){
+void  Map::goUp(){
 
 
     // Верх
