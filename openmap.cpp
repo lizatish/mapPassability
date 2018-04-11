@@ -105,7 +105,7 @@ void  OpenMap::goUp(){
 }
 
 void OpenMap::connectOpenAndLocalMap(LocalMap* LM){
-
+    LM->isFindWALL();
     int localMapSize = LM->getSize();
     int** localMap = LM->getMap();
 
@@ -120,6 +120,7 @@ void OpenMap::connectOpenAndLocalMap(LocalMap* LM){
         x++;
         y = heroCoordY - (localMapSize - 1) / 2;
     }
+    checkForOverloadingCells(LM);
 }
 
 void OpenMap::checkForOverloadingCells(LocalMap* LM){

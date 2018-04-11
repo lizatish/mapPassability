@@ -10,6 +10,7 @@ public:
     GlobalMap(int glSize, int hCoordX, int hCoordY);
 
     void setGlobalMap();
+    void setGlobalMap(int** glMap);
 
 };
 

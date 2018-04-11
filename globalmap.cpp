@@ -42,3 +42,8 @@ void GlobalMap::setGlobalMap(){
     map[heroCoordX][heroCoordY] = HERO;
 
 }
+void GlobalMap::setGlobalMap(int** glMap){
+    for (int i = 0; i < size; ++i)
+        for (int j = 0; j < size; ++j)
+            map[i][j] = glMap[i][j];
+}
