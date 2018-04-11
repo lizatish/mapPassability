@@ -1,4 +1,3 @@
-#include "MapPassability.h"
 #include <unistd.h>
 
 
@@ -19,57 +18,51 @@ void glutInit();
 void display();
 void getInitParams();
 
-vector<int> pathX;
-vector<int> pathY;
+#include "navigator.h"
+#include "openmap.h"
+#include "globalmap.h"
+#include "localmap.h"
 
-MapPassability GM(10, 5);
+GlobalMap* GM;
+
+
 
 int main()
 {
     // Инициализация GLUT и основных параметров карты
+
+
+    GM = new GlobalMap(20, 10, 10);
+    GM->setGlobalMap();
+
+    LocalMap* LM;
+    LM = new LocalMap();
+    int** localMap = LM->getMap();
+
+    Navigator NTR(GM, LM);
+    localMap = NTR.connectGlobalAndLocalMap(localMap);
+
+    OpenMap* OM;
+    OM = new OpenMap(GM);
+    OM->connectOpenAndLocalMap(LM);
+    map = OM->getMap();
+
+
+
     glutInit();
     getInitParams();
-    // Инициализация глобальной карты
-    GM.setGlobalMap();
-
-    // Проверяем наличие стенок  и невидимых зон в локальной карте
-    GM.isFindWALL();
-
-    // Рисуем текущую карту
-    map = GM.getCurrentMap();
     display();
-
-    while(1){
-        char ch;
-        cin >> ch;
-        switch(ch){
-        case 'w': { GM.goUp();
-            map = GM.getCurrentMap();
-            display();
-            break;}
-        case 'a': { GM.goLeft();
-            map = GM.getCurrentMap();
-            display();
-            break;}
-        case 's': { GM.goDown();
-            map = GM.getCurrentMap();
-            display();
-            break;}
-        case 'd': { GM.goRight();
-            map = GM.getCurrentMap();
-            display();
-            break;}
-        }
-
-    }
-
+    usleep(300000);
     glutMainLoop();
+
     return 0;
+
+
 }
 void display(){
 
-    heroCoordX = GM.getHeroCoordX();
-    heroCoordY = GM.getHeroCoordY();
+    heroCoordX = GM->getHeroCoordX();
+    heroCoordY = GM->getHeroCoordY();
 
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_QUADS);
@@ -114,13 +107,14 @@ void glutInit(){
 }
 
 void getInitParams(){
-    bigMapSize = GM.getBigMapSize();
-    WALL = GM.getWALL();
-    heroCoordX = GM.getHeroCoordX();
-    heroCoordY = GM.getHeroCoordY();
+    bigMapSize = GM->getSize();
+    WALL = GM->getWALL();
+    heroCoordX = GM->getHeroCoordX();
+    heroCoordY = GM->getHeroCoordY();
 
-    UNKNOWN = GM.getUNKNOWN();
-    VISIBLE = GM.getVISIBLE();
-    wasThere = GM.getWasThere();
+    UNKNOWN = GM->getUNKNOWN();
+    VISIBLE = GM->getVISIBLE();
+    wasThere = GM->getWasThere();
 
 }
+
