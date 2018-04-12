@@ -17,95 +17,13 @@ OpenMap::OpenMap(GlobalMap* glMap):Map(glMap->getSize())
             map[i][j] = UNKNOWN;
         }
 }
-void OpenMap::goLeft(){
 
-
-    if((map[heroCoordX - 1][heroCoordY] != WALL)&&(map[heroCoordX - 1][heroCoordY] != UNKNOWN)){
-        prevHeroCoordX = heroCoordX;
-        prevHeroCoordY = heroCoordY;
-
-        pathX.push_back(heroCoordX);
-        pathY.push_back(heroCoordY);
-
-        //        cout << "GO LEFT" << endl;
-        prevPath = "Left";
-        heroCoordX--;
-        map[heroCoordX][heroCoordY] = HERO;
-        for(uint i = 0; i < pathX.size(); i++){
-            map[pathX[i]][pathY[i]] = WAS_THERE;
-        }
-    }
-}
-
-void  OpenMap::goRight(){
-
-
-    if((map[heroCoordX + 1][heroCoordY] != WALL)&&(map[heroCoordX + 1][heroCoordY] != UNKNOWN)){
-
-        prevHeroCoordX = heroCoordX;
-        prevHeroCoordY = heroCoordY;
-
-        pathX.push_back(heroCoordX);
-        pathY.push_back(heroCoordY);
-
-        //        cout << "GO RIGHT" << endl;
-        prevPath = "Right";
-        heroCoordX++;
-        map[heroCoordX][heroCoordY] = HERO;
-        for(uint i = 0; i < pathX.size(); i++){
-            map[pathX[i]][pathY[i]] = WAS_THERE;
-        }
-    }
-
-
-}
-
-void  OpenMap::goDown(){
-
-    // Низ
-    if((map[heroCoordX][heroCoordY + 1] != WALL)&&(map[heroCoordX][heroCoordY + 1] != UNKNOWN)){
-
-        prevHeroCoordX = heroCoordX;
-        prevHeroCoordY = heroCoordY;
-
-        pathX.push_back(heroCoordX);
-        pathY.push_back(heroCoordY);
-        //        cout << "GO DOWN" << endl;
-        prevPath = "Down";
-        heroCoordY++;
-        map[heroCoordX][heroCoordY] = HERO;
-        for(uint i = 0; i < pathX.size(); i++){
-            map[pathX[i]][pathY[i]] = WAS_THERE;
-        }
-    }
-
-}
-
-void  OpenMap::goUp(){
-
-
-    // Верх
-    if((map[heroCoordX][heroCoordY - 1] != WALL)&&(map[heroCoordX][heroCoordY - 1] != UNKNOWN)){
-
-        prevHeroCoordX = heroCoordX;
-        prevHeroCoordY = heroCoordY;
-
-        pathX.push_back(heroCoordX);
-        pathY.push_back(heroCoordY);
-        //        cout << "GO UP" << endl;
-        prevPath = "Up";
-        heroCoordY--;
-        map[heroCoordX][heroCoordY] = HERO;
-        for(uint i = 0; i < pathX.size(); i++){
-            map[pathX[i]][pathY[i]] = WAS_THERE;
-        }
-
-    }
-
-}
 
 void OpenMap::connectOpenAndLocalMap(LocalMap* LM){
     LM->isFindWALL();
+   if(n >= 1) checkForOverloadingCells(LM);
+   n++;
+
     int localMapSize = LM->getSize();
     int** localMap = LM->getMap();
 
@@ -120,7 +38,6 @@ void OpenMap::connectOpenAndLocalMap(LocalMap* LM){
         x++;
         y = heroCoordY - (localMapSize - 1) / 2;
     }
-    checkForOverloadingCells(LM);
 }
 
 void OpenMap::checkForOverloadingCells(LocalMap* LM){
@@ -147,3 +64,78 @@ void OpenMap::checkForOverloadingCells(LocalMap* LM){
     }
 
 }
+
+
+bool OpenMap::isFreeGoRight(){
+    if((map[heroCoordX + 1][heroCoordY] != WALL)&&(map[heroCoordX + 1][heroCoordY] != UNKNOWN))
+        return 1;
+    else
+        return 0;
+}
+void  OpenMap::goRight(){
+
+    pathX.push_back(heroCoordX);
+    pathY.push_back(heroCoordY);
+
+    //        cout << "GO RIGHT" << endl;
+    heroCoordX++;
+    for(uint i = 0; i < pathX.size(); i++){
+        map[pathX[i]][pathY[i]] = WAS_THERE;
+    }
+}
+
+
+bool OpenMap::isFreeGoLeft(){
+    if((map[heroCoordX - 1][heroCoordY] != WALL)&&(map[heroCoordX - 1][heroCoordY] != UNKNOWN))
+        return 1;
+    else
+        return 0;
+}
+void OpenMap::goLeft(){
+
+    pathX.push_back(heroCoordX);
+    pathY.push_back(heroCoordY);
+
+    //        cout << "GO LEFT" << endl;
+    heroCoordX--;
+    for(uint i = 0; i < pathX.size(); i++){
+        map[pathX[i]][pathY[i]] = WAS_THERE;
+    }
+}
+
+bool OpenMap::isFreeGoUp(){
+    // Верх
+    if((map[heroCoordX][heroCoordY - 1] != WALL)&&(map[heroCoordX][heroCoordY - 1] != UNKNOWN))
+        return 1;
+    else
+        return 0;
+}
+
+void OpenMap::goUp(){
+    pathX.push_back(heroCoordX);
+    pathY.push_back(heroCoordY);
+    //        cout << "GO UP" << endl;
+    heroCoordY--;
+    for(uint i = 0; i < pathX.size(); i++){
+        map[pathX[i]][pathY[i]] = WAS_THERE;
+    }
+}
+
+bool OpenMap::isFreeGoDown(){
+    // Низ
+    if((map[heroCoordX][heroCoordY + 1] != WALL)&&(map[heroCoordX][heroCoordY + 1] != UNKNOWN))
+        return 1;
+    else
+        return 0;
+}
+void OpenMap::goDown(){
+
+    pathX.push_back(heroCoordX);
+    pathY.push_back(heroCoordY);
+    //        cout << "GO DOWN" << endl;
+    heroCoordY++;
+    for(uint i = 0; i < pathX.size(); i++){
+        map[pathX[i]][pathY[i]] = WAS_THERE;
+    }
+}
+

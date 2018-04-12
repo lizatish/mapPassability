@@ -7,8 +7,6 @@ Map::Map(int initSize)
     for(int i = 0; i < initSize; i++){
         map[i] = new int[initSize];
     }
-
-    prevPath = "";
 }
 
 int Map::getUNKNOWN() const { return UNKNOWN; }

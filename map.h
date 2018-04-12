@@ -34,17 +34,6 @@ protected:
     int heroCoordX;
     int heroCoordY;
 
-    // Координаты предыдущего положения героя
-    int prevHeroCoordX;
-    int prevHeroCoordY;
-
-    // Вектор хранения координат пройденного пути
-    vector<int> pathX;
-    vector<int> pathY;
-
-    // В какую сторону был соверщен предыдущий шаг
-    string prevPath;
-
 public:
     Map(int initSize);
     Map();

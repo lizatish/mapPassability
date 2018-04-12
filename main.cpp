@@ -9,10 +9,8 @@ int heroCoordY;
 
 int UNKNOWN;
 int VISIBLE;
-int wasThere;
-
+int WAS_THERE;
 int** map;
-int** localMap;
 
 void glutInit();
 void display();
@@ -22,16 +20,19 @@ void getInitParams();
 #include "openmap.h"
 #include "globalmap.h"
 #include "localmap.h"
+#include <stdio.h>
 
 GlobalMap* GM;
+OpenMap* OM;
 
 
+void goRight();
+void goLeft();
+void goDown();
+void goUp();
 
 int main()
 {
-    // Инициализация GLUT и основных параметров карты
-
-
     GM = new GlobalMap(20, 10, 10);
     GM->setGlobalMap();
 
@@ -42,27 +43,69 @@ int main()
     Navigator NTR(GM, LM);
     localMap = NTR.connectGlobalAndLocalMap(localMap);
 
-    OpenMap* OM;
     OM = new OpenMap(GM);
     OM->connectOpenAndLocalMap(LM);
     map = OM->getMap();
 
-
-
+    // Инициализация GLUT и основных параметров карты
     glutInit();
     getInitParams();
     display();
-    usleep(300000);
+
+    while(1){
+        localMap = NTR.connectGlobalAndLocalMap(localMap);
+        OM->connectOpenAndLocalMap(LM);
+        map = OM->getMap();
+        display();
+
+        bool access = false;
+        char ch;
+        cin >> ch;
+        switch(ch){
+        case 'w': {
+            access = OM->isFreeGoUp();
+            if(access == true){
+                OM->goUp();
+                NTR.goUp();
+            }
+            break;}
+        case 'a': {
+            access =  OM->isFreeGoLeft();
+            if(access == true){
+                OM->goLeft();
+                NTR.goLeft();
+            }
+            break;}
+        case 's': {
+            access = OM->isFreeGoDown();
+            if(access == true){
+                OM->goDown();
+                NTR.goDown();
+            }
+            break;}
+        case 'd': {
+            access = OM->isFreeGoRight();
+            if(access == true){
+                OM->goRight();
+                NTR.goRight();
+            }
+            break;
+        }
+        }
+        //    OM->connectOpenAndLocalMap(LM);
+
+
+
+    }
+
     glutMainLoop();
-
     return 0;
-
-
 }
+
 void display(){
 
-    heroCoordX = GM->getHeroCoordX();
-    heroCoordY = GM->getHeroCoordY();
+    heroCoordX = OM->getHeroCoordX();
+    heroCoordY = OM->getHeroCoordY();
 
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_QUADS);
@@ -71,7 +114,7 @@ void display(){
         {
             if ((i == heroCoordX)&&(j == heroCoordY))
                 glColor3f(0, 0, 1);
-            else if (map[i][j] == wasThere)
+            else if (map[i][j] == WAS_THERE)
                 glColor3f( 1, 0, 0);
             else if (map[i][j] == WALL)
                 glColor3f(0, 0, 0);
@@ -114,7 +157,7 @@ void getInitParams(){
 
     UNKNOWN = GM->getUNKNOWN();
     VISIBLE = GM->getVISIBLE();
-    wasThere = GM->getWasThere();
+    WAS_THERE = GM->getWasThere();
 
 }
 

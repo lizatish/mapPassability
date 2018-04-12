@@ -5,9 +5,6 @@ GlobalMap::GlobalMap():Map(30)
     // Наша начальная позиция
     heroCoordX = size / 2 - 1;
     heroCoordY = size / 2 - 1;
-    prevHeroCoordX = heroCoordX;
-    prevHeroCoordY = heroCoordY;
-
 }
 GlobalMap::GlobalMap(int glSize, int hCoordX, int hCoordY):Map(glSize){
 
@@ -15,9 +12,6 @@ GlobalMap::GlobalMap(int glSize, int hCoordX, int hCoordY):Map(glSize){
     // Наша начальная позиция
     heroCoordX = hCoordX;
     heroCoordY = hCoordY;
-    prevHeroCoordX = heroCoordX;
-    prevHeroCoordY = heroCoordY;
-
 }
 
 

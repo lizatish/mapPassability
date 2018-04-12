@@ -2,11 +2,11 @@
 
 Navigator::Navigator(GlobalMap* GM, LocalMap* LM)
 {
-     locMapSize =  LM->getSize();
-     globMapSize = GM->getSize();
+    locMapSize =  LM->getSize();
+    globMapSize = GM->getSize();
 
-     globHeroX = GM->getHeroCoordX();
-     globHeroY = GM->getHeroCoordY();
+    globHeroX = GM->getHeroCoordX();
+    globHeroY = GM->getHeroCoordY();
 
 
     globMap = new int* [globMapSize];
@@ -31,4 +31,28 @@ int** Navigator::connectGlobalAndLocalMap( int** locMap){
     }
 
     return locMap;
+}
+
+void Navigator::setCoordinates(int x, int y){
+    globHeroX = x;
+    globHeroY = y;
+}
+
+void Navigator::goUp(){
+    globHeroY--;
+}
+
+void Navigator::goDown(){
+    globHeroY++;
+
+}
+
+void Navigator::goLeft(){
+    globHeroX--;
+
+}
+
+void Navigator::goRight(){
+    globHeroX++;
+
 }

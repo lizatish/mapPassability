@@ -13,13 +13,16 @@ private:
     int globHeroX;
     int globHeroY;
 
-    int locHeroX;
-    int locHeroY;
-
     int** globMap;
 public:
     Navigator(GlobalMap* GM, LocalMap* LM);
     int** connectGlobalAndLocalMap( int** locMap);
+    void setCoordinates(int x, int y);
+
+    void goUp();
+    void goDown();
+    void goLeft();
+    void goRight();
 
 };
 
