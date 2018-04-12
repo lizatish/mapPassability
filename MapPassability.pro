@@ -29,11 +29,13 @@ SOURCES += main.cpp \
     localmap.cpp \
     globalmap.cpp \
     openmap.cpp \
-    navigator.cpp
+    navigator.cpp \
+    robot.cpp
 
 HEADERS +=  map.h \
 # catch.hpp \
     localmap.h \
     globalmap.h \
     openmap.h \
-    navigator.h
+    navigator.h \
+    robot.h
