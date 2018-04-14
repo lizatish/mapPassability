@@ -14,40 +14,40 @@ OpenMap* Robot::showSituation(){
 }
 
 void Robot::goUp(){
-    access = OM->isFreeGoUp();
-    if(access == true){
+    isFreeNeedCell = OM->isFreeGoUp();
+    if(isFreeNeedCell == true){
         OM->goUp();
         NTR->goUp();
     }
 }
 void Robot::goDown(){
-    access = OM->isFreeGoDown();
-    if(access == true){
+    isFreeNeedCell = OM->isFreeGoDown();
+    if(isFreeNeedCell == true){
         OM->goDown();
         NTR->goDown();
     }
 }
 
 void Robot::goRight(){
-    access = OM->isFreeGoRight();
-    if(access == true){
+    isFreeNeedCell = OM->isFreeGoRight();
+    if(isFreeNeedCell == true){
         OM->goRight();
         NTR->goRight();
     }
 }
 
 void Robot::goLeft(){
-    access = OM->isFreeGoLeft();
-    if(access == true){
+    isFreeNeedCell = OM->isFreeGoLeft();
+    if(isFreeNeedCell == true){
         OM->goLeft();
         NTR->goLeft();
     }
 }
 
 void Robot::connectOpenMap(){
-    heroCoordX = NTR->getHeroCoordX();
-    heroCoordY = NTR->getHeroCoordY();
-    globalMapSize = NTR->getGlobalMapSize();
+    int heroCoordX = NTR->getHeroCoordX();
+    int heroCoordY = NTR->getHeroCoordY();
+    int globalMapSize = NTR->getGlobalMapSize();
 
     OM = new OpenMap(globalMapSize, heroCoordX, heroCoordY);
 

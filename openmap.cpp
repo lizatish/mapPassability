@@ -15,7 +15,6 @@ OpenMap::OpenMap(int initSize, int heroX, int heroY):Map(initSize)
 {
     LM = new LocalMap();
 
-
     heroCoordX = heroX;
     heroCoordY = heroY;
 
@@ -23,18 +22,20 @@ OpenMap::OpenMap(int initSize, int heroX, int heroY):Map(initSize)
         for (int j = 0; j < size; ++j){
             map[i][j] = UNKNOWN;
         }
-}
 
-void OpenMap::setHeroCoords(int x, int y){
-    heroCoordX = x;
-    heroCoordY = y;
+    isFirstCall = true;
+
 }
 
 void OpenMap::connectOpenAndLocalMap(LocalMap* LM){
 
-    LM->isFindWALL();
-    if(n >= 1) checkForOverloadingCells(LM);
-    n++;
+    LM->isExistUNKNOWNzones();
+
+    if(!isFirstCall)
+        checkForOverloadingCells(LM);
+
+    isFirstCall = false;
+
 
     int localMapSize = LM->getSize();
     int** localMap = LM->getMap();

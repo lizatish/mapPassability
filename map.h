@@ -18,6 +18,7 @@ using namespace std;
 class Map
 {
 protected:
+    // Карта
     int** map;
     // Размер карты
     int size;
@@ -31,13 +32,6 @@ protected:
 public:
     Map(int initSize);
     Map();
-    struct point{
-        int x;
-        int y;
-    };
-
-    void setMap( int** initMap);
-    void setMap();
 
     // Get-теры
     int getUNKNOWN() const;

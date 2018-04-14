@@ -6,15 +6,19 @@
 class Display
 {
 private:
-    int bigMapSize;
-    int WALL;
+    // Размер открытой карты
+    int openMapSize;
 
+    // Текущие координаты
     int heroCoordX;
     int heroCoordY;
 
+    // Текущая карта
     int** map;
 public:
     Display();
+
+    // Отображение открытой карты
     void display(OpenMap* OM);
 
 };

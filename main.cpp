@@ -9,7 +9,6 @@ int main()
     GlobalMap* GM;
     // В аргемунте конструктора - размер карты
     GM = new GlobalMap(20);
-    GM->setGlobalMap();
 
     // Создание навигатора
     Navigator* NV;

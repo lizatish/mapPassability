@@ -5,7 +5,7 @@ LocalMap::LocalMap():Map(5){
     heroCoordY = 2;
 }
 
-void LocalMap::isFindWALL(){
+void LocalMap::isExistUNKNOWNzones(){
 
     for(int i = 0; i < size; i++)
         for(int j = 0; j < size; j++)

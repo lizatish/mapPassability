@@ -7,26 +7,37 @@
 class Navigator
 {
 private:
+    // Объект для хранения локальной карты
     LocalMap* LM;
-
+    // Текущая локальная карта
+    int** locMap;
+    // Размер локальной карты
     int locMapSize;
-    int globMapSize;
 
+    // Глобальная карта
+    int** globMap;
+    // Размер глобальной карты
+    int globMapSize;
+    // Текущие глобальные координаты
     int globHeroX;
     int globHeroY;
 
-    int** globMap;
-    int** locMap;
 public:
-    LocalMap* findRobotOnGlobalMap();
     Navigator(GlobalMap* GM);
+
+    // Установка текущего местонахождения героя
     void setCoordinates(int x, int y);
 
+    // Поиск текущего местонахождения робота на глобальной карте
+    LocalMap* findRobotOnGlobalMap();
+
+    // Изменить координаты в зависимости от того, куда робот пошел
     void goUp();
     void goDown();
     void goLeft();
     void goRight();
 
+    // Get-теры
     int getHeroCoordX() const;
     int getHeroCoordY() const;
     int getGlobalMapSize() const;

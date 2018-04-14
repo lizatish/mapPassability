@@ -15,23 +15,3 @@ int Map::getSize() const { return size; }
 int **Map::getMap() const { return map; }
 int Map::getVISIBLE() const { return VISIBLE; }
 int Map::getWasThere() const { return WAS_THERE; }
-
-void Map::setMap(){
-
-    srand(time(NULL));
-    for (int i = 0; i < size; ++i)
-        for (int j = 0; j < size; ++j)
-        {
-            if (rand() % 4 == 0)
-                map[i][j] = WALL;
-            else
-                map[i][j] = VISIBLE;
-        }
-    for (int i = 0; i < size; ++i)
-    {
-        map[i][0] = WALL;
-        map[0][i] = WALL;
-        map[i][size - 1] = WALL;
-        map[size - 1][i] = WALL;
-    }
-}

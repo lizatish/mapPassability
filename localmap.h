@@ -5,15 +5,16 @@
 #include "globalmap.h"
 
 
-class LocalMap : public Map
-{
+class LocalMap : public Map {
 private:
+    // Текущие координаты героя [всегда одинаковы]
     int heroCoordX;
     int heroCoordY;
 public:
     LocalMap();
 
-    void isFindWALL();
+    // Проверка на наличие невидимых зон
+    void isExistUNKNOWNzones();
 };
 
 #endif // LOCALMAP_H

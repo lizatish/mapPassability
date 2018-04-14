@@ -1,10 +1,11 @@
 #include "globalmap.h"
 
 GlobalMap::GlobalMap():Map(30){
+    setGlobalMap();
 }
 GlobalMap::GlobalMap(int glSize):Map(glSize){
+    setGlobalMap();
 }
-
 
 void GlobalMap::setGlobalMap(){
 
