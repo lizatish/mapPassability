@@ -7,6 +7,8 @@
 class Navigator
 {
 private:
+    LocalMap* LM;
+
     int locMapSize;
     int globMapSize;
 
@@ -14,9 +16,10 @@ private:
     int globHeroY;
 
     int** globMap;
+    int** locMap;
 public:
-    Navigator(GlobalMap* GM, LocalMap* LM);
-    int** connectGlobalAndLocalMap( int** locMap);
+    LocalMap* findRobotOnGlobalMap();
+    Navigator(GlobalMap* GM);
     void setCoordinates(int x, int y);
 
     void goUp();
@@ -24,6 +27,9 @@ public:
     void goLeft();
     void goRight();
 
+    int getHeroCoordX() const;
+    int getHeroCoordY() const;
+    int getGlobalMapSize() const;
 };
 
 #endif // NAVIGATOR_H

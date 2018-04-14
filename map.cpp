@@ -10,9 +10,6 @@ Map::Map(int initSize)
 }
 
 int Map::getUNKNOWN() const { return UNKNOWN; }
-int Map::getHeroCoordY() const { return heroCoordY; }
-int Map::getHeroCoordX() const { return heroCoordX; }
-int Map::getHERO() const { return HERO; }
 int Map::getWALL() const { return WALL; }
 int Map::getSize() const { return size; }
 int **Map::getMap() const { return map; }
@@ -37,5 +34,4 @@ void Map::setMap(){
         map[i][size - 1] = WALL;
         map[size - 1][i] = WALL;
     }
-    map[heroCoordX][heroCoordY] = HERO;
 }

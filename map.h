@@ -24,15 +24,9 @@ protected:
 
     // Константы для обозначения ячеек внутри карты
     const int WALL = 55;
-    const int HERO = -1;
     const int UNKNOWN = 99;
     const int VISIBLE = -9;
-    // Обозначение ячейки, где мы уже были
     const int WAS_THERE = 40;
-
-    // Координаты героя
-    int heroCoordX;
-    int heroCoordY;
 
 public:
     Map(int initSize);
@@ -42,24 +36,17 @@ public:
         int y;
     };
 
-
     void setMap( int** initMap);
     void setMap();
 
-
     // Get-теры
     int getUNKNOWN() const;
-    int getHeroCoordY() const;
-    int getHeroCoordX() const;
     int getEXIT() const;
-    int getHERO() const;
     int getWALL() const;
     int getVISIBLE() const;
     int getSize() const;
     int **getMap() const;
-
     int getWasThere() const;
-    void setHeroCoordXY(int x, int y);
 };
 
 #endif // MAP_H

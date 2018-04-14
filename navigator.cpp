@@ -1,12 +1,11 @@
 #include "navigator.h"
 
-Navigator::Navigator(GlobalMap* GM, LocalMap* LM)
+Navigator::Navigator(GlobalMap* GM)
 {
-    locMapSize =  LM->getSize();
     globMapSize = GM->getSize();
 
-    globHeroX = GM->getHeroCoordX();
-    globHeroY = GM->getHeroCoordY();
+    globHeroX = globMapSize / 2 - 1;
+    globHeroY = globMapSize / 2 - 1;
 
 
     globMap = new int* [globMapSize];
@@ -15,13 +14,40 @@ Navigator::Navigator(GlobalMap* GM, LocalMap* LM)
     }
 
     globMap = GM->getMap();
+    LM = new LocalMap();
 }
-int** Navigator::connectGlobalAndLocalMap( int** locMap){
+
+int Navigator::getHeroCoordX() const
+{
+    return globHeroX;
+}
+
+int Navigator::getHeroCoordY() const
+{
+    return globHeroY;
+}
+
+int Navigator::getGlobalMapSize() const
+{
+    return globMapSize;
+}
+
+LocalMap* Navigator::findRobotOnGlobalMap(){
+    locMapSize =  LM->getSize();
+    locMap = LM->getMap();
+
     int x = globHeroX - (locMapSize - 1) / 2;
     int y = globHeroY - (locMapSize - 1) / 2;
 
+
+
     for(int i = 0; i < locMapSize; i++){
-        for(int j = 0; j < locMapSize; j++){
+        int j = 0;
+        while(y < 0){
+            y++;
+            j++;
+        }
+        for(j; j < locMapSize; j++){
             if((x >= globMapSize)||(y >= globMapSize)||(x < 0)||(y < 0))
                 continue;
             locMap[i][j] = globMap[x][y++];
@@ -29,9 +55,9 @@ int** Navigator::connectGlobalAndLocalMap( int** locMap){
         x++;
         y = globHeroY - (locMapSize - 1) / 2;
     }
-
-    return locMap;
+    return LM;
 }
+
 
 void Navigator::setCoordinates(int x, int y){
     globHeroX = x;
@@ -44,15 +70,12 @@ void Navigator::goUp(){
 
 void Navigator::goDown(){
     globHeroY++;
-
 }
 
 void Navigator::goLeft(){
     globHeroX--;
-
 }
 
 void Navigator::goRight(){
     globHeroX++;
-
 }

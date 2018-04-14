@@ -7,7 +7,7 @@ class GlobalMap : public Map
 {
 public:
     GlobalMap();
-    GlobalMap(int glSize, int hCoordX, int hCoordY);
+    GlobalMap(int glSize);
 
     void setGlobalMap();
     void setGlobalMap(int** glMap);

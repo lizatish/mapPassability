@@ -8,15 +8,12 @@
 class LocalMap : public Map
 {
 private:
-    int globalMapSize = 30;
+    int heroCoordX;
+    int heroCoordY;
 public:
     LocalMap();
 
-
-
     void isFindWALL();
-
-
 };
 
 #endif // LOCALMAP_H

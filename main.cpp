@@ -1,20 +1,31 @@
-#include <robot.h>
-#include <globalmap.h>
+#include "robot.h"
+#include "display.h"
+#include "globalmap.h"
+#include "navigator.h"
 
 int main()
-{
+{   
     GlobalMap* GM;
+    GM = new GlobalMap(20);
+    GM->setGlobalMap();    
+
+    Navigator* NV;
+    NV = new Navigator(GM);
+    NV->setCoordinates(18, 1);
 
     Robot* robotic;
-    robotic = new Robot();
+    robotic = new Robot(NV);
 
-    robotic->showSituation();
-
+    OpenMap* OM;
+    Display* DISP;
+    DISP = new Display();
+    OM = robotic->showSituation();
+    DISP->display(OM);
 
     while(1){
         char ch;
-        ch = getchar();
-        robotic->showSituation();
+        cin >> ch;
+
 
         switch(ch){
         case 'w': {
@@ -31,6 +42,10 @@ int main()
             break;
         }
         }
+        OM = robotic->showSituation();
+        DISP->display(OM);
+
+
     }
     return 0;
 }

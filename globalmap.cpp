@@ -1,17 +1,8 @@
 #include "globalmap.h"
 
-GlobalMap::GlobalMap():Map(30)
-{
-    // Наша начальная позиция
-    heroCoordX = size / 2 - 1;
-    heroCoordY = size / 2 - 1;
+GlobalMap::GlobalMap():Map(30){
 }
-GlobalMap::GlobalMap(int glSize, int hCoordX, int hCoordY):Map(glSize){
-
-    // Размеры по умолчанию
-    // Наша начальная позиция
-    heroCoordX = hCoordX;
-    heroCoordY = hCoordY;
+GlobalMap::GlobalMap(int glSize):Map(glSize){
 }
 
 
@@ -33,7 +24,6 @@ void GlobalMap::setGlobalMap(){
         map[i][size - 1] = WALL;
         map[size - 1][i] = WALL;
     }
-    map[heroCoordX][heroCoordY] = HERO;
 
 }
 void GlobalMap::setGlobalMap(int** glMap){

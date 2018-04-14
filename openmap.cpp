@@ -1,16 +1,23 @@
 #include "openmap.h"
 
-OpenMap::OpenMap(GlobalMap* glMap):Map(glMap->getSize())
+int OpenMap::getHeroCoordX() const
+{
+    return heroCoordX;
+}
+
+int OpenMap::getHeroCoordY() const
+{
+    return heroCoordY;
+}
+
+OpenMap::OpenMap(int initSize, int heroX, int heroY):Map(initSize)
 
 {
-    GM = new GlobalMap();
     LM = new LocalMap();
 
-    GM = glMap;
 
-    heroCoordX = glMap->getHeroCoordX();
-    heroCoordY = glMap->getHeroCoordY();
-
+    heroCoordX = heroX;
+    heroCoordY = heroY;
 
     for (int i = 0; i < size; ++i)
         for (int j = 0; j < size; ++j){
@@ -18,11 +25,16 @@ OpenMap::OpenMap(GlobalMap* glMap):Map(glMap->getSize())
         }
 }
 
+void OpenMap::setHeroCoords(int x, int y){
+    heroCoordX = x;
+    heroCoordY = y;
+}
 
 void OpenMap::connectOpenAndLocalMap(LocalMap* LM){
+
     LM->isFindWALL();
-   if(n >= 1) checkForOverloadingCells(LM);
-   n++;
+    if(n >= 1) checkForOverloadingCells(LM);
+    n++;
 
     int localMapSize = LM->getSize();
     int** localMap = LM->getMap();
@@ -30,7 +42,12 @@ void OpenMap::connectOpenAndLocalMap(LocalMap* LM){
     int x = heroCoordX - (localMapSize - 1) / 2;
     int y = heroCoordY - (localMapSize - 1) / 2;
     for(int i = 0; i < localMapSize; i++){
-        for(int j = 0; j < localMapSize; j++){
+        int j = 0;
+        while(y < 0){
+            y++;
+            j++;
+        }
+        for(j; j < localMapSize; j++){
             if((x >= size)||(y >= size)||(x < 0)||(y < 0))
                 continue;
             map[x][y++] = localMap[i][j];
@@ -49,7 +66,13 @@ void OpenMap::checkForOverloadingCells(LocalMap* LM){
     int y = heroCoordY - (localMapSize - 1) / 2;
 
     for(int i = 0; i < localMapSize; i++){
-        for(int j = 0; j < localMapSize; j++){
+        int j = 0;
+        while(y < 0){
+            y++;
+            j++;
+        }
+
+        for(j; j < localMapSize; j++){
             if((x >= size)||(y >= size)||(x < 0)||(y < 0))
                 continue;
 
@@ -65,7 +88,6 @@ void OpenMap::checkForOverloadingCells(LocalMap* LM){
 
 }
 
-
 bool OpenMap::isFreeGoRight(){
     if((map[heroCoordX + 1][heroCoordY] != WALL)&&(map[heroCoordX + 1][heroCoordY] != UNKNOWN))
         return 1;
@@ -76,8 +98,6 @@ void  OpenMap::goRight(){
 
     pathX.push_back(heroCoordX);
     pathY.push_back(heroCoordY);
-
-    //        cout << "GO RIGHT" << endl;
     heroCoordX++;
     for(uint i = 0; i < pathX.size(); i++){
         map[pathX[i]][pathY[i]] = WAS_THERE;
@@ -95,8 +115,6 @@ void OpenMap::goLeft(){
 
     pathX.push_back(heroCoordX);
     pathY.push_back(heroCoordY);
-
-    //        cout << "GO LEFT" << endl;
     heroCoordX--;
     for(uint i = 0; i < pathX.size(); i++){
         map[pathX[i]][pathY[i]] = WAS_THERE;
@@ -112,9 +130,9 @@ bool OpenMap::isFreeGoUp(){
 }
 
 void OpenMap::goUp(){
+
     pathX.push_back(heroCoordX);
     pathY.push_back(heroCoordY);
-    //        cout << "GO UP" << endl;
     heroCoordY--;
     for(uint i = 0; i < pathX.size(); i++){
         map[pathX[i]][pathY[i]] = WAS_THERE;
@@ -132,10 +150,8 @@ void OpenMap::goDown(){
 
     pathX.push_back(heroCoordX);
     pathY.push_back(heroCoordY);
-    //        cout << "GO DOWN" << endl;
     heroCoordY++;
     for(uint i = 0; i < pathX.size(); i++){
         map[pathX[i]][pathY[i]] = WAS_THERE;
     }
 }
-

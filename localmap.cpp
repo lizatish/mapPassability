@@ -1,16 +1,9 @@
 #include "localmap.h"
 
-LocalMap::LocalMap():Map(5)
-
-{
-     heroCoordX = 2;
-     heroCoordY = 2;
-
+LocalMap::LocalMap():Map(5){
+    heroCoordX = 2;
+    heroCoordY = 2;
 }
-
-
-
-
 
 void LocalMap::isFindWALL(){
 
@@ -108,5 +101,4 @@ void LocalMap::isFindWALL(){
                 }
 
             }
-
 }

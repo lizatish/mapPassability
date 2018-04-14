@@ -4,6 +4,8 @@
 #include "openmap.h"
 #include "globalmap.h"
 #include "localmap.h"
+#include "display.h"
+
 #include <stdio.h>
 
 #include <unistd.h>
@@ -12,13 +14,10 @@
 class Robot
 {
 private:
-    GlobalMap* GM;
     OpenMap* OM;
-    LocalMap* LM;
     Navigator* NTR;
-    int** localMap;
 
-    int bigMapSize;
+    int globalMapSize;
     int WALL;
 
     int heroCoordX;
@@ -31,11 +30,10 @@ private:
 
     bool access;
 public:
-    Robot();
+    Robot(Navigator* initNav);
 
-    void showSituation();
-    void display();
-    void getInitParams();
+    OpenMap* showSituation();
+    void connectOpenMap();
 
     void goUp();
     void goDown();
