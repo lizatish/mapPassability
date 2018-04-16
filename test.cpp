@@ -2,184 +2,277 @@
 
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "MapPassability.h"
-#include <unistd.h>
+#include "robot.h"
+#include "map.h"
+#include "display.h"
+#include "globalmap.h"
+#include "navigator.h"
 
-int bigMapSize = 10;
-int WALL;
-int heroCoordX;
-int heroCoordY;
-int UNKNOWN;
-int VISIBLE;
-int WAS_THERE;
-
-int** map0;
-
-void glutInits();
-void display();
-void getInitParams();
-
-MapPassability GM(10,5);
 
 TEST_CASE( "First_use", "[test]" ) {
 
-    // Инициализация GLUT и основных параметров карты
-    glutInits();
-    getInitParams();
+    int baseMapSize = 10;
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////    Тест глобальной карты       ////////////////////
+    ///////////////////////////////////////////////////////////////////////
+
+    GlobalMap* BaseMap;
+    BaseMap = new GlobalMap(baseMapSize);
+
+    // Проверяем размер карты
+    CHECK(BaseMap->getSize() == baseMapSize);
+
+    int WALL = BaseMap->getWALL();
+    int VISIBLE = BaseMap->getVISIBLE();
+    int WAS_THERE = BaseMap->getWasThere();
+    int UNKNOWN = BaseMap->getUNKNOWN();
 
     // Инициализация динамического двумерного массива карты
-    map0 = new int* [bigMapSize];
-    for(int i = 0; i < bigMapSize; i++){
-        map0[i] = new int[bigMapSize];
+    int** myMap;
+    myMap = new int* [baseMapSize];
+    for(int i = 0; i < baseMapSize; i++){
+        myMap[i] = new int[baseMapSize];
     }
+
     // Задание всех клеток изначально видимыми
-    for(int i = 0; i < bigMapSize; i++){
-        for(int j = 0; j < bigMapSize; j++){
-            map0[i][j] = VISIBLE;
+    for(int i = 0; i < baseMapSize; i++){
+        for(int j = 0; j < baseMapSize; j++){
+            myMap[i][j] = VISIBLE;
         }
     }
-    // Создание стенок по граниам карты
-    for (int i = 0; i < bigMapSize; ++i)
-    {
-        map0[i][0] = WALL;
-        map0[0][i] = WALL;
-        map0[i][bigMapSize - 1] = WALL;
-        map0[bigMapSize - 1][i] = WALL;
-    }
-    // Задание координат героя
-    heroCoordX = 5;
-    heroCoordY = 5;
-    GM.setHeroCoordXY(heroCoordX, heroCoordY);
 
-    // Задание стенок снизу и сверху от героя
-    map0[5][4] = WALL;
-    map0[5][6] = WALL;
+    // Задание стенок в определенных местах карты
+    myMap[5][4] = WALL;
+    myMap[5][6] = WALL;
 
-    // Синзронизация только что созданной карты с объектом
-    GM.setGlobalMap(map0);
+    BaseMap->setGlobalMap(myMap);
+    myMap = BaseMap->getMap();
 
-    // Получем карту с объекта
-    map0 = GM.getCurrentMap();
+    // Проверяем наличие стенок в определенных местах
+    CHECK(myMap[5][4] == WALL);
+    CHECK(myMap[5][6] == WALL);
 
-    // Проверяем местонахождение героя
-    CHECK(GM.getHeroCoordX() == 5);
-    CHECK(GM.getHeroCoordY() == 5);
+    /////////////////////////////////////////////////////////////////////////
+    ///////////////////         Тест навигатора             /////////////////
+    /////////////////////////////////////////////////////////////////////////
 
-    // Проверяем наличие стенок снизу и сверху
-    CHECK(map0[5][4] == WALL);
-    CHECK(map0[5][6]  == WALL);
+    // Создание навигатора
+    Navigator* NV;
+    NV = new Navigator(BaseMap);
+    // Установить текущее местоположение
+    NV->setCoordinates(1, 1);
 
-    // Проверяем наличие невидимых зон за стенками сверху
-    CHECK(map0[5][3] == UNKNOWN);
-    CHECK(map0[6][3] == UNKNOWN);
-    CHECK(map0[4][3] == UNKNOWN);
+    CHECK(NV->getHeroCoordX() == 1);
+    CHECK(NV->getHeroCoordY() == 1);
 
-    // Проверяем наличие невидимых зон за стенками снизу
-    CHECK(map0[5][7] == UNKNOWN);
-    CHECK(map0[4][7] == UNKNOWN);
-    CHECK(map0[6][7] == UNKNOWN);
+    CHECK(NV->getGlobalMapSize() == baseMapSize);
 
-    display();
-    usleep(1000000);
+    NV->goRight();
+    CHECK(NV->getHeroCoordX() == 2);
+    CHECK(NV->getHeroCoordY() == 1);
 
-    // Идем вправо
-    GM.goRight();
-    display();
-    usleep(1000000);
+    NV->goLeft();
+    CHECK(NV->getHeroCoordX() == 1);
+    CHECK(NV->getHeroCoordY() == 1);
 
-    // Идем вверх на 2 клетки
-    GM.goUp();
-    GM.goUp();
-    display();
-    usleep(1000000);
+    NV->goDown();
+    CHECK(NV->getHeroCoordX() == 1);
+    CHECK(NV->getHeroCoordY() == 2);
 
-    // Верхние ячейки, которые были невидимы в начальном положении героя,
-    // теперь должны стать видимыми
-    // Проверяем это
-    CHECK(map0[5][3] == VISIBLE);
-    CHECK(map0[6][3] == VISIBLE);
-    CHECK(map0[4][3] == VISIBLE);
+    NV->goUp();
+    CHECK(NV->getHeroCoordX() == 1);
+    CHECK(NV->getHeroCoordY() == 1);
 
-    // Теперь идем вниз к невидимым зонам
-    GM.goDown();
-    GM.goDown();
-    GM.goDown();
-    GM.goDown();
+    /////////////////////////////////////////////////////////////////////////
+    ///////////////////       Тест локальной карты          /////////////////
+    /////////////////////////////////////////////////////////////////////////
 
-    // Нижние ячейки, которые были невидимы в начальном положении героя,
-    // теперь должны стать видимыми
-    // Проверяем это
-    CHECK(map0[5][7] == VISIBLE);
-    CHECK(map0[4][7] == VISIBLE);
-    CHECK(map0[6][7] == VISIBLE);
+    LocalMap* LM;
+    LM = new LocalMap();
 
-    // Проверка на то, что мы запомнили ячейки, в которых уже были
-    // Проверка на начальное положение героя
-    CHECK(map0[5][5] == WAS_THERE);
-    // Как мы ходили вниз
-    CHECK(map0[6][6] == WAS_THERE);
-    // Как мы ходили вверх
-    CHECK(map0[6][4] == WAS_THERE);
-    CHECK(map0[6][3] == WAS_THERE);
-    // Проверка на то, где сейчас герой
-    CHECK(GM.getHeroCoordX() == 6);
-    CHECK(GM.getHeroCoordY() == 7);
+    int locMapSize = 5;
+    CHECK(LM->getSize() == locMapSize);
 
-    display();
-    usleep(300000);
-}
+    NV->setCoordinates(5, 5);
+    LM = NV->findRobotOnGlobalMap();
+
+    int** myLocMap = LM->getMap();
+
+    LM->isExistUNKNOWNzones();
+
+    CHECK(myLocMap[2][1] == WALL);
+
+    CHECK(myLocMap[2][0] == UNKNOWN);
+    CHECK(myLocMap[3][0] == UNKNOWN);
+    CHECK(myLocMap[1][0] == UNKNOWN);
+
+    CHECK(myLocMap[2][3] == WALL);
+
+    CHECK(myLocMap[2][4] == UNKNOWN);
+    CHECK(myLocMap[3][4] == UNKNOWN);
+    CHECK(myLocMap[1][4] == UNKNOWN);
 
 
-void display(){
 
-    heroCoordX = GM.getHeroCoordX();
-    heroCoordY = GM.getHeroCoordY();
+    /////////////////////////////////////////////////////////////////////////
+    ///////////////////            Тест робота              /////////////////
+    /////////////////////////////////////////////////////////////////////////
 
-    glClear(GL_COLOR_BUFFER_BIT);
-    glBegin(GL_QUADS);
-    for (int i = 0; i < bigMapSize; ++i)
-        for (int j = 0; j < bigMapSize; ++j)
-        {
-            if ((i == heroCoordX)&&(j == heroCoordY))
-                glColor3f(0, 0, 1);
-            else if (map0[i][j] == WAS_THERE)
-                glColor3f( 1, 0, 0);
-            else if (map0[i][j] == WALL)
-                glColor3f(0, 0, 0);
-            else if (map0[i][j] == VISIBLE)
-                glColor3f(1, 1, 1);
-            else if (map0[i][j] == UNKNOWN)
-                glColor3f( 0.64,  0.64, 0.64);
+    // Создание робота
+    Robot* robotic;
+    // Загружаем в робота навигатор
+    robotic = new Robot(NV);
+    /////////////////////////////////////////////////////////////////////////
+    ///////////////////        Тест открытой карты          /////////////////
+    /////////////////////////////////////////////////////////////////////////
 
-            glVertex2f((i) * 480 / bigMapSize, (j) * 480 / bigMapSize);
-            glVertex2f((i + 1) * 480 / bigMapSize, (j) * 480 / bigMapSize);
-            glVertex2f((i + 1) * 480 / bigMapSize, (j + 1) * 480 / bigMapSize);
-            glVertex2f((i) * 480 / bigMapSize, (j + 1) * 480 / bigMapSize);
-        }
+    OpenMap* OM;
+    OM = new OpenMap(baseMapSize, NV->getHeroCoordX(), NV->getHeroCoordY());
 
-    glEnd();
-    glutSwapBuffers();
-}
+    CHECK(OM->getSize() == baseMapSize);
+    CHECK(OM->getHeroCoordX() == NV->getHeroCoordX());
+    CHECK(OM->getHeroCoordY() == NV->getHeroCoordY());
 
-void glutInits(){
+    OM = robotic->showSituation();
 
-    int argc = 0;
-    char* argv[1];
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowSize(480, 480);
-    glutInitWindowPosition(20, 1050 - 480 - 20);
-    glutCreateWindow("Sample Algorithm");
-    glClearColor(0, 0, 0, 1.0);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho (0, 480, 480, 0, -1, 1);
-}
+    int** myOpenMap = OM->getMap();
 
-void getInitParams(){
-    WALL = GM.getWALL();
-    UNKNOWN = GM.getUNKNOWN();
-    VISIBLE = GM.getVISIBLE();
-    WAS_THERE = GM.getWasThere();
+
+    CHECK(myOpenMap[5][4] == WALL);
+
+    CHECK(myOpenMap[5][3] == UNKNOWN);
+    CHECK(myOpenMap[6][3] == UNKNOWN);
+    CHECK(myOpenMap[4][3] == UNKNOWN);
+
+    CHECK(myOpenMap[5][6] == WALL);
+
+    CHECK(myOpenMap[5][7] == UNKNOWN);
+    CHECK(myOpenMap[6][7] == UNKNOWN);
+    CHECK(myOpenMap[4][7] == UNKNOWN);
+
+    /////////////////////////////////////////////////////////////////////////
+    ////        Тест на движение робота и нарисовку открытой карты       ////
+    /////////////////////////////////////////////////////////////////////////
+
+
+    bool access = false;
+    access =  OM->isFreeGoRight();
+    CHECK(access == true);
+
+    access = OM->isFreeGoLeft();
+    CHECK(access == true);
+
+    access = OM->isFreeGoDown();
+    CHECK(access == false);
+
+    access = OM->isFreeGoUp();
+    CHECK(access == false);
+
+
+
+    robotic->goRight();
+    CHECK(NV->getHeroCoordX() == 6);
+    CHECK(NV->getHeroCoordY() == 5);
+
+    robotic->goRight();
+    CHECK(NV->getHeroCoordX() == 7);
+    CHECK(NV->getHeroCoordY() == 5);
+
+
+    robotic->goLeft();
+    CHECK(NV->getHeroCoordX() == 6);
+    CHECK(NV->getHeroCoordY() == 5);
+
+    robotic->goDown();
+    CHECK(NV->getHeroCoordX() == 6);
+    CHECK(NV->getHeroCoordY() == 6);
+
+    robotic->goUp();
+    CHECK(NV->getHeroCoordX() == 6);
+    CHECK(NV->getHeroCoordY() == 5);
+
+    myOpenMap = OM->getMap();
+    CHECK(myOpenMap[5][5] == WAS_THERE);
+    CHECK(myOpenMap[6][5] == WAS_THERE);
+    CHECK(myOpenMap[7][5] == WAS_THERE);
+    CHECK(myOpenMap[6][6] == WAS_THERE);
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////
+    ////        Тест на верное наложение локальной и открытой карт       ////
+    /////////////////////////////////////////////////////////////////////////
+
+    //    // Создание открытой карты
+    //    OpenMap* OM;
+
+
+    //    // Получение текущей открытой карты
+    //    OM = robotic->showSituation();
+
+
+
+
+
+
+
+    //    // Проверяем наличие невидимых зон за стенками сверху
+    //    CHECK(map0[5][3] == UNKNOWN);
+    //    CHECK(map0[6][3] == UNKNOWN);
+    //    CHECK(map0[4][3] == UNKNOWN);
+
+    //    // Проверяем наличие невидимых зон за стенками снизу
+    //    CHECK(map0[5][7] == UNKNOWN);
+    //    CHECK(map0[4][7] == UNKNOWN);
+    //    CHECK(map0[6][7] == UNKNOWN);
+
+    //    display();
+    //    usleep(1000000);
+
+    //    // Идем вправо
+    //    GM.goRight();
+    //    display();
+    //    usleep(1000000);
+
+    //    // Идем вверх на 2 клетки
+    //    GM.goUp();
+    //    GM.goUp();
+    //    display();
+    //    usleep(1000000);
+
+    //    // Верхние ячейки, которые были невидимы в начальном положении героя,
+    //    // теперь должны стать видимыми
+    //    // Проверяем это
+    //    CHECK(map0[5][3] == VISIBLE);
+    //    CHECK(map0[6][3] == VISIBLE);
+    //    CHECK(map0[4][3] == VISIBLE);
+
+    //    // Теперь идем вниз к невидимым зонам
+    //    GM.goDown();
+    //    GM.goDown();
+    //    GM.goDown();
+    //    GM.goDown();
+
+    //    // Нижние ячейки, которые были невидимы в начальном положении героя,
+    //    // теперь должны стать видимыми
+    //    // Проверяем это
+    //    CHECK(map0[5][7] == VISIBLE);
+    //    CHECK(map0[4][7] == VISIBLE);
+    //    CHECK(map0[6][7] == VISIBLE);
+
+    //    // Проверка на то, что мы запомнили ячейки, в которых уже были
+    //    // Проверка на начальное положение героя
+    //    CHECK(map0[5][5] == WAS_THERE);
+    //    // Как мы ходили вниз
+    //    CHECK(map0[6][6] == WAS_THERE);
+    //    // Как мы ходили вверх
+    //    CHECK(map0[6][4] == WAS_THERE);
+    //    CHECK(map0[6][3] == WAS_THERE);
+    //    // Проверка на то, где сейчас герой
+    //    CHECK(GM.getHeroCoordX() == 6);
+    //    CHECK(GM.getHeroCoordY() == 7);
+
 
 }

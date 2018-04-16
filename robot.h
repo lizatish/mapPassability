@@ -15,8 +15,6 @@ private:
     // Объект навигатора
     Navigator* NTR;
 
-    // Свободна ли ячейка, куда мы хотим переместиться
-    bool isFreeNeedCell;
 public:
     Robot(Navigator* initNav);
 

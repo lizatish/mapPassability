@@ -7,9 +7,9 @@
 
 class LocalMap : public Map {
 private:
-    // Текущие координаты героя [всегда одинаковы]
-    int heroCoordX;
-    int heroCoordY;
+    // Текущие координаты героя [условно]
+    int centerX;
+    int centerY;
 public:
     LocalMap();
 

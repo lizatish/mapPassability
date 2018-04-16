@@ -8,18 +8,18 @@ INCLUDEPATH += /usr/include/GL
 LIBS += -lglut
 
 TEMPLATE = app
-SOURCES += main.cpp \
-#test.cpp \
+SOURCES += test.cpp \
     map.cpp \
     localmap.cpp \
     globalmap.cpp \
     openmap.cpp \
     navigator.cpp \
     robot.cpp \
-    display.cpp
+    display.cpp \
+    #main.cpp \
 
 HEADERS +=  map.h \
-# catch.hpp \
+    catch.hpp \
     localmap.h \
     globalmap.h \
     openmap.h \
