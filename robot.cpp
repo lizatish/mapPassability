@@ -14,14 +14,14 @@ OpenMap* Robot::showSituation(){
 }
 
 void Robot::goUp(){
-    isFreeNeedCell = OM->isFreeGoUp();
+    bool isFreeNeedCell = OM->isFreeGoUp();
     if(isFreeNeedCell == true){
         OM->goUp();
         NTR->goUp();
     }
 }
 void Robot::goDown(){
-    isFreeNeedCell = OM->isFreeGoDown();
+    bool isFreeNeedCell = OM->isFreeGoDown();
     if(isFreeNeedCell == true){
         OM->goDown();
         NTR->goDown();
@@ -29,7 +29,7 @@ void Robot::goDown(){
 }
 
 void Robot::goRight(){
-    isFreeNeedCell = OM->isFreeGoRight();
+    bool isFreeNeedCell = OM->isFreeGoRight();
     if(isFreeNeedCell == true){
         OM->goRight();
         NTR->goRight();
@@ -37,7 +37,7 @@ void Robot::goRight(){
 }
 
 void Robot::goLeft(){
-    isFreeNeedCell = OM->isFreeGoLeft();
+    bool isFreeNeedCell = OM->isFreeGoLeft();
     if(isFreeNeedCell == true){
         OM->goLeft();
         NTR->goLeft();

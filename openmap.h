@@ -19,8 +19,6 @@ private:
     vector <int> pathX;
     vector <int> pathY;
 
-    bool isFirstCall;
-
 public:
     OpenMap(int initSize, int heroX, int heroY);
 

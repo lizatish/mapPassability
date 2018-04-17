@@ -22,20 +22,11 @@ OpenMap::OpenMap(int initSize, int heroX, int heroY):Map(initSize)
         for (int j = 0; j < size; ++j){
             map[i][j] = UNKNOWN;
         }
-
-    isFirstCall = true;
-
 }
 
 void OpenMap::connectOpenAndLocalMap(LocalMap* LM){
 
-    LM->isExistUNKNOWNzones();
-
-    if(!isFirstCall)
-        checkForOverloadingCells(LM);
-
-    isFirstCall = false;
-
+    checkForOverloadingCells(LM);
 
     int localMapSize = LM->getSize();
     int** localMap = LM->getMap();
@@ -43,12 +34,11 @@ void OpenMap::connectOpenAndLocalMap(LocalMap* LM){
     int x = heroCoordX - (localMapSize - 1) / 2;
     int y = heroCoordY - (localMapSize - 1) / 2;
     for(int i = 0; i < localMapSize; i++){
-        int j = 0;
-        while(y < 0){
-            y++;
-            j++;
-        }
-        for(j; j < localMapSize; j++){
+        for(int j = 0; j < localMapSize; j++){
+            while(y < 0){
+                y++;
+                j++;
+            }
             if((x >= size)||(y >= size)||(x < 0)||(y < 0))
                 continue;
             map[x][y++] = localMap[i][j];
@@ -67,18 +57,18 @@ void OpenMap::checkForOverloadingCells(LocalMap* LM){
     int y = heroCoordY - (localMapSize - 1) / 2;
 
     for(int i = 0; i < localMapSize; i++){
-        int j = 0;
-        while(y < 0){
-            y++;
-            j++;
-        }
-
-        for(j; j < localMapSize; j++){
+        for(int j = 0; j < localMapSize; j++){
+            while(y < 0){
+                y++;
+                j++;
+            }
             if((x >= size)||(y >= size)||(x < 0)||(y < 0))
                 continue;
 
             if((map[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                 localMap[i][j] = VISIBLE;
+            else if((map[x][y] == WALL)&&(localMap[i][j] == UNKNOWN))
+                localMap[i][j] = WALL;
             else if(map[x][y] == WAS_THERE)
                 localMap[i][j] = WAS_THERE;
             y++;

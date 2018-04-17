@@ -14,7 +14,7 @@ int main()
     Navigator* NV;
     NV = new Navigator(GM);
     // Установить текущее местоположение
-    NV->setCoordinates(18, 1);
+    NV->setCoordinates(4, 7);
 
     // Создание робота
     Robot* robotic;

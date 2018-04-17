@@ -35,12 +35,11 @@ LocalMap* Navigator::findRobotOnGlobalMap(){
     int y = globHeroY - (locMapSize - 1) / 2;
 
     for(int i = 0; i < locMapSize; i++){
-        int j = 0;
-        while(y < 0){
-            y++;
-            j++;
-        }
-        for(j; j < locMapSize; j++){
+        for(int j = 0; j < locMapSize; j++){
+            while(y < 0){
+                y++;
+                j++;
+            }
             if((x >= globMapSize)||(y >= globMapSize)||(x < 0)||(y < 0))
                 continue;
             locMap[i][j] = globMap[x][y++];
@@ -48,6 +47,7 @@ LocalMap* Navigator::findRobotOnGlobalMap(){
         x++;
         y = globHeroY - (locMapSize - 1) / 2;
     }
+    LM->isExistUNKNOWNzones();
     return LM;
 }
 
