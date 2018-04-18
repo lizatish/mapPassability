@@ -14,21 +14,6 @@ Navigator::Navigator(GlobalMap* GM)
     locMap = LM->getMap();
 }
 
-int Navigator::getHeroCoordX() const
-{
-    return globHeroX;
-}
-
-int Navigator::getHeroCoordY() const
-{
-    return globHeroY;
-}
-
-int Navigator::getGlobalMapSize() const
-{
-    return globMapSize;
-}
-
 LocalMap* Navigator::findRobotOnGlobalMap(){
 
     int x = globHeroX - (locMapSize - 1) / 2;
@@ -71,4 +56,19 @@ void Navigator::goLeft(){
 
 void Navigator::goRight(){
     globHeroX++;
+}
+
+int Navigator::getHeroCoordX() const
+{
+    return globHeroX;
+}
+
+int Navigator::getHeroCoordY() const
+{
+    return globHeroY;
+}
+
+int Navigator::getGlobalMapSize() const
+{
+    return globMapSize;
 }
