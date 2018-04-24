@@ -35,14 +35,21 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
 
-    vector<int> map{100, 100, 100, 100,
-                    50, 50, 50, 50,
-                    0, 0, 0, 0,
-                    100, 100, 100, 100};
-    w.setMap(map);
+    vector<int> map;
+
 
     // Получение текущей открытой карты
     OM = robotic->showSituation();
+
+    int** omap = OM->getMap();
+
+    for(int i = 0; i < 20; i++)
+        for(int j = 0; j < 20; j++)
+            map.push_back(omap[i][j]);
+
+    w.setMap(map);
+    map.clear();
+
     // Отображение
     DISP->display(OM);
 
@@ -71,6 +78,15 @@ int main(int argc, char *argv[])
         }
         // Получение текущей открытой карты
         OM = robotic->showSituation();
+        omap = OM->getMap();
+
+            for(int i = 0; i < 20; i++)
+                for(int j = 0; j < 20; j++)
+                    map.push_back(omap[i][j]);
+
+            w.setMap(map);
+            map.clear();
+
         // Отображение
         DISP->display(OM);
     }

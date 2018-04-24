@@ -24,10 +24,10 @@ protected:
     int size;
 
     // Константы для обозначения ячеек внутри карты
-    const int WALL = 55;
-    const int UNKNOWN = 99;
-    const int VISIBLE = -9;
-    const int WAS_THERE = 40;
+    const int WALL = 100;
+    const int UNKNOWN = 50;
+    const int VISIBLE = 0;
+    const int WAS_THERE = 1;
 
 public:
     Map(int initSize);
