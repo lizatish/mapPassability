@@ -16,7 +16,10 @@ SOURCES += map.cpp \
     robot.cpp \
     display.cpp \
     main.cpp \
-#test.cpp \
+    rosnode.cpp \
+    mainwindow.cpp \
+    #test.cpp \
+
 
 HEADERS +=  map.h \
     catch.hpp \
@@ -25,4 +28,24 @@ HEADERS +=  map.h \
     openmap.h \
     navigator.h \
     robot.h \
-    display.h
+    display.h \
+    rosnode.h \
+     mainwindow.h \
+
+FORMS    += mainwindow.ui
+
+#########################################################
+#                          ROS
+#########################################################
+
+INCLUDEPATH += /opt/ros/kinetic/include
+
+LIBS += -L/opt/ros/kinetic/lib
+LIBS += -lroscpp -lrosconsole
+LIBS += -lroscpp_serialization -lrostime
+LIBS += -lxmlrpcpp -lcpp_common
+LIBS += -lrosconsole -lrosconsole_backend_interface
+LIBS += -lconsole_bridge -lrosconsole_log4cxx
+
+#########################################################
+

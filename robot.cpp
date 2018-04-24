@@ -13,6 +13,7 @@ OpenMap* Robot::showSituation(){
     return OM;
 }
 
+
 void Robot::goUp(){
     bool isFreeNeedCell = OM->isFreeGoUp();
     if(isFreeNeedCell == true){

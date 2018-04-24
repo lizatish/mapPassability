@@ -2,9 +2,14 @@
 #include "display.h"
 #include "globalmap.h"
 #include "navigator.h"
+#include "mainwindow.h"
 
-int main()
-{   
+
+#include <QApplication>
+
+
+int main(int argc, char *argv[])
+{
     // Создание глобальной карты
     GlobalMap* GM;
     // В аргемунте конструктора - размер карты
@@ -26,6 +31,15 @@ int main()
     // Создание визуализации
     Display* DISP;
     DISP = new Display();
+
+    QApplication a(argc, argv);
+    MainWindow w;
+
+    vector<int> map{100, 100, 100, 100,
+                    50, 50, 50, 50,
+                    0, 0, 0, 0,
+                    100, 100, 100, 100};
+    w.setMap(map);
 
     // Получение текущей открытой карты
     OM = robotic->showSituation();
@@ -60,5 +74,5 @@ int main()
         // Отображение
         DISP->display(OM);
     }
-    return 0;
+    return a.exec();
 }
