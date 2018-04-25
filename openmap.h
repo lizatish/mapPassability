@@ -16,8 +16,7 @@ private:
     int heroCoordY;
 
     // Хранилище координат пройденного пути
-    vector <int> pathX;
-    vector <int> pathY;
+    vector <pair<int, int>> path;
 
 public:
     OpenMap(int initSize, int heroX, int heroY);
@@ -43,6 +42,7 @@ public:
     // Get-теры
     int getHeroCoordX() const;
     int getHeroCoordY() const;
+    vector<pair<int, int> > getPath() const;
 };
 
 

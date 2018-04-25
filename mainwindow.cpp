@@ -27,6 +27,15 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::setMap(vector<int> maps){
-    RN->setMap(maps);
+void MainWindow::setMap(int** opMap){
+    vector<int> map;
+    for(int i = 0; i < 20; i++)
+        for(int j = 0; j < 20; j++)
+            map.push_back(opMap[i][j]);
+    RN->setMap(map);
 }
+
+void MainWindow::setPath(vector<pair<int, int>> path){
+    RN->setPath(path);
+}
+

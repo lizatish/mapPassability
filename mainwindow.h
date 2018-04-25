@@ -20,7 +20,9 @@ public:
     ~MainWindow();
 
 public slots:
-    void setMap(vector<int> maps);
+    void setMap(int** openMap);
+    void setPath(vector<pair<int, int>> path);
+
 private:
     Ui::MainWindow *ui;
     RosNode *RN;

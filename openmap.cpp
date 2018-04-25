@@ -10,6 +10,11 @@ int OpenMap::getHeroCoordY() const
     return heroCoordY;
 }
 
+vector<pair<int, int> > OpenMap::getPath() const
+{
+    return path;
+}
+
 OpenMap::OpenMap(int initSize, int heroX, int heroY):Map(initSize)
 
 {
@@ -87,12 +92,11 @@ bool OpenMap::isFreeGoRight(){
 }
 void  OpenMap::goRight(){
 
-    pathX.push_back(heroCoordX);
-    pathY.push_back(heroCoordY);
+    path.push_back(make_pair(heroCoordX, heroCoordY));
+
     heroCoordX++;
-    for(uint i = 0; i < pathX.size(); i++){
-        map[pathX[i]][pathY[i]] = WAS_THERE;
-    }
+    for(uint i = 0; i < path.size(); i++)
+        map[path[i].first][path[i].second] = WAS_THERE;
 }
 
 
@@ -104,12 +108,12 @@ bool OpenMap::isFreeGoLeft(){
 }
 void OpenMap::goLeft(){
 
-    pathX.push_back(heroCoordX);
-    pathY.push_back(heroCoordY);
+    path.push_back(make_pair(heroCoordX, heroCoordY));
     heroCoordX--;
-    for(uint i = 0; i < pathX.size(); i++){
-        map[pathX[i]][pathY[i]] = WAS_THERE;
-    }
+
+    for(uint i = 0; i < path.size(); i++)
+        map[path[i].first][path[i].second] = WAS_THERE;
+
 }
 
 bool OpenMap::isFreeGoUp(){
@@ -122,12 +126,11 @@ bool OpenMap::isFreeGoUp(){
 
 void OpenMap::goUp(){
 
-    pathX.push_back(heroCoordX);
-    pathY.push_back(heroCoordY);
+    path.push_back(make_pair(heroCoordX, heroCoordY));
+
     heroCoordY--;
-    for(uint i = 0; i < pathX.size(); i++){
-        map[pathX[i]][pathY[i]] = WAS_THERE;
-    }
+    for(uint i = 0; i < path.size(); i++)
+        map[path[i].first][path[i].second] = WAS_THERE;
 }
 
 bool OpenMap::isFreeGoDown(){
@@ -139,10 +142,9 @@ bool OpenMap::isFreeGoDown(){
 }
 void OpenMap::goDown(){
 
-    pathX.push_back(heroCoordX);
-    pathY.push_back(heroCoordY);
+    path.push_back(make_pair(heroCoordX, heroCoordY));
+
     heroCoordY++;
-    for(uint i = 0; i < pathX.size(); i++){
-        map[pathX[i]][pathY[i]] = WAS_THERE;
-    }
+    for(uint i = 0; i < path.size(); i++)
+        map[path[i].first][path[i].second] = WAS_THERE;
 }
