@@ -8,6 +8,8 @@
 #include <ros/ros.h>
 #include <nav_msgs/OccupancyGrid.h>
 #include <nav_msgs/Path.h>
+#include <geometry_msgs/Point32.h>
+
 
 using namespace std;
 

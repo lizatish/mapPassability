@@ -30,6 +30,8 @@ void RosNode::process() {
 
     ros::spinOnce();
     ros::Rate rate = 10;
+    float offset_x = -0;
+    float offset_y = -10;
 
     while(isAllowProcess && ros::ok()) {
         cout<<"Thread running"<<endl;
@@ -38,14 +40,17 @@ void RosNode::process() {
         mapMessage.info.height = 20;
         mapMessage.info.width = 20;
         mapMessage.info.resolution = 1;
-        mapMessage.info.origin.position.x = -10;
-        mapMessage.info.origin.position.y = -10;
+//        mapMessage.info.origin.position.x  -= 10;
+//        mapMessage.info.origin.position.y -= 10;
+        mapMessage.info.origin.position.x = offset_x;
+        mapMessage.info.origin.position.y = offset_y;
         mapMessage.data.resize((mapMessage.info.height * mapMessage.info.width)/mapMessage.info.resolution);
 
         // Формирование пути
+        pathMessage.poses.clear();
         for (uint i = 0; i < pathToLoad.size(); i++){
-            point.pose.position.x = pathToLoad[i].second - 10;
-            point.pose.position.y = pathToLoad[i].first - 10;
+            point.pose.position.x = pathToLoad[i].second + offset_x + 0.5;
+            point.pose.position.y = pathToLoad[i].first + offset_y + 0.5;
             point.pose.position.z = 0.0;
             point.pose.orientation.x = 0.0;
             point.pose.orientation.y = 0.0;
