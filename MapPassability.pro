@@ -19,6 +19,8 @@ SOURCES += map.cpp \
     rosnode.cpp \
     mainwindow.cpp \
     #test.cpp \
+    node.cpp \
+    astarsearch.cpp
 
 
 HEADERS +=  map.h \
@@ -31,6 +33,8 @@ HEADERS +=  map.h \
     display.h \
     rosnode.h \
      mainwindow.h \
+    node.h \
+    astarsearch.h
 
 FORMS    += mainwindow.ui
 

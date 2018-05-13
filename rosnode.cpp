@@ -25,16 +25,16 @@ void RosNode::process() {
             m.advertise<nav_msgs::OccupancyGrid>("/mapPassability", 2);
 
     // Инициализация fixed frame
-    pathMessage.header.frame_id = "map";
+    pathMessage.header.frame_id = "odom";
     pathMessage.header.stamp = ros::Time::now();
 
     ros::spinOnce();
     ros::Rate rate = 10;
-    float offset_x = -0;
+    float offset_x = -10;
     float offset_y = -10;
 
     while(isAllowProcess && ros::ok()) {
-        cout<<"Thread running"<<endl;
+    //    cout<<"Thread running"<<endl;
 
         // Инициализация параметров карты
         mapMessage.info.height = 20;
@@ -49,8 +49,8 @@ void RosNode::process() {
         // Формирование пути
         pathMessage.poses.clear();
         for (uint i = 0; i < pathToLoad.size(); i++){
-            point.pose.position.x = pathToLoad[i].second + offset_x + 0.5;
-            point.pose.position.y = pathToLoad[i].first + offset_y + 0.5;
+            point.pose.position.x = pathToLoad[i].second;
+            point.pose.position.y = pathToLoad[i].first;
             point.pose.position.z = 0.0;
             point.pose.orientation.x = 0.0;
             point.pose.orientation.y = 0.0;
@@ -78,6 +78,5 @@ void RosNode::setMap(vector<int> om){
 }
 void RosNode::setPath(vector<pair<int, int> > path){
     pathToLoad = path;
-    cout << pathToLoad.size() << endl;
 
 }

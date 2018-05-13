@@ -9,10 +9,24 @@ int OpenMap::getHeroCoordY() const
 {
     return heroCoordY;
 }
+int OpenMap::getExitCoordX() const
+{
+    return exitCoordX;
+}
+
+int OpenMap::getExitCoordY() const
+{
+    return exitCoordY;
+}
 
 vector<pair<int, int> > OpenMap::getPath() const
 {
     return path;
+}
+
+int OpenMap::getEXIT() const
+{
+    return EXIT;
 }
 
 OpenMap::OpenMap(int initSize, int heroX, int heroY):Map(initSize)
@@ -28,6 +42,25 @@ OpenMap::OpenMap(int initSize, int heroX, int heroY):Map(initSize)
             map[i][j] = UNKNOWN;
         }
 }
+OpenMap::OpenMap(int initSize, int heroX, int heroY, int exX, int exY):Map(initSize)
+
+{
+    LM = new LocalMap();
+
+    heroCoordX = heroX;
+    heroCoordY = heroY;
+    exitCoordX = exX;
+    exitCoordY = exY;
+
+
+    for (int i = 0; i < size; ++i)
+        for (int j = 0; j < size; ++j){
+            map[i][j] = UNKNOWN;
+        }
+    map[exitCoordX][exitCoordY] = EXIT;
+
+}
+
 
 void OpenMap::connectOpenAndLocalMap(LocalMap* LM){
 
@@ -69,13 +102,15 @@ void OpenMap::checkForOverloadingCells(LocalMap* LM){
             }
             if((x >= size)||(y >= size)||(x < 0)||(y < 0))
                 continue;
-
-            if((map[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
+            else if(map[x][y] == EXIT)
+                    localMap[i][j] = EXIT;
+            else if((map[x][y] == VISIBLE)&&(localMap[i][j] == UNKNOWN))
                 localMap[i][j] = VISIBLE;
             else if((map[x][y] == WALL)&&(localMap[i][j] == UNKNOWN))
                 localMap[i][j] = WALL;
             else if(map[x][y] == WAS_THERE)
                 localMap[i][j] = WAS_THERE;
+
             y++;
         }
         x++;
@@ -140,11 +175,71 @@ bool OpenMap::isFreeGoDown(){
     else
         return 0;
 }
+
+
+
+bool  OpenMap::isFreeGoDiaUL(){
+    if((map[heroCoordX - 1][heroCoordY - 1] != WALL)&&(map[heroCoordX - 1][heroCoordY - 1] != UNKNOWN))
+        return 1;
+    else
+        return 0;
+}
+
+bool OpenMap::isFreeGoDiaUR(){
+    if((map[heroCoordX + 1][heroCoordY - 1] != WALL)&&(map[heroCoordX + 1][heroCoordY - 1] != UNKNOWN))
+        return 1;
+    else
+        return 0;
+}
+
+bool OpenMap::isFreeGoDiaDR(){
+    if((map[heroCoordX + 1][heroCoordY + 1] != WALL)&&(map[heroCoordX + 1][heroCoordY + 1] != UNKNOWN))
+        return 1;
+    else
+        return 0;
+}
+
+bool OpenMap::isFreeGoDiaDL(){
+    if((map[heroCoordX - 1][heroCoordY + 1] != WALL)&&(map[heroCoordX - 1][heroCoordY + 1] != UNKNOWN))
+        return 1;
+    else
+        return 0;
+}
+
 void OpenMap::goDown(){
 
     path.push_back(make_pair(heroCoordX, heroCoordY));
 
     heroCoordY++;
+    for(uint i = 0; i < path.size(); i++)
+        map[path[i].first][path[i].second] = WAS_THERE;
+}
+
+void OpenMap::goDiaUR(){
+    path.push_back(make_pair(heroCoordX, heroCoordY));
+
+    heroCoordY--; heroCoordX++;
+    for(uint i = 0; i < path.size(); i++)
+        map[path[i].first][path[i].second] = WAS_THERE;
+}
+void OpenMap::goDiaUL(){
+    path.push_back(make_pair(heroCoordX, heroCoordY));
+
+    heroCoordY--; heroCoordX--;
+    for(uint i = 0; i < path.size(); i++)
+        map[path[i].first][path[i].second] = WAS_THERE;
+}
+void OpenMap::goDiaDR(){
+    path.push_back(make_pair(heroCoordX, heroCoordY));
+
+    heroCoordY++; heroCoordX++;
+    for(uint i = 0; i < path.size(); i++)
+        map[path[i].first][path[i].second] = WAS_THERE;
+}
+void OpenMap::goDiaDL(){
+    path.push_back(make_pair(heroCoordX, heroCoordY));
+
+    heroCoordY++; heroCoordX--;
     for(uint i = 0; i < path.size(); i++)
         map[path[i].first][path[i].second] = WAS_THERE;
 }

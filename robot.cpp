@@ -44,12 +44,48 @@ void Robot::goLeft(){
         NTR->goLeft();
     }
 }
+void Robot::goDiaUR(){
+    bool isFreeNeedCell = OM->isFreeGoDiaUR();
+    if(isFreeNeedCell == true){
+        OM->goDiaUR();
+        NTR->goDiaUR();
+    }
+}
+void Robot::goDiaUL(){
+    bool isFreeNeedCell = OM->isFreeGoDiaUL();
+    if(isFreeNeedCell == true){
+        OM->goDiaUL();
+        NTR->goDiaUL();
+    }
+}
+void Robot::goDiaDR(){
+    bool isFreeNeedCell = OM->isFreeGoDiaDR();
+    if(isFreeNeedCell == true){
+        OM->goDiaDR();
+        NTR->goDiaDR();
+    }
+}
+void Robot::goDiaDL(){
+    bool isFreeNeedCell = OM->isFreeGoDiaDL();
+    if(isFreeNeedCell == true){
+        OM->goDiaDL();
+        NTR->goDiaDL();
+    }
+}
+
+
 
 void Robot::connectOpenMap(){
     int heroCoordX = NTR->getHeroCoordX();
     int heroCoordY = NTR->getHeroCoordY();
+
+    int exitCoordX = NTR->getExitCoordX();
+    int exitCoordY = NTR->getExitCoordY();
+
     int globalMapSize = NTR->getGlobalMapSize();
 
-    OM = new OpenMap(globalMapSize, heroCoordX, heroCoordY);
+//    OM = new OpenMap(globalMapSize, heroCoordX, heroCoordY);
+    OM = new OpenMap(globalMapSize, heroCoordX, heroCoordY, exitCoordX, exitCoordY);
+
 
 }

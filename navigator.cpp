@@ -42,6 +42,11 @@ void Navigator::setCoordinates(int x, int y){
     globHeroY = y;
 }
 
+void Navigator::setExit(int x, int y){
+    exitCoordX = x;
+    exitCoordY = y;
+}
+
 void Navigator::goUp(){
     globHeroY--;
 }
@@ -56,6 +61,33 @@ void Navigator::goLeft(){
 
 void Navigator::goRight(){
     globHeroX++;
+}
+
+void Navigator::goDiaUR(){
+    globHeroX++;
+    globHeroY--;
+}
+void Navigator::goDiaUL(){
+    globHeroX--;
+    globHeroY--;
+}
+void Navigator::goDiaDR(){
+    globHeroX++;
+    globHeroY++;
+}
+void Navigator::goDiaDL(){
+    globHeroX--;
+    globHeroY++;
+}
+
+
+
+int Navigator::getExitCoordX() const{
+    return exitCoordX;
+}
+
+int Navigator::getExitCoordY() const{
+    return exitCoordY;
 }
 
 int Navigator::getHeroCoordX() const

@@ -30,6 +30,11 @@ public:
     void goDown();
     void goLeft();
     void goRight();
+
+    void goDiaUR();
+    void goDiaUL();
+    void goDiaDR();
+    void goDiaDL();
 };
 
 #endif // ROBOT_H

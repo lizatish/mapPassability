@@ -34,6 +34,8 @@ void Display::display(OpenMap* OM){
                 glColor3f(0, 0, 0);
             else if (map[i][j] == OM->getVISIBLE())
                 glColor3f(1, 1, 1);
+            else if (map[i][j] == OM->getEXIT())
+                glColor3f( 1,  0, 1);
             else if (map[i][j] == OM->getUNKNOWN())
                 glColor3f( 0.64,  0.64, 0.64);
 

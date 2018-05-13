@@ -14,6 +14,8 @@ private:
     // Размер локальной карты
     int locMapSize;
 
+    int exitCoordX;
+    int exitCoordY;
     // Глобальная карта
     int** globMap;
     // Размер глобальной карты
@@ -28,6 +30,9 @@ public:
     // Установка текущего местонахождения героя
     void setCoordinates(int x, int y);
 
+    void setExit(int x, int y);
+
+
     // Поиск текущего местонахождения робота на глобальной карте
     LocalMap* findRobotOnGlobalMap();
 
@@ -37,9 +42,16 @@ public:
     void goLeft();
     void goRight();
 
+    void goDiaUR();
+    void goDiaUL();
+    void goDiaDR();
+    void goDiaDL();
+
     // Get-теры
     int getHeroCoordX() const;
     int getHeroCoordY() const;
+    int getExitCoordX() const;
+    int getExitCoordY() const;
     int getGlobalMapSize() const;
 };
 
